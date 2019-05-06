@@ -27,8 +27,7 @@ CPSwarm OSGI Bundles are subdivided in three different repositories: one for sta
 	    >javax.net.ssl.trustStorePassword=changeit,\
         >javax.net.ssl.trustStore=/usr/java/jdk1.8.0_171/jre/lib/security/cacerts,\
 	    >org.osgi.framework.trust.repositories=/usr/java/jdk1.8.0_171/jre/lib/security/cacerts
-
-    2. build and run the orchestrator
+    2. build and run the `orchestrator.bndrun`
         >bnd package orchestrator.bndrun,\
         >java -jar orchestrator.jar
 
