@@ -1,0 +1,24 @@
+Bundle-Version: 1.0.43
+-buildpath: \
+	org.minidns.core,\
+	org.apache.commons.cli,\
+	osgi.core;version=5.0,\
+	it.ismb.pert.cpswarm.mqttLib;version=1.1.0,\
+	org.eclipse.paho.client.mqttv3;version=1.2,\
+	com.google.gson.bundle;version=2.8,\
+	optimization-messages;version=latest,\
+	org.igniterealtime.smack.core;version=4.3,\
+	org.igniterealtime.smack.extensions;version=4.3,\
+	org.igniterealtime.smack.im;version=4.3,\
+	org.igniterealtime.smack.tcp;version=4.3,\
+	org.jxmpp.jid;version=0.6,\
+	org.jxmpp.core;version=0.6
+	
+	
+Private-Package: \
+	it.ismb.pert.cpswarm.simulationOrchestrator,\
+	it.ismb.pert.cpswarm.simulationOrchestrator.xmpp,\
+	it.ismb.pert.cpswarm.simulationOrchestrator.tools,\
+	it.ismb.pert.cpswarm.simulationOrchestrator.config,\
+	it.ismb.pert.cpswarm.messages.server
+	

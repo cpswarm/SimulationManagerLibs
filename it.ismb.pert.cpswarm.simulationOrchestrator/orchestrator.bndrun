@@ -1,0 +1,53 @@
+-include ./soocore.bndrun
+
+
+
+-runbundles.orch: \
+	org.eclipse.paho.client.mqttv3;version=1.2.0,\
+	org.igniterealtime.smack.im;version=4.3.1,\
+	org.igniterealtime.smack.core;version=4.3.1,\
+	org.igniterealtime.smack.extensions;version=4.3.1,\
+	org.igniterealtime.smack.java7;version=4.3.1,\
+	org.igniterealtime.smack.sasl-provided;version=4.3.1,\
+	org.igniterealtime.smack.tcp;version=4.3.1,\
+	org.jxmpp.jid;version=0.6.3,\
+	org.jxmpp.core;version=0.6.3,\
+	org.jxmpp.util-cache;version=0.6.3,\
+	org.apache.commons.cli;version=1.4.0,\
+	org.minidns.core;version=0.3.3,\
+	it.ismb.pert.cpswarm.mqttLib;version=1.1.0,\
+	bcprov;version=1.46.0,\
+	it.ismb.pert.cpswarm.messages.server;version=latest,\
+	it.ismb.pert.cpswarm.simulationOrchestrator;version=latest
+	
+
+
+-runtrace: 		false
+-runproperties: \
+	ros.core.native=true,\
+	gazebo.launch=false,\
+	CpswarmSimulation.launch=false,\
+	ros.master.uri=http://localhost:11311,\
+	org.apache.felix.log.storeDebug=true,\
+	felix.fileinstall.dir=resources,\
+	org.osgi.service.http.port=8080,\
+	logback.configurationFile=resources/logback.xml,\
+	Orchestrator.config.file.orchestrator.xml=resources/orchestrator.xml,\
+	Orchestrator.config.fileXSD=resources/file.xsd,\
+	conf=/home/rui/Documents/CPSwarm/SOOdata/conf-fd/,\
+	src=/home/rui/Documents/CPSwarm/SOOdata/src-fd/,\
+	target=/home/rui/Documents/CPSwarm/SOOdata/target-fd/,\
+	test.candidate.file=resources/candidate.c,\
+	id=emergency_exit,\
+	dim=3d,\
+	max=8,\
+	opt=false,\
+	gui=false,\
+	javax.net.ssl.trustStore=/usr/java/jdk1.8.0_171/jre/lib/security/cacerts,\
+	javax.net.ssl.trustStorePassword=changeit,\
+	org.osgi.framework.security="osgi",\
+	java.security.policy=all.policy,\
+	org.osgi.framework.trust.repositories=/usr/java/jdk1.8.0_171/jre/lib/security/cacerts
+	
+
+
