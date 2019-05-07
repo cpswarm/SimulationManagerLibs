@@ -4,7 +4,7 @@ CPSwarm OSGI Bundles are subdivided in three different repositories: one for sta
 
 # Installation and Configuration
 0. Be sure you have installed the BND tool in your system
-    >sudo apt-get update
+    >sudo apt-get update 
     >sudo apt-get install bnd
 
 1. clone and import all sub-projects in eclipse.
