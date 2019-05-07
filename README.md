@@ -8,7 +8,7 @@ CPSwarm OSGI Bundles are subdevided in three different repositories: one for sta
     >sudo apt-get install bnd
 
 1. clone and import all sub-projects in eclipse.
-    >git clone https://git.pertforge.ismb.it/rzhao/cpswarm-common.git\\
+    >git clone https://git.pertforge.ismb.it/rzhao/cpswarm-common.git
     >In Eclipse: import-> Existing Projects into Workspace-> Select the cpswarm-common-> Copy projects into workspace-> Finish
 
     Note: must be sure the box *"Copy projects into workspace"* is checked.
