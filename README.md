@@ -13,4 +13,4 @@ CPSwarm OSGI Bundles are subdevided in three different repositories: one for sta
 
     >In Eclipse: import-> Existing Projects into Workspace-> Select the cpswarm-common-> Copy projects into workspace-> Finish
 
-    Note: must be sure the box "Copy projects into workspace" is checked.
+    Note: must be sure the box *"Copy projects into workspace"* is checked.
