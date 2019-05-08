@@ -54,13 +54,11 @@ public class PacketListenerImpl implements StanzaListener {
 		// to its roster, it checks the username that has done the
 		// request and inserts the user in a group
 		if (presence.getType() == Presence.Type.subscribe) {
-			System.out.println("subscription request received from SOOline58 " + presence.getFrom());
-			// parent.putSubscribeRequest(presence);
+			System.out.println("subscription request received from " + presence.getFrom());
 			final Presence answerPresence = new Presence(Presence.Type.subscribe);
 			answerPresence.setTo(presence.getFrom());
 			try {
 				parent.getConnection().sendStanza(answerPresence);
-				System.out.println(" \n line 65 PacketListenerImpl sending subscribe to " + presence.getFrom());
 				final Roster roster = Roster.getInstanceFor(parent.getConnection());
 
 				String entryType = "simulator";
@@ -85,8 +83,7 @@ public class PacketListenerImpl implements StanzaListener {
 		} else {
 			if (presence.isAvailable()) {
 				Gson gson = new Gson();
-				System.out.println("presence received from SOOline92 " + presence.getType() + "  " + presence.getFrom()
-						+ ", status: " + presence.getStatus());
+				System.out.println("presence received from "+ presence.getFrom()+ ", status: " + presence.getStatus());
 				try {
 					if (presence.getFrom().toString().startsWith("manager")) {
 						System.out.println("Adding Manager " + presence.getFrom().toString()
@@ -104,8 +101,7 @@ public class PacketListenerImpl implements StanzaListener {
 					return;
 				}
 			} else if (presence.getType().equals(Presence.Type.unavailable)) {
-				System.out.println("presence received from SOOline110 " + presence.getFrom() + ", type: "
-						+ presence.getType().toString());
+				System.out.println("presence received from " + presence.getFrom() + ", type: "+ presence.getType().toString());
 				if (presence.getFrom() != null && presence.getFrom().toString().startsWith("manager")) {
 					System.out.println(
 							"Removing Manager " + presence.getFrom().toString() + " to the list of the ones available");

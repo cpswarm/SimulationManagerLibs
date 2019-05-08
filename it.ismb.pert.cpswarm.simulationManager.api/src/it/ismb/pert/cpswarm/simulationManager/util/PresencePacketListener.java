@@ -49,8 +49,7 @@ public class PresencePacketListener implements StanzaListener {
 		// Intercepts the presences that contain the request
 		// of subscription to the roster
 		if (presence.getType() == Presence.Type.subscribe) {
-			System.out.println("\n MA PresencePacketListener line 52 got presence .........." + presence.getType()
-					+ "  " + presence.getStatus() + "  from " + presence.getFrom());
+			System.out.println("\n MA PresencePacketListener got subscribtion request  from " + presence.getFrom());
 			try {
 				final Roster roster = Roster.getInstanceFor(manager.getConnection());
 				String description = "";
@@ -68,8 +67,6 @@ public class PresencePacketListener implements StanzaListener {
 				System.out.println("Connection disconnected, packet reception interrupted");
 			}
 		} else {
-			System.out.println("MA PresencePacketListener line 73 got presence .........." + presence.getType() + "  "
-					+ presence.getStatus() + "  from " + presence.getFrom());
 			try {
 				if (!manager.getConnection().isConnected() || presence.getType() == Presence.Type.error) {
 					return;
@@ -134,8 +131,6 @@ public class PresencePacketListener implements StanzaListener {
 		assert group != null;
 		assert entryName != null;
 		try {
-			System.out.println("MA presence package listener line 146............handleSubscriptionRequest from "
-					+ presence.getFrom() + presence.getType());
 			// Updates the roster, adding a client that has
 			// requested the subscription
 			synchronized (roster) {
@@ -166,7 +161,6 @@ public class PresencePacketListener implements StanzaListener {
 			Gson gson = new Gson();
 			answerPresence.setStatus(gson.toJson(manager.getServer()));
 			manager.getConnection().sendStanza(answerPresence);
-			System.out.println(" \n line 183 presence listenner sending subscribe to " + presence.getFrom());
 		} catch (NotLoggedInException | NoResponseException | NotConnectedException | InterruptedException e) {
 			System.out.println("Error receiving a subscription request.");
 			System.out.println("cause " + e.getCause());

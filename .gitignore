@@ -6,15 +6,8 @@ RemoteSystemsTempFiles/
 *.git/
 **/generated/
 **/bin/
-**/gazebo.bndrun
-**/gazebo.jar
-**/stage.bndrun
-**/stage.jar
 test/
 test1/
-**/resources/logs/
-**/b2service
-**/gazeSOO
 it.ismb.pert.cpswarm.stageSimulationManager
 be.iminds.iot.simulator.gazebo
 coppelia
