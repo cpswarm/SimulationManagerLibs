@@ -44,7 +44,6 @@ public class PacketListenerImpl implements StanzaListener {
 	public PacketListenerImpl(final SimulationOrchestrator parent) {
 		assert parent != null;
 		this.parent = parent;
-		System.out.println(" SOO create a PacketListenerImpl...............\n");
 	}
 
 	@Override

@@ -155,7 +155,6 @@ public class NativeRosNode {
 			throw e;
 		} finally {
 			builder = null;
-	//		deactivate(); // automatically destroy the service instance after building.
 		}
 	}
 

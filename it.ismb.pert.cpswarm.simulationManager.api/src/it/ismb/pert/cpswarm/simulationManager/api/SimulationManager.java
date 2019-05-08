@@ -107,8 +107,6 @@ public abstract class SimulationManager {
 		this.fake = fake;
 		
 		System.out.println("\n Create a simulation manager with clientID = "+clientID+" \n");
-		System.out.println(serverIP+", "+ serverName +", "+ serverPassword+", "+ dataFolder+", "+ rosFolder+", "+ serverInfo+", "+ optimizationUser+", "+ orchestratorUser+", "+ uuid+", "+ debug+", "+ monitoring+", "+ mqttBroker+", "+ timeout+", "+ "\n ");
-		
 		try {
 			
 
@@ -307,7 +305,7 @@ public abstract class SimulationManager {
 	public boolean publishFitness(SimulationResultMessage message) {
 		MessageSerializer serializer = new MessageSerializer();
 		String messageToSend = serializer.toJson(message);
-		System.out.println("\n Manager starts to publish fitness...........");
+		System.out.println("\nManager starts to publish fitness...........");
 		try {
 			ChatManager chatManager = ChatManager.getInstanceFor(this.getConnection());
 			Chat chat = chatManager.chatWith(optimizationToolJID.asEntityBareJidIfPossible());

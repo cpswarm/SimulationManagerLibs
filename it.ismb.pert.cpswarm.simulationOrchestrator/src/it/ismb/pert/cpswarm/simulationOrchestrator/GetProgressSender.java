@@ -1,8 +1,4 @@
 package it.ismb.pert.cpswarm.simulationOrchestrator;
-/**
- * 
- */
-
 
 /**
  * A Runnable class for monitoring the progess of the optimization process
@@ -11,20 +7,18 @@ package it.ismb.pert.cpswarm.simulationOrchestrator;
  */
 public class GetProgressSender implements Runnable {
 
-	
 	private SimulationOrchestrator parent = null;
 	private boolean canRun = true;
-	private final static int TIME_TO_SLEEP = 60*1000;
-	
-	
+	private final static int TIME_TO_SLEEP = 60 * 1000;
+
 	public GetProgressSender(final SimulationOrchestrator parent) {
 		this.parent = parent;
 	}
-	
+
 	@Override
 	public void run() {
-		while(canRun) {
-			if(!parent.sendGetProgress()) {
+		while (canRun) {
+			if (!parent.sendGetProgress()) {
 				canRun = false;
 			}
 			try {
@@ -34,15 +28,14 @@ public class GetProgressSender implements Runnable {
 			}
 		}
 	}
-		
-	
+
 	/**
-	 * The runnable flag setter, if called with a false value, the thread will
-	 * stop and gracefully exit.
+	 * The runnable flag setter, if called with a false value, the thread will stop
+	 * and gracefully exit.
 	 * 
 	 * @param canRun
 	 */
 	public synchronized void setCanRun(boolean canRun) {
 		this.canRun = canRun;
-	}	
+	}
 }

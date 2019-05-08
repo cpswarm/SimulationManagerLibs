@@ -253,11 +253,6 @@ public class SimulationOrchestrator {
 			final String dimensions, final Long maxAgents, final Boolean optimization, final String configurationFolder,
 			final Boolean localOptimization, final String optimizationToolPath, final String optimizationToolPassword) {
 		System.out.println("\n startSimulationOrchestrator...................\n");
-		System.out.println(serverIP + ", " + serverName + ", " + serverPassword + ", " + serverUsername + ", "
-				+ inputDataFolder + ", " + outputDataFolder + ", " + optimizationToolUser + ", " + monitoring + ", "
-				+ mqttBroker + ", " + taskId + ", " + guiEnabled + ", " + parameters + ", " + dimensions + ", "
-				+ maxAgents + ", " + optimization + ", " + localOptimization + ", " + optimizationToolPath + ", "
-				+ optimizationToolPassword + "\n ");
 		this.taskId = taskId;
 		this.serverName = serverName;
 		this.inputDataFolder = inputDataFolder;
@@ -378,7 +373,6 @@ public class SimulationOrchestrator {
 	}
 
 	private boolean createAccount(final String password) {
-		System.out.println(" \n SOO creating account................. \n");
 		final AccountManager accountManager = AccountManager.getInstance(connection);
 		final HashMap<String, String> props = new HashMap<String, String>();
 		// The description will be the property name of the account
@@ -500,7 +494,7 @@ public class SimulationOrchestrator {
 	 */
 	public void transferFile(final EntityFullJid receiver, final String filePath, final String message) {
 		final ServiceDiscoveryManager disco = ServiceDiscoveryManager.getInstanceFor(connection);
-		System.out.println("SOO transferFile from filepath = "+filePath +"  to "+ receiver +" with message = " + message);
+		System.out.println("SOO transfers file from "+filePath +"  to "+ receiver +" with message = " + message);
 		// Receives the info about the client of the receiver
 		DiscoverInfo discoInfo = null;
 		try {
@@ -585,7 +579,6 @@ public class SimulationOrchestrator {
 	}
 
 	public boolean sendGetProgress() {
-		System.out.println("SOO sends GetProgress()....");
 		if (!connection.isConnected()) {
 			// the connection need to be reconnected
 			this.reconnect();
@@ -652,9 +645,9 @@ public class SimulationOrchestrator {
 				candidateToSend = this.readFile(new File(testCandidateFile).getAbsolutePath(), StandardCharsets.UTF_8);
 			} else {
 				// Gazebo
-				// candidateToSend = this.readFile(this.configurationFolder+File.separator+"candidate.c", StandardCharsets.UTF_8);
+				 candidateToSend = this.readFile(this.configurationFolder+File.separator+"candidate.c", StandardCharsets.UTF_8);
 				// Stage
-				candidateToSend = this.readFile(this.inputDataFolder + File.separator + "candidate.h", StandardCharsets.UTF_8);
+				//candidateToSend = this.readFile(this.inputDataFolder + File.separator + "candidate.h", StandardCharsets.UTF_8);
 			}
 		} catch (IOException e1) {
 			e1.printStackTrace();

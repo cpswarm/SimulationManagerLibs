@@ -35,8 +35,7 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 	public void newIncomingMessage(EntityBareJid sender, Message msg, org.jivesoftware.smack.chat2.Chat chat) {
 		MessageSerializer serializer = new MessageSerializer();
 		RunSimulationMessage runSimulation = serializer.fromJson(msg.getBody());
-		System.out.println(
-				"Abstract MessageEventCoordinator Line 37...................received runSimulation message from =  "+ sender);
+		System.out.println("MA MessageEventCoordinator received runSimulation message from =  "+ sender);
 		parent.setOptimizationID(runSimulation.getId());
 		parent.setSimulationID(runSimulation.getSid());
 		parent.setSimulationConfiguration(runSimulation.getConfiguration());
