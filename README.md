@@ -33,8 +33,8 @@ Input the `help` command in Felix console to see the following Ros commands are 
 *  **be.iminds.iot.simulator.gazebo**: it's an example of using the generated java types of the messages(gazebo\_msgs, trajectory\_msgs, std_srvs) to send some commands to control the Gazebo simulation process.\
 
     Run the `gazebo.bndrun` to see the available commands:
-    >bnd run gazebo.bndrun\
-    >help\
+    >\>bnd run gazebo.bndrun\
+    >\>help\
     >gazebo:start\
     >gazebo:stop\
     >gazebo:pause\
