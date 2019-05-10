@@ -1,11 +1,9 @@
-
 -runfw: org.apache.felix.framework;version='[6.0.2,6.0.2]'   
 
 -runee: JavaSE-1.8
 -runprovidedcapabilities: ${native_capability}
 
 -resolve.effective: active;skip:="osgi.service"
-
 
 -runtrace: 		false
 
@@ -40,7 +38,6 @@
 	org.ros.rosjava.message_generation;version='[0.2.1,0.2.2)',\
 	org.ros.rosjava_messages.rosgraph_msgs;version='[1.11.1,1.12)',\
 	org.ros.rosjava_messages.std_msgs;version='[0.5.9,0.6)',\
-	org.ros.rosjava_messages.std_srvs;version='[1.11.1,1.11.2)',\
 	org.ros.rosjava_messages.geometry_msgs;version='[1.11.7,1.11.8)',\
 	org.ros.rosjava_messages.sensor_msgs;version='[1.11.7,1.11.8)',\
 	ch.qos.logback.classic;version='[1.0.13,1.0.14)',\
@@ -59,13 +56,16 @@
 	de.javakaffee.kryo-serializers;version='[0.23,0.24)',\
 	be.iminds.iot.ros.msgs.generator;version=latest,\
 	be.iminds.iot.ros.api;version=latest,\
-	be.iminds.iot.ros.core;version=latest,\
-	com.google.gson.bundle;version=2.8.5,\
-	gson-extras-bundle;version=2.8.5,\
-	optimization-messages;version=0.0.1
+	be.iminds.iot.ros.core;version=latest
 	
 	
-	
+-runproperties: \
+	ros.core.native=true,\
+	ros.master.uri=http://localhost:11311,\
+	org.apache.felix.log.storeDebug=false,\
+	felix.fileinstall.dir=resources,\
+	org.osgi.service.http.port=8080,\
+	logback.configurationFile=resources/logback.xml	
 
 
 -runsystempackages: \
@@ -105,15 +105,5 @@
 	sun.reflect,\
 	sun.*,\
 	sun.net.spi.nameservice.*,\
-	javax.*,\
-	org.bouncycastle.jce.provider,\
-	com.google.gson.typeadapters,\
-	com.google.gson.typeadapters.*,\
-	com.google.gson.annotations,\
-	com.google.gson.internal.*,\
-	com.google.gson.internal.reflect,\
-	com.google.gson.internal.bind.*,\
-	com.google.gson.internal.bind.util,\
-	com.google.gson.*
-	
+	javax.*
 
