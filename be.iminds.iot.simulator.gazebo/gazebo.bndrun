@@ -1,0 +1,20 @@
+-include ../be.iminds.iot.ros.core/core.bndrun
+
+-runbundles.gazebo: \
+	org.ros.rosjava_messages.trajectory_msgs;version='[1.11.7,1.12)',\
+	org.ros.rosjava_messages.gazebo_msgs;version='[2.4.13,2.5)',\
+	be.iminds.iot.simulator.gazebo;version=latest
+	
+-runtrace: 		false
+
+-runproperties: \
+	ros.core.native=true,\
+	gazebo.launch=true,\
+	ros.master.uri=http://localhost:11311,\
+	org.apache.felix.log.storeDebug=false,\
+	felix.fileinstall.dir=resources,\
+	org.osgi.service.http.port=8080,\
+	logback.configurationFile=resources/logback.xml
+
+
+	

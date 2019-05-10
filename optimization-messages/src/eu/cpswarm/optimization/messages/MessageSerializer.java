@@ -7,13 +7,9 @@ import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 public class MessageSerializer {
 
 	protected Gson gson;
-	protected Gson OptimizationPogressGson;
-	protected Gson OptimizationStartedGson;
-	protected Gson OptimizationCancelledGson;
-	protected Gson SimulationResultGson;
 
 	public MessageSerializer() {
-		RuntimeTypeAdapterFactory<Message> typeFactory = RuntimeTypeAdapterFactory.of(Message.class, "type")
+		RuntimeTypeAdapterFactory<Message> typeFactory = RuntimeTypeAdapterFactory.of(Message.class)
 				.registerSubtype(StartOptimizationMessage.class, StartOptimizationMessage.TYPE_NAME)
 				.registerSubtype(GetProgressMessage.class, GetProgressMessage.TYPE_NAME)
 				.registerSubtype(CancelOptimizationMessage.class, CancelOptimizationMessage.TYPE_NAME)

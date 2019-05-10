@@ -22,6 +22,8 @@
  *******************************************************************************/
 package be.iminds.iot.ros.util;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -130,8 +132,16 @@ public class NativeRosNode {
 				cmd.add(source);
 				System.out.println("\n=================running command = " + cmd + " ==================\n");
 				ProcessBuilder builder = new ProcessBuilder(cmd);
-				builder.inheritIO();
+		//		builder.inheritIO();
 				process = builder.start();
+				String line="";
+				BufferedReader input =  
+						new BufferedReader  
+						(new InputStreamReader(process.getErrorStream()));  
+				while ((line = input.readLine()) != null) {  
+					System.out.println(line);
+				}  
+
 				process.waitFor();
 				System.out.println("Ros command exits \n");
 			} catch (Exception e) {

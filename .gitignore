@@ -6,13 +6,4 @@ RemoteSystemsTempFiles/
 *.git/
 **/generated/
 **/bin/
-test/
-test1/
-it.ismb.pert.cpswarm.stageSimulationManager
-be.iminds.iot.simulator.gazebo
-coppelia
-it.ismb.pert.cpswarm.gazeboSimulationManager
-it.ismb.pert.cpswarm.stageSimulationManager
-org.ros.rosjava_messages.gazebo_msgs
-org.ros.rosjava_messages.std_srvs
-org.ros.rosjava_messages.trajectory_msgs
+

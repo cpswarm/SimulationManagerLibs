@@ -1,0 +1,5 @@
+Bundle-Version: 3.3.1
+Export-Package: coppelia
+Bundle-NativeCode: libremoteApiJava.so;osname=Linux;processor=x86_64, \
+	libremoteApiJava.dylib;osname=macosx;processor=x86_64
+-includeresource: native/Linux/x86_64/; native/Darwin/x86_64

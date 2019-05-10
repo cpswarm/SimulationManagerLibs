@@ -62,7 +62,7 @@
 	be.iminds.iot.ros.core;version=latest,\
 	com.google.gson.bundle;version=2.8.5,\
 	gson-extras-bundle;version=2.8.5,\
-	optimization-messages;version=latest
+	optimization-messages;version=0.0.1
 	
 	
 	

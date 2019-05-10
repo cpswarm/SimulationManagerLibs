@@ -29,10 +29,4 @@ public class OptimizationProgressMessage extends ReplyMessage {
 	public String getCandidate() {
 		return candidate;
 	}
-
-	public String toString() {
-		return new String(
-				"type=" + type + ", id=" + id + ", description= " + description + ", status= " + operationStatus
-						+ ", progress=" + progress + ", fitness=" + fitnessValue + ", candidate =..." + candidate);
-	}
 }
