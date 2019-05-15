@@ -19,8 +19,8 @@ Help-> Eclipse Markerplace-> search 'Bndtools'-> Installed->Restart Eclipse.
 git clone https://git.pertforge.ismb.it/rzhao/cpswarm-common.git
 In Eclipse: Import-> Existing Projects into Workspace-> Select the cpswarm-common-> Copy projects into workspace-> Finish
 ```
-    
-    >Note: the `cnf` project is a fixed name in the source code of Bnd IDE, it makes a directory a workspace, just like the .git directory does for git. So don't change its name.\If there is already a cnf project in the bnd OSGI workspace, when you want to import the second bnd repository which also contains a cnf project, you must discard it, and just clone&import other sub-projects by keeping the `Copy projects into workspace` option is checked.  
+
+>Note: the `cnf` project is a fixed name in the source code of Bnd IDE, it makes a directory a workspace, just like the .git directory does for git. So don't change its name.\If there is already a cnf project in the bnd OSGI workspace, when you want to import the second bnd repository which also contains a cnf project, you must discard it, and just clone&import other sub-projects by keeping the `Copy projects into workspace` option is checked.  
 
 ***Usage of specific bundles***: have been added in the `local` repository of all `cnf` projects in the Gazebo and Stage manager bundle repositories 
 
