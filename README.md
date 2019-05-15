@@ -1,16 +1,19 @@
-## CPswarm-common
+# CPswarm-common
 
 CPSwarm OSGI Bundles are subdevided in three different repositories: one for stage, one for gazebo and one for the common part used by both of them and the their source code. It leverages some bundles from [`RosOsgi`](https://github.com/ibcn-cloudlet/rososgi) project.
 
-# Installation and Configuration
-0. Be sure you have installed the BND tool in your system
-    >sudo apt-get update\
-    >sudo apt-get install bnd
+## Setup
+Be sure you have installed the BND tool and [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) in your system
+``` bash
+sudo apt-get update
+sudo apt-get install bnd
+```
 
 1. clone and import all sub-projects in eclipse.
     >git clone https://git.pertforge.ismb.it/rzhao/cpswarm-common.git
 
     >In Eclipse: import-> Existing Projects into Workspace-> Select the cpswarm-common-> Copy projects into workspace-> Finish
+    
     **Note:** the `cnf` project is a fixed name in the source code of Bnd IDE, it makes a directory a workspace, just like the .git directory does for git. So don't change its name\if there is already a cnf project in the bnd OSGI workspace, when you want to import the second bnd repository which also contains a cnf project, you must discard it, and just clone&import other sub-projects by keeping the `Copy projects into workspace` option is checked.  
 
 ***Usage of specific bundles***: have been added in the `local` repository of all `cnf` projects in the Gazebo and Stage manager bundle repositories 
