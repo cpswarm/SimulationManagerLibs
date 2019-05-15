@@ -22,6 +22,8 @@ In Eclipse: Import-> Existing Projects into Workspace-> Select the cpswarm-commo
 
 >Note: the `cnf` project is a fixed name in the source code of Bnd IDE, it makes a directory a workspace, just like the .git directory does for git. So don't change its name.\If there is already a cnf project in the bnd OSGI workspace, when you want to import the second bnd repository which also contains a cnf project, you must discard it, and just clone&import other sub-projects by keeping the `Copy projects into workspace` option is checked.  
 
+
+## Tutorial
 ***Usage of specific bundles***: have been added in the `local` repository of all `cnf` projects in the Gazebo and Stage manager bundle repositories 
 
 Input the `help` command in Felix console to see the following Ros commands are embeded:
@@ -43,7 +45,8 @@ Input the `help` command in Felix console to see the following Ros commands are 
 
     Run the `gazebo.bndrun` to see the available commands:
     
-    In order to better experience the usage of these commands, you can just open an empty Gazebo simulator without running a simulation, so you need to uncomment the source code of line116~124 in the GazeboActivator.java class. But as a dependency bundle for the simulation manager, it's not used. 
+    In order to better experience the usage of these commands, you can just open an empty Gazebo simulator without running a simulation, so you need to uncomment the source code of *line116~124* in the GazeboActivator.java class. But as a dependency bundle for the simulation manager, it's not used. 
+    
     >\$ bnd run gazebo.bndrun\
     >g! help\
     >gazebo:start\
