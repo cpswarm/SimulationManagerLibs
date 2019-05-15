@@ -26,7 +26,7 @@ In Eclipse: Import-> Existing Projects into Workspace-> Select the cpswarm-commo
 ## Tutorial
 ***Usage of specific bundles***: have been added in the `local` repository of all `cnf` projects in the Gazebo and Stage manager bundle repositories 
 
-Input the `help` command in Felix console to see the following Ros commands are embeded:
+Input the `g!help` command in Felix console to see the following Ros commands are embeded:
 *  **be.iminds.iot.ros.api**: it embeds the basic ros commands(e.g roslaunch, catkinBuild, rosrun) in the Felix GOGO console.
     >ros:catkinBuild\
     >ros:roslaunch\
