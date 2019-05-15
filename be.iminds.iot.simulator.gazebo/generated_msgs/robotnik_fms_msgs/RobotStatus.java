@@ -1,0 +1,42 @@
+package robotnik_fms_msgs;
+
+public interface RobotStatus extends org.ros.internal.message.Message {
+  static final java.lang.String _TYPE = "robotnik_fms_msgs/RobotStatus";
+  static final java.lang.String _DEFINITION = "int32 id\ngeometry_msgs/Pose position\nfloat32 battery\nint32 floor\nint32 node\nstring map\nbool emergency_stop\nint32 mission_id\nint32 task_id\nint32 task_rlc_id\nint32 task_rlc_sent_id\nstring task_rlc_type\nint32 last_task_rlc_id\nstring last_task_rlc_type\nbool waiting_continue_signal\nbool alarm_or_error_active\nint32 last_task_rlc_error\nstring error_msg\n";
+  int getId();
+  void setId(int value);
+  geometry_msgs.Pose getPosition();
+  void setPosition(geometry_msgs.Pose value);
+  float getBattery();
+  void setBattery(float value);
+  int getFloor();
+  void setFloor(int value);
+  int getNode();
+  void setNode(int value);
+  java.lang.String getMap();
+  void setMap(java.lang.String value);
+  boolean getEmergencyStop();
+  void setEmergencyStop(boolean value);
+  int getMissionId();
+  void setMissionId(int value);
+  int getTaskId();
+  void setTaskId(int value);
+  int getTaskRlcId();
+  void setTaskRlcId(int value);
+  int getTaskRlcSentId();
+  void setTaskRlcSentId(int value);
+  java.lang.String getTaskRlcType();
+  void setTaskRlcType(java.lang.String value);
+  int getLastTaskRlcId();
+  void setLastTaskRlcId(int value);
+  java.lang.String getLastTaskRlcType();
+  void setLastTaskRlcType(java.lang.String value);
+  boolean getWaitingContinueSignal();
+  void setWaitingContinueSignal(boolean value);
+  boolean getAlarmOrErrorActive();
+  void setAlarmOrErrorActive(boolean value);
+  int getLastTaskRlcError();
+  void setLastTaskRlcError(int value);
+  java.lang.String getErrorMsg();
+  void setErrorMsg(java.lang.String value);
+}

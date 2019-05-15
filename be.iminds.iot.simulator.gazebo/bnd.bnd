@@ -13,7 +13,6 @@ Bundle-Version: 0.4.0
 	osgi.enterprise;version=5.0,\
 	osgi.promise,\
 	be.iminds.iot.ros.api;version=latest,\
-	coppelia;version=latest,\
 	be.iminds.iot.simulator.api;version=latest
 Private-Package: be.iminds.iot.simulator.gazebo
 Export-Package: be.iminds.iot.simulator.api
