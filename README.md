@@ -3,7 +3,7 @@
 CPSwarm OSGI Bundles are subdevided in three different repositories: one for stage, one for gazebo and one for the common part used by both of them and the their source code. It leverages some bundles from [`RosOsgi`](https://github.com/ibcn-cloudlet/rososgi) project.
 
 ## Setup
-Install Ros system and set up the Ros environment variable `ROS_MASTER_URI` which is `http://localhost:11311` by default in order set up your local machine as a ROS master.
+Install Ros system and set up the Ros environment variable `ROS_MASTER_URI=http://localhost:11311` by default in order to set up your local machine as a ROS master.
 ``` bash
 $ source /opt/ros/kinetic/setup.bash
 $ printenv | grep ROS
@@ -25,7 +25,8 @@ git clone https://git.pertforge.ismb.it/rzhao/cpswarm-common.git
 In Eclipse: Import-> Existing Projects into Workspace-> Select the cpswarm-common-> Copy projects into workspace-> Finish
 ```
 
->Note: the `cnf` project is a fixed name in the source code of Bnd IDE, it makes a directory a workspace, just like the .git directory does for git. So don't change its name.\If there is already a cnf project in the bnd OSGI workspace, when you want to import the second bnd repository which also contains a cnf project, you must discard it, and just clone&import other sub-projects by keeping the `Copy projects into workspace` option is checked.  
+>Note: the `cnf` project is a fixed name in the source code of Bnd IDE, it makes a directory a workspace, just like the .git directory does for git. So don't change its name.\
+>If there is already a cnf project in the bnd workspace, when you want to import the second bnd repository which also contains a cnf project, you must discard it, and just clone&import other sub-projects in this repository by keeping the `Copy projects into workspace` option is checked.  
 
 
 ## Tutorial
@@ -50,7 +51,7 @@ Input the `g!help` command in Felix console to see the following Ros commands ar
 
    There is a file `gazebo.bndrun` with the following `-runproperties:` instruction for configuring the launching environment:
     ``` bash
-    -runpropertie: \
+    -runproperties: \
 	    ros.core.native=true,\        # Indicating if launching the installed ROS system or the rosjava ROScore implementation of the rosjava_core project
 	    gazebo.launch=false,\        # You can set it true to just open the Gazebo simulator without running a simulation to use `loadScene` command, but as a dependency bundle for the simulation manager, it's false
 	    ros.master.uri=http://localhost:11311,\     # It is used to manually indicate the Ros environment variable in case the user doesn't set it during the Ros installation
