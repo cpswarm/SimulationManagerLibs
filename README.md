@@ -19,12 +19,11 @@ Help-> Eclipse Markerplace-> search 'Bndtools'-> Installed->Restart Eclipse.
 ```
 ## Installation
 
-1. clone and import all sub-projects in eclipse.
+Clone and import all sub-projects in eclipse.
 ``` bash
 git clone https://git.pertforge.ismb.it/rzhao/cpswarm-common.git
 In Eclipse: Import-> Existing Projects into Workspace-> Select the cpswarm-common-> Copy projects into workspace-> Finish
 ```
-
 >Note: the `cnf` project is a fixed name in the source code of Bnd IDE, it makes a directory a workspace, just like the .git directory does for git. So don't change its name.\
 >If there is already a cnf project in the bnd workspace, when you want to import the second bnd repository which also contains a cnf project, you must discard it, and just clone&import other sub-projects in this repository by keeping the `Copy projects into workspace` option is checked.  
 
