@@ -49,18 +49,18 @@ Input the `g!help` command in Felix console to see the following Ros commands ar
 *  **be.iminds.iot.simulator.gazebo**: it's an example of using the generated java types of the messages(gazebo\_msgs, trajectory\_msgs, std_srvs) to send some commands to control the Gazebo simulation process.
 
    There is a file `gazebo.bndrun` with the following `-runproperties:` instruction for configuring the launching environment:
-    
+``` bash
    >-runpropertie:&nbsp;\\\
-	&nbsp;  &nbsp;  >ros.core.native=true,\\ &nbsp;  &nbsp;  # Indicating if launching the installed ROS system or the rosjava ROScore implementation of the rosjava_core project\
-	&nbsp;  &nbsp;  >gazebo.launch=false,\\  &nbsp;  &nbsp;  # You can set it true to just open the Gazebo simulator without running a simulation to use ***loadScene*** command, but as a dependency bundle for the simulation manager, it's false\
-	&nbsp;  &nbsp;  >ros.master.uri=http://localhost:11311,\\&nbsp;  &nbsp;  # It is used to manually indicate the Ros environment variable in case the user doesn't set it during the Ros installation\
-	&nbsp;  &nbsp;  >org.apache.felix.log.storeDebug=false,\\&nbsp;  &nbsp;  # Configuration of org.apache.felix.log bundle to determine whether or not debug messages will be stored in the history\
-	&nbsp;  &nbsp;  >felix.fileinstall.dir=resources,\\&nbsp;  &nbsp;  # Configuration of org.apache.felix.fileinstall bundle\
-	&nbsp;  &nbsp;  >org.osgi.service.http.port=8080,\\&nbsp;  &nbsp;  # The default port used for Felix servlets and resources available via HTTP\
-	&nbsp;  &nbsp;  >logback.configurationFile=resources/logback.xml &nbsp;  &nbsp;  # Configuration of ch.qos.logback.core bundle
-    
+	&nbsp;  &nbsp;  ros.core.native=true,\\ &nbsp;  &nbsp;  # Indicating if launching the installed ROS system or the rosjava ROScore implementation of the rosjava_core project\
+	&nbsp;  &nbsp;  gazebo.launch=false,\\  &nbsp;  &nbsp;  # You can set it true to just open the Gazebo simulator without running a simulation to use `loadScene` command, but as a dependency bundle for the simulation manager, it's false\
+	&nbsp;  &nbsp;  ros.master.uri=http://localhost:11311,\\&nbsp;  &nbsp;  # It is used to manually indicate the Ros environment variable in case the user doesn't set it during the Ros installation\
+	&nbsp;  &nbsp;  org.apache.felix.log.storeDebug=false,\\&nbsp;  &nbsp;  # Configuration of org.apache.felix.log bundle to determine whether or not debug messages will be stored in the history\
+	&nbsp;  &nbsp;  felix.fileinstall.dir=resources,\\&nbsp;  &nbsp;  # Configuration of org.apache.felix.fileinstall bundle\
+	&nbsp;  &nbsp;  org.osgi.service.http.port=8080,\\&nbsp;  &nbsp;  # The default port used for Felix servlets and resources available via HTTP\
+	&nbsp;  &nbsp;  logback.configurationFile=resources/logback.xml &nbsp;  &nbsp;  # Configuration of ch.qos.logback.core bundle
+```    
    Run the `gazebo.bndrun` to see the available commands:
-   >\$ bnd run gazebo.bndrun\
+    >\$ bnd run gazebo.bndrun\
     >g! help\
     >gazebo:start\
     >gazebo:stop\
