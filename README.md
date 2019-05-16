@@ -51,7 +51,7 @@ Input the `g!help` command in Felix console to see the following Ros commands ar
     There is a file `gazebo.bndrun` with the following `-runproperties:` instruction for configuring the launching environment:
     
     >-runpropertie:&nbsp;\\\
-	>ros.core.native=true,\\         <pre>   <pre>     # Indicating if launching the installed ROS system or the rosjava ROScore implementation of the rosjava_core project\
+	>ros.core.native=true,\\&nbsp;  # Indicating if launching the installed ROS system or the rosjava ROScore implementation of the rosjava_core project\
 	>gazebo.launch=false,\\               # You can set it true to just open the Gazebo simulator without running a simulation to use ***loadScene*** command, but as a dependency bundle for the simulation manager, it's false\
 	>ros.master.uri=http://localhost:11311,\\        # It is used to manually indicate the Ros environment variable in case the user doesn't set it during the Ros installation\
 	>org.apache.felix.log.storeDebug=false,\\         # Configuration of org.apache.felix.log bundle to determine whether or not debug messages will be stored in the history\
