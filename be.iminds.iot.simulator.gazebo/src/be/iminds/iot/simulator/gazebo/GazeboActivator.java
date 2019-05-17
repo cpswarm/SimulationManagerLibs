@@ -65,7 +65,6 @@ public class GazeboActivator extends AbstractNodeMain{
 	void activate(BundleContext context, Map<String, Object> config){
 		this.context = context;
 		String launch = context.getProperty("gazebo.launch");
-		System.out.println("launch = "+ launch);
 		if(launch != null){
 			launchNative = Boolean.parseBoolean(launch);
 		}
@@ -113,7 +112,7 @@ public class GazeboActivator extends AbstractNodeMain{
 				reg = context.registerService(Simulator.class, gazebo, properties);
 				
 			} catch(Exception e){
-			/*	if(nativeConfig == null && launchNative){
+				if(nativeConfig == null && launchNative){
 					System.out.println("\n  try to load gazebo ourselves");
 					// try to load gazebo ourselves?					
 					try {				
@@ -121,7 +120,7 @@ public class GazeboActivator extends AbstractNodeMain{
 						nativeConfig.update(new Hashtable());
 					} catch(Exception ex){}
 				}
-			*/
+			
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e1) {
