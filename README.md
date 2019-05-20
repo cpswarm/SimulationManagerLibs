@@ -50,10 +50,18 @@ Input the `g!help` command in Felix console to see the following Ros commands ar
 *  **be.iminds.iot.simulator.gazebo**: it's an example of using the generated java types of the messages(gazebo\_msgs, trajectory\_msgs, std_srvs) to send some commands to control the Gazebo simulation process.
 
    There is a file `gazebo.bndrun` with the following `-runproperties:` instruction for configuring the launching environment:
+
+   To set individual System properties with the `-D` option to pass the command line parameters to override the properties listed in the `-runproperties:` when running the manager,
+
+   for example:
+   ``` bash
+   java -Dverbosity=0 -jar gazebo.jar
+   ```
     ``` bash
     -runproperties: \
 	    ros.core.native=true,\        # Indicating if launching the installed ROS system or the rosjava ROScore implementation of the rosjava_core project
 	    gazebo.launch=false,\        # You can set it true to just open the Gazebo simulator without running a simulation to use `loadScene` command, but as a dependency bundle for the simulation manager, it's false
+	    verbosity=2,\                               # Selected verbosity level: 0 NO_OUTPUT, 1 ONLY_FITNESS_SCORE, 2 ALL
 	    ros.master.uri=http://localhost:11311,\     # It is used to manually indicate the Ros environment variable in case the user doesn't set it during the Ros installation
 	    org.apache.felix.log.storeDebug=false,\     # Configuration of org.apache.felix.log bundle to determine whether or not debug messages will be stored in the history
 	    felix.fileinstall.dir=resources,\           # Configuration of org.apache.felix.fileinstall bundle
@@ -62,7 +70,8 @@ Input the `g!help` command in Felix console to see the following Ros commands ar
     ```  
     
     Run the `gazebo.bndrun` in the project folder to see the available commands:
-    >\$ bnd run gazebo.bndrun\
+    >\$ bnd package gazebo.bndrun\
+    >\$ java -jar gazebo.jar\
     >g! help\
     >gazebo:start\
     >gazebo:stop\
