@@ -38,9 +38,11 @@ public final class RosterListenerImpl implements RosterListener {
 			if (!manager.getConnection().isConnected()) {
 				return;
 			}
-			System.out.println(
+			if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+				System.out.println(
 					"SimulationManager "+manager.getJid()+", Presence received: " + presence.getFrom()
 							+ " " + presence);
+			}
 			// Stores the bare JID without resource, because the roster
 			// returns that info as user of a RosterEntry
 			final StringTokenizer bareJID = new StringTokenizer(
@@ -54,8 +56,10 @@ public final class RosterListenerImpl implements RosterListener {
 			} else if (presence.getType() == Presence.Type.unavailable) {
 				handlePrenceUnavailable(presence, jid, roster);
 			}
-			System.out.println(
+			if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+				System.out.println(
 					"SimulationManager "+manager.getJid()+"," + presence.getFrom() + " managed");
+			}
 		} catch (final IllegalStateException e) {
 			// The client is disconnected
 			System.out.println(
@@ -82,8 +86,10 @@ public final class RosterListenerImpl implements RosterListener {
 		// If the bundle has gone away, it is removed from
 		// the list of the available bundles
 		if (presence.getMode() == Presence.Mode.away) {
-			System.out.println(
+			if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+				System.out.println(
 					"SimulationManager "+manager.getJid()+"," + presence.getFrom() +"is offline");
+			}
 			//TODO
 			// handle orchestrator offline 
 			
@@ -91,8 +97,10 @@ public final class RosterListenerImpl implements RosterListener {
 			// it is inserted in the list of those available
 		} else if ((presence.getMode() == Presence.Mode.available)
 				|| (presence.getMode() == null)) {
-			System.out.println(
+			if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+				System.out.println(
 					"SimulationManager "+manager.getJid()+"," + presence.getFrom() +" is online");
+			}
 			//TODO
 			// handle orchestrator online 
 			
@@ -116,29 +124,37 @@ public final class RosterListenerImpl implements RosterListener {
 	 */
 	private void handlePrenceUnavailable(final Presence presence,
 			final String jid, final Roster roster) {
-		System.out.println(
+		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+			System.out.println(
 				"SimulationManager "+manager.getJid()+","+ presence.getFrom() + "is offline");
+		}
 		//TODO
 		// handle orchestrator offline
 	}
 
 	@Override
 	public void entriesAdded(Collection<Jid> arg0) {
-		System.out.println(
+		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+			System.out.println(
 				"SimulationManager "+manager.getJid()+", entry added in RosterListener, entry: " + arg0);
+		}
 	}
 
 	@Override
 	public void entriesDeleted(Collection<Jid> arg0) {
-		System.out.println(
+		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+			System.out.println(
 				"SimulationManager "+manager.getJid()+", entry deleted in RosterListener, entry: " + arg0);
+		}
 	}
 
 	@Override
 	public void entriesUpdated(Collection<Jid> arg0) {
 		for (final Jid entry : arg0) {
-			System.out.println(
+			if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+				System.out.println(
 					"SimulationManager "+manager.getJid()+", entry updated in RosterListener, entry: " + entry);
+			}
 		}
 	}
 }

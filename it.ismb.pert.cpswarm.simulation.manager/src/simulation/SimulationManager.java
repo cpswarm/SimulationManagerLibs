@@ -6,7 +6,6 @@ import java.net.InetAddress;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.UUID;
-
 import javax.net.ssl.SSLContext;
 import org.jivesoftware.smack.ReconnectionManager;
 import org.jivesoftware.smack.ReconnectionManager.ReconnectionPolicy;
@@ -82,10 +81,11 @@ public abstract class SimulationManager {
 	
 	public static VERBOSITY_LEVELS CURRENT_VERBOSITY_LEVEL = VERBOSITY_LEVELS.ALL;
 
-	public void connectToXMPPserver(final InetAddress serverIP, final String serverName, final String serverPassword, final String dataFolder, final String rosFolder, final Server serverInfo, final String optimizationUser, final String orchestratorUser, String uuid, boolean debug, final boolean monitoring, final String mqttBroker, final int timeout, final boolean fake) {
+	public void connectToXMPPserver(final InetAddress serverIP, final String serverName, final String serverPassword, final String dataFolder, final String rosFolder, final Server serverInfo, final String optimizationUser, final String orchestratorUser, String uuid, boolean debug, final boolean monitoring, final String mqttBroker, final int timeout, final boolean fake, final VERBOSITY_LEVELS CURRENT_VERBOSITY_LEVEL) {
 		if(uuid.isEmpty()) {
 			uuid = UUID.randomUUID().toString();
 		}
+		SimulationManager.CURRENT_VERBOSITY_LEVEL = CURRENT_VERBOSITY_LEVEL;
 		clientID = "manager_"+uuid;
 		this.serverName = serverName;
 		this.dataFolder = dataFolder;
@@ -108,7 +108,6 @@ public abstract class SimulationManager {
 		
 		System.out.println("\n Create a simulation manager with clientID = "+clientID+" \n");
 		try {
-			
 
 			clientJID = JidCreate.from(clientID+"@"+serverName+"/"+RESOURCE);
 			optimizationToolJID = JidCreate.from(optimizationUser+"@"+serverName+"/"+RESOURCE);
@@ -122,7 +121,10 @@ public abstract class SimulationManager {
 					.build();
 			connection = new XMPPTCPConnection(connectionConfig);
 			connection.connect();
-			System.out.println("Connected to server");
+			
+			if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
+				System.out.println("Connected to server");
+			}
 
 			connectionListener = new ConnectionListenerImpl(this);
 			// Adds a listener for the status of the connection
@@ -165,7 +167,6 @@ public abstract class SimulationManager {
 
 
     private boolean createAccount(final String password, final Server serverInfo) {
-    	System.out.println("creating account.......... ");
 		final AccountManager accountManager = AccountManager
 				.getInstance(connection);
 		final HashMap<String, String> props = new HashMap<String, String>();
@@ -180,7 +181,7 @@ public abstract class SimulationManager {
 			Thread.sleep(2000);
 			final Presence presence = new Presence(Presence.Type.available);
 			Gson gson = new Gson();
-			presence.setStatus(gson.toJson(serverInfo, Server.class));
+			presence.setStatus(gson.toJson(serverInfo));
 			try {
 				connection.sendStanza(presence);
 			} catch (final NotConnectedException | InterruptedException e) {
@@ -246,7 +247,6 @@ public abstract class SimulationManager {
 	 *             if something is wrong
 	 */
 	private void addOrchestratorAndOptimizationToTheRoster() {
-		System.out.println("addOrchestratorAndOptimizationToTheRoster.......... ");
 		// Sets the type of subscription of the roster
 		final Roster roster = Roster.getInstanceFor(connection);
 		roster.setSubscriptionMode(SubscriptionMode.accept_all);
@@ -304,14 +304,15 @@ public abstract class SimulationManager {
 	public boolean publishFitness(SimulationResultMessage message) {
 		MessageSerializer serializer = new MessageSerializer();
 		String messageToSend = serializer.toJson(message);
-		System.out.println("\nManager starts to publish fitness...........");
 		try {
 			ChatManager chatManager = ChatManager.getInstanceFor(this.getConnection());
 			Chat chat = chatManager.chatWith(optimizationToolJID.asEntityBareJidIfPossible());
 			Message xmppMessage = new Message();
 			xmppMessage.setBody(messageToSend);
 			chat.send(messageToSend);
-			System.out.println("fitness score: "+ messageToSend + " sent");
+			if(!CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.NO_DEBUG)) {
+				System.out.println("fitness score: "+ messageToSend + " sent");
+			}
 		} catch (NotConnectedException | InterruptedException e) {
 			System.out.println("Error sending the result of the simulation: "+messageToSend);
 			e.printStackTrace();
@@ -351,10 +352,6 @@ public abstract class SimulationManager {
 			}
 
 		}
-	}
-	
-	public String getClientID() {
-		return clientID;
 	}
 	
 	public boolean isStarted() {
@@ -434,23 +431,15 @@ public abstract class SimulationManager {
 		this.timeout = timeout;
 	}
 
-
-	public String getServerName() {
-		return serverName;
-	}
-
-
-	public void setServerName(String serverName) {
-		this.serverName = serverName;
-	}
-
-
 	public boolean isFake() {
 		return fake;
 	}
 
-
 	public void setFake(boolean fake) {
 		this.fake = fake;
+	}
+	
+	public String getClientID() {
+		return clientID;
 	}
 }

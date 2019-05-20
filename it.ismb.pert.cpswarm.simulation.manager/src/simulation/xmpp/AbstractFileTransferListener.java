@@ -32,7 +32,6 @@ public abstract class AbstractFileTransferListener implements FileTransferListen
 		this.parent = manager;
 		this.dataFolder = parent.getDataFolder();
 		this.rosFolder = parent.getRosFolder();
-		System.out.println("A new FileTransferListenerImpl bound to MA =  " + manager.getClientID());
 	}
 
 	@Override
@@ -57,7 +56,9 @@ public abstract class AbstractFileTransferListener implements FileTransferListen
 				}
 				Thread.sleep(1000);
 			}
-			System.out.println("File received " + fileToReceive);
+			if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+				System.out.println("File received");
+			}
 			Thread.sleep(1000);
 			// If it's the configuration from the Simulation Orchestrator
 			if (request.getRequestor().compareTo(parent.getOrchestratorJID()) == 0) {
@@ -65,13 +66,16 @@ public abstract class AbstractFileTransferListener implements FileTransferListen
 				final Chat newChat = chatmanager.chatWith(parent.getOrchestratorJID().asEntityBareJidIfPossible());
 				packageName = request.getDescription();
 				if (unzipFiles(fileToReceive)) {
-					System.out.println("SimulationManager configured for optimization " + request.getDescription());
+					if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+						System.out.println("SimulationManager configured for optimization "+request.getDescription());
+					}
 					parent.setOptimizationID(request.getDescription());
 					SimulatorConfiguredMessage reply = new SimulatorConfiguredMessage("Simulator configured",
 							request.getDescription(), eu.cpswarm.optimization.messages.ReplyMessage.Status.OK);
 					MessageSerializer serializer = new MessageSerializer();
 					newChat.send(serializer.toJson(reply));
 				} else {
+					System.out.println("Error unzipping the file, sending error to SOO");
 					newChat.send("error");
 				}
 			}
@@ -90,7 +94,9 @@ public abstract class AbstractFileTransferListener implements FileTransferListen
 	}
 
 	private void scanFolder(final Set<String> supportedException, File currentFolder, File outputFolder) {
-		System.out.println("Scanning folder [" + currentFolder + "]... ");
+		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+    		System.out.println("Scanning folder [" + currentFolder + "]...");
+    	}
 		File[] files = currentFolder.listFiles(filter);
 		for (File file : files) {
 			if (file.isDirectory()) {
@@ -103,7 +109,9 @@ public abstract class AbstractFileTransferListener implements FileTransferListen
 
 	private void copy(File file, File outputFolder) {
 		try {
-			System.out.println("\tCopying [" + file + "] to folder [" + outputFolder + "]...");
+			if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+        		System.out.println("\tCopying [" + file + "] to folder [" + outputFolder + "]...");
+        	}
 			InputStream input = new FileInputStream(file);
 			OutputStream out = new FileOutputStream(new File(outputFolder + File.separator + file.getName()));
 			byte data[] = new byte[input.available()];

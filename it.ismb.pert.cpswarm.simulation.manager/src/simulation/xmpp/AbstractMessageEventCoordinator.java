@@ -28,14 +28,15 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 	public void setSimulationManager(final SimulationManager manager) {
 		assert (parent) != null;
 		this.parent = manager;
-		System.out.println("A new MessageEventCoordinatorImpl bound to MA =  " + manager.getClientID());
 	}
 
 	@Override
 	public void newIncomingMessage(EntityBareJid sender, Message msg, org.jivesoftware.smack.chat2.Chat chat) {
 		MessageSerializer serializer = new MessageSerializer();
 		RunSimulationMessage runSimulation = serializer.fromJson(msg.getBody());
-		System.out.println("MA MessageEventCoordinator received runSimulation message from =  "+ sender);
+		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+			System.out.println("SimulationManager received RunSimulationMessage from "+/*msg.getBody()*/ sender.asBareJid());
+		}
 		parent.setOptimizationID(runSimulation.getId());
 		parent.setSimulationID(runSimulation.getSid());
 		parent.setSimulationConfiguration(runSimulation.getConfiguration());
@@ -52,7 +53,9 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 	protected boolean serializeCandidate(final String candidate) {
 		try {
 			String filePath = packageFolder + File.separator + "src" + File.separator + "candidate.h";
-			System.out.println("Saving the candidate in " + filePath);
+			if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+				System.out.println("Saving the candidate in "+ filePath);
+			}
 			Files.write(Paths.get(filePath), candidate.getBytes());
 			return true;
 		} catch (IOException e) {
