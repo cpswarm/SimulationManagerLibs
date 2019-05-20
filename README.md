@@ -34,9 +34,11 @@ In Eclipse: Import-> Existing Projects into Workspace-> Select the cpswarm-commo
 
 Input the `g!help` command in Felix console to see the following Ros commands are embeded:
 *  **be.iminds.iot.ros.api**: it embeds the basic ros commands(e.g roslaunch, catkinBuild, rosrun) in the Felix GOGO console.
-    >ros:catkinBuild\
-    >ros:roslaunch\
-    >ros:rosrun
+    ``` bash
+    ros:catkinBuild\
+    ros:roslaunch\
+    ros:rosrun
+    ```
 *  **be.iminds.iot.ros.core**: it registers a Ros service which can launch the Ros Master.
     >ros:env\
     >ros:nodes\
