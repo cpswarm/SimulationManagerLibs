@@ -6,5 +6,6 @@ Export-Package: \
 	osgi.enterprise;version=5.0,\
 	org.ros.rosjava,\
 	osgi.cmpn,\
-	osgi.residential
+	osgi.residential,\
+	osgi.core
 	

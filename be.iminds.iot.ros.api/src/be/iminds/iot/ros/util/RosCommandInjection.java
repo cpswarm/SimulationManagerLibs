@@ -111,7 +111,5 @@ public class RosCommandInjection {
 	@Reference(target = "(component.factory=it.ismb.pert.cpswarm.rosCommand.factory)")
 	public void getRosCommandFactory(final ComponentFactory s) {
 		this.rosCommandFactory = s;
-		System.out.println(" \n RosCommandInjection gets a RosCommand ComponentFactory ...");
-
 	}
 }

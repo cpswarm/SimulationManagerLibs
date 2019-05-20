@@ -68,6 +68,7 @@
 -runproperties: \
 	ros.core.native=true,\
 	gazebo.launch=true,\
+	verbosity=2,\
 	ros.master.uri=http://localhost:11311,\
 	org.apache.felix.log.storeDebug=false,\
 	felix.fileinstall.dir=resources,\

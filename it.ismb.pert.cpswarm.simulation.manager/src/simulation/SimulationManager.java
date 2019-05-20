@@ -81,11 +81,11 @@ public abstract class SimulationManager {
 	
 	public static VERBOSITY_LEVELS CURRENT_VERBOSITY_LEVEL = VERBOSITY_LEVELS.ALL;
 
-	public void connectToXMPPserver(final InetAddress serverIP, final String serverName, final String serverPassword, final String dataFolder, final String rosFolder, final Server serverInfo, final String optimizationUser, final String orchestratorUser, String uuid, boolean debug, final boolean monitoring, final String mqttBroker, final int timeout, final boolean fake, final VERBOSITY_LEVELS CURRENT_VERBOSITY_LEVEL) {
+	public void connectToXMPPserver(final InetAddress serverIP, final String serverName, final String serverPassword, final String dataFolder, final String rosFolder, final Server serverInfo, final String optimizationUser, final String orchestratorUser, String uuid, boolean debug, final boolean monitoring, final String mqttBroker, final int timeout, final boolean fake) {
 		if(uuid.isEmpty()) {
 			uuid = UUID.randomUUID().toString();
 		}
-		SimulationManager.CURRENT_VERBOSITY_LEVEL = CURRENT_VERBOSITY_LEVEL;
+	
 		clientID = "manager_"+uuid;
 		this.serverName = serverName;
 		this.dataFolder = dataFolder;
@@ -105,8 +105,9 @@ public abstract class SimulationManager {
 		this.mqttBroker  = mqttBroker;
 		this.timeout = timeout;
 		this.fake = fake;
-		
-		System.out.println("\n Create a simulation manager with clientID = "+clientID+" \n");
+		if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
+			System.out.println("\n Create a simulation manager with clientID = "+clientID+" \n");
+		}
 		try {
 
 			clientJID = JidCreate.from(clientID+"@"+serverName+"/"+RESOURCE);

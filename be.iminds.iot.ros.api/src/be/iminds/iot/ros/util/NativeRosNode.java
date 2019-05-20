@@ -29,10 +29,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-
 import be.iminds.iot.ros.api.Ros;
 
 public class NativeRosNode {
@@ -43,8 +43,16 @@ public class NativeRosNode {
 	protected String rosPackage;
 	protected String rosNode;
 	protected String rosWorkspace;
+	protected String verbosity = "0";
 	protected List<String> rosParameters = new ArrayList<>();
-
+	public static enum VERBOSITY_LEVELS {
+		NO_DEBUG,
+		ONLY_FITNESS_SCORE,
+		ALL;
+	};
+	
+	public static VERBOSITY_LEVELS CURRENT_VERBOSITY_LEVEL = VERBOSITY_LEVELS.ALL;
+	
 	public NativeRosNode() {
 	}
 
@@ -69,7 +77,17 @@ public class NativeRosNode {
 	}
 
 	@Activate
-	protected void activate(Map<String, Object> properties) throws Exception {
+	protected void activate(BundleContext context, Map<String, Object> properties) throws Exception {
+		if(context.getProperty("verbosity")!=null){
+			verbosity = context.getProperty("verbosity");
+		}
+		int verbosityI = Integer.parseInt(verbosity);
+		if(verbosityI>2) {
+			System.out.println("Invalid verbosity level, using the default one: ALL");
+		} else {
+			CURRENT_VERBOSITY_LEVEL = VERBOSITY_LEVELS.values()[verbosityI];
+		}
+		
 		// this also allows to build a ROS node driven by configuration
 		if (properties.containsKey("ros.buildWorkspace")) {
 			rosWorkspace = (String) properties.get("ros.buildWorkspace");
@@ -108,7 +126,6 @@ public class NativeRosNode {
 			}
 			try {
 				List<String> cmd = new ArrayList<>();
-				//echo $ROS_PACKAGE_PATH ; rospack find emergency_exit ; 
 				String source = "source /opt/ros/kinetic/setup.bash ; source " + rosWorkspace + "devel/setup.bash ; ";
 				cmd.add("/bin/bash");
 				cmd.add("-c");
@@ -130,20 +147,26 @@ public class NativeRosNode {
 				}
 
 				cmd.add(source);
-				System.out.println("\n=================running command = " + cmd + " ==================\n");
+				if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
+					System.out.println("\n=================running command = " + cmd + " ==================\n");
+				}
 				ProcessBuilder builder = new ProcessBuilder(cmd);
 		//		builder.inheritIO();
 				process = builder.start();
 				String line="";
 				BufferedReader input =  
 						new BufferedReader  
-						(new InputStreamReader(process.getErrorStream()));  
+						(new InputStreamReader(process.getInputStream()));  
 				while ((line = input.readLine()) != null) {  
-					System.out.println(line);
+					if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
+						System.out.println(line);
+					}
 				}  
-
 				process.waitFor();
-				System.out.println("Ros command exits \n");
+				input.close();
+				if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
+					System.out.println("Ros command exits \n");
+				}
 			} catch (Exception e) {
 				System.err.println("Error launching native ros node " + rosPackage + " " + rosNode);
 				throw e;
@@ -160,7 +183,9 @@ public class NativeRosNode {
 			builder.inheritIO();
 			process = builder.start();
 			process.waitFor();
-			System.out.println("build workspace finished");
+			if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
+				System.out.println("build workspace finished");
+			}
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -170,7 +195,9 @@ public class NativeRosNode {
 
 	@Deactivate
 	protected void deactivate() {
-		System.out.println("rosComand is deactivated");
+		if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
+			System.out.println("rosComand is deactivated");
+		}
 		// help ... destroy doesn't gracefully ends the child process ... might not be
 		// enough :-/
 		if (process != null) {
