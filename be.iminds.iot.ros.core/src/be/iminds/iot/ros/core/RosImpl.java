@@ -126,7 +126,7 @@ public class RosImpl extends AbstractNodeMain implements Ros {
 		// start ROS core if required
 		boolean start = !rosCoreActive();
 		if(start){
-			System.out.println("\n start installed ROS master ?  "+ start);
+			System.out.println("\n start installed ROS system ?  "+ start);
 			boolean startNative = false;   // -------keep always running native ros core
 			String rosCoreNative = context.getProperty("ros.core.native");
 			if(rosCoreNative != null){
