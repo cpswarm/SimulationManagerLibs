@@ -43,11 +43,10 @@ public class NativeRosNode {
 	protected String rosPackage;
 	protected String rosNode;
 	protected String rosWorkspace;
-	protected String verbosity = "0";
 	protected List<String> rosParameters = new ArrayList<>();
 	public static enum VERBOSITY_LEVELS {
 		NO_DEBUG,
-		ONLY_FITNESS_SCORE,
+		ONLY_ERROR,
 		ALL;
 	};
 	
@@ -78,6 +77,7 @@ public class NativeRosNode {
 
 	@Activate
 	protected void activate(BundleContext context, Map<String, Object> properties) throws Exception {
+		String verbosity = "2";
 		if(context.getProperty("verbosity")!=null){
 			verbosity = context.getProperty("verbosity");
 		}

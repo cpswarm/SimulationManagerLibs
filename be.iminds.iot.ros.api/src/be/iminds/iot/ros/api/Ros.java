@@ -46,7 +46,6 @@ public interface Ros {
 	
 	List<File> packagePath();
 	
-
 	URI nodeURI(String node);
 	
 	Collection<String> nodes();
