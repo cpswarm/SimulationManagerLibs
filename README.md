@@ -34,18 +34,24 @@ In Eclipse: Import-> Existing Projects into Workspace-> Select the cpswarm-commo
 ***Usage of specific bundles***: have been added in the `local` repository of all `cnf` projects in the Gazebo and Stage manager bundle repositories 
 
 Input the `g!help` command in Felix console to see the following Ros commands are embeded:
+
+The Ros commands in Felix console compose of two parts that are separated by a colon: <Command_Scope>:<Command_Function>, when two command functions have the same name, but different scope names, you have to specify the Command_Scope.
 *  **be.iminds.iot.ros.api**: it embeds the basic ros commands(e.g roslaunch, catkinBuild, rosrun) in the Felix GOGO console.
-    >ros:catkinBuild\
-    >ros:roslaunch\
-    >ros:rosrun
+    ``` bash
+    ros:catkinBuild             # arguments: (String rosWorkspace, String pkg, String node, String... parameters)
+    ros:roslaunch               # arguments: (String rosWorkspace, String pkg, String node, String... parameters)
+    ros:rosrun                  # arguments: (String workspace)
+    ```
 *  **be.iminds.iot.ros.core**: it registers a Ros service which can launch the Ros Master.
-    >ros:env\
-    >ros:nodes\
-    >ros:provider\
-    >ros:publishers\
-    >ros:services\
-    >ros:subscribers\
-    >ros:topics
+    ``` bash
+    >ros:env                # list ROS Environments including the ROS_MASTER_URI
+    >ros:nodes              # list all active nodes when Ros master is running
+    >ros:provider           # list all active providers when Ros master is running
+    >ros:publishers         # list all active publishers when Ros master is running
+    >ros:services           # list all active services when Ros master is running
+    >ros:subscribers        # list all active subscribers when Ros master is running
+    >ros:topics             # list all active topics when Ros master is running
+    ```
 *  **be.iminds.iot.ros.msgs.generator**: we can use the `ros:generate` command in the Felix console when the Ros master is running to convert all available types of the Ros messages into the Java types placed in the `generated_msgs` folder that can then be wrapped in an OSGi bundle, so in this case we can directly send ros commands from the Java world to the Ros world through the APIs provided by the [Rosjava](http://rosjava.github.io/rosjava_core/latest/) project (e.g Publisher, Subscriber, Service...).
     >ros:generate
 *  **be.iminds.iot.simulator.gazebo**: it's an example of using the generated java types of the messages(gazebo\_msgs, trajectory\_msgs, std_srvs) to send some commands to control the Gazebo simulation process.
