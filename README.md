@@ -34,25 +34,31 @@ In Eclipse: Import-> Existing Projects into Workspace-> Select the cpswarm-commo
 ***Usage of specific bundles***: have been added in the `local` repository of all `cnf` projects in the Gazebo and Stage manager bundle repositories 
 
 Input the `g!help` command in Felix console to see the following Ros commands are embeded:
+
+The Ros commands in Felix console compose of two parts that are separated by a colon: <Command_Scope>:<Command_Function>, when two command functions have the same name, but different scope names, you have to specify the Command_Scope.
 *  **be.iminds.iot.ros.api**: it embeds the basic ros commands(e.g roslaunch, catkinBuild, rosrun) in the Felix GOGO console.
-    >ros:catkinBuild\
-    >ros:roslaunch\
-    >ros:rosrun
+    ``` bash
+    ros:catkinBuild             # arguments: (String rosWorkspace, String pkg, String node, String... parameters)
+    ros:roslaunch               # arguments: (String rosWorkspace, String pkg, String node, String... parameters)
+    ros:rosrun                  # arguments: (String workspace)
+    ```
 *  **be.iminds.iot.ros.core**: it registers a Ros service which can launch the Ros Master.
-    >ros:env\
-    >ros:nodes\
-    >ros:provider\
-    >ros:publishers\
-    >ros:services\
-    >ros:subscribers\
-    >ros:topics
+    ``` bash
+    ros:env                # list ROS Environments including the ROS_MASTER_URI
+    ros:nodes              # list all active nodes when Ros master is running
+    ros:provider           # list all active providers when Ros master is running
+    ros:publishers         # list all active publishers when Ros master is running
+    ros:services           # list all active services when Ros master is running
+    ros:subscribers        # list all active subscribers when Ros master is running
+    ros:topics             # list all active topics when Ros master is running
+    ```
 *  **be.iminds.iot.ros.msgs.generator**: we can use the `ros:generate` command in the Felix console when the Ros master is running to convert all available types of the Ros messages into the Java types placed in the `generated_msgs` folder that can then be wrapped in an OSGi bundle, so in this case we can directly send ros commands from the Java world to the Ros world through the APIs provided by the [Rosjava](http://rosjava.github.io/rosjava_core/latest/) project (e.g Publisher, Subscriber, Service...).
     >ros:generate
-*  **be.iminds.iot.simulator.gazebo**: it's an example of using the generated java types of the messages(gazebo\_msgs, trajectory\_msgs, std_srvs) to send some commands to control the Gazebo simulation process.
+*  **be.iminds.iot.simulator.gazebo**: it's an example of using the generated java types of the messages`(gazebo\_msgs, trajectory\_msgs, std\_srvs)` to send/receive some requests/responses to control the Gazebo simulation process.
 
    There is a file `gazebo.bndrun` with the following `-runproperties:` instruction for configuring the launching environment:
 
-   To set individual System properties with the `-D` option to pass the command line parameters to override the properties listed in the `-runproperties:` when running the manager, for more approaches to launch a bndrun file, please refer [here](https://git.pertforge.ismb.it/rzhao/StageManagerBundle.git) in the `Run` session.
+   To set individual System properties with the `-D` option to pass the command line parameters to override the properties listed in the `-runproperties:` when running the manager
 
    for example:
    ``` bash
@@ -70,21 +76,25 @@ Input the `g!help` command in Felix console to see the following Ros commands ar
 	    logback.configurationFile=resources/logback.xml         # Configuration of ch.qos.logback.core bundle
     ```  
     
-    Run the `gazebo.bndrun` in in Eclipse
+    To run the `gazebo.bndrun` in in Eclipse:
 
-    Right click `gazebo.bndrun` -> Run as -> Bnd OSGi Run Launcher, then:
-    >g! help\
-    >gazebo:start\
-    >gazebo:stop\
-    >gazebo:pause\
-    >gazebo:tick\
-    >gazebo:loadScene\
-    >gazebo:getPosition\
-    >gazebo:setPosition\
-    >...
+       Right click `gazebo.bndrun` -> Run as -> Bnd OSGi Run Launcher, then:
+    ``` bash
+       g! help
+        gazebo:start                # start the simulation, optionally pass two arguments(boolean sync, float step) to start: 1. sync: set to true to control simulator ticks; 2. step: time (in seconds) to advance the simulator each tick
+        gazebo:stop                 # stop the simulation 
+        gazebo:pause                # pause the simulation 
+        gazebo:tick                 # Advance simulation with one tick, only applies when started with sync=true
+        gazebo:loadScene            # load a single model that is as a scene, the model could be a .sdf or .urdf file, e.g: $ loadScene robot.sdf
+        gazebo:getPosition          # get the position of an object, e.g: getPosition object_name
+        gazebo:setPosition
+       ...
+    ```
     
-    You can see the `generated_msgs` folder if you run `generate` command in the GOGO console here.
-*  **org.ros.rosjava\_messages.\***: there are three sets of the java messages generated by the `ros:generate` command, they are used by the `be.iminds.iot.simulator.gazebo` project
+    You can see a `generated_msgs` folder under this project if you run `generate` command in the GOGO console.
+    
+    For more approaches to launch a bndrun file, please refer to the `Run` session in [StageManagerBundle Repository](https://git.pertforge.ismb.it/rzhao/StageManagerBundle.git).
+*  **org.ros.rosjava\_messages.\***: there are three sets of the java messages generated by the `ros:generate` command, they are used by the `be.iminds.iot.simulator.gazebo` project when generating the Gazebo-specific commands
 *  **it.ismb.pert.cpswarm.simulation.manager**: it provides the CPSwarm Simulation Manager APIs
 
 ## Dependency Bundles Updation
