@@ -8,18 +8,18 @@ public class SimulationResultMessage extends ReplyMessage {
 	@SerializedName("SID")
 	protected String sid;
 
+	@SerializedName("fitnessValue")
 	protected double fitnessValue;
 
-	public SimulationResultMessage(String id, String description, ReplyMessage.Status status, String sid,
-			double fitnessValue) {
-		super(TYPE_NAME, id, description, status);
+
+	public SimulationResultMessage(String oid, Boolean success, String sid, double fitnessValue) {
+		super(TYPE_NAME, oid, success);
 		this.sid = sid;
 		this.fitnessValue = fitnessValue;
 	}
-
+	
 	public SimulationResultMessage() {
 		this.type = TYPE_NAME;
-
 	}
 
 	public String getSid() {

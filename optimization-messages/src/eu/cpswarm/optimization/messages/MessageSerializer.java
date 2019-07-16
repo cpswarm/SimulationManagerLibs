@@ -9,30 +9,27 @@ public class MessageSerializer {
 	protected Gson gson;
 
 	public MessageSerializer() {
+
 		RuntimeTypeAdapterFactory<Message> typeFactory = RuntimeTypeAdapterFactory.of(Message.class)
-				.registerSubtype(StartOptimizationMessage.class, StartOptimizationMessage.TYPE_NAME)
-				.registerSubtype(GetProgressMessage.class, GetProgressMessage.TYPE_NAME)
 				.registerSubtype(CancelOptimizationMessage.class, CancelOptimizationMessage.TYPE_NAME)
-				.registerSubtype(OptimizationStartedMessage.class, OptimizationStartedMessage.TYPE_NAME)
-				.registerSubtype(OptimizationCancelledMessage.class, OptimizationCancelledMessage.TYPE_NAME)
-				.registerSubtype(OptimizationProgressMessage.class, OptimizationProgressMessage.TYPE_NAME)
+				.registerSubtype(GetOptimizationStateMessage.class, GetOptimizationStateMessage.TYPE_NAME)
+				.registerSubtype(GetOptimizationStatusMessage.class, GetOptimizationStatusMessage.TYPE_NAME)
+				.registerSubtype(OptimizationStatusMessage.class, OptimizationStatusMessage.TYPE_NAME)
+				.registerSubtype(OptimizationToolConfiguredMessage.class, OptimizationToolConfiguredMessage.TYPE_NAME)
 				.registerSubtype(RunSimulationMessage.class, RunSimulationMessage.TYPE_NAME)
 				.registerSubtype(SimulationResultMessage.class, SimulationResultMessage.TYPE_NAME)
-				.registerSubtype(SimulatorConfiguredMessage.class, SimulatorConfiguredMessage.TYPE_NAME);
+				.registerSubtype(SimulatorConfiguredMessage.class, SimulatorConfiguredMessage.TYPE_NAME)
+				.registerSubtype(StartOptimizationMessage.class, StartOptimizationMessage.TYPE_NAME);
 
 		gson = new GsonBuilder().registerTypeAdapterFactory(typeFactory).create();
-
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T extends Message> T fromJson(String json) {
-
 		return (T) gson.fromJson(json, Message.class);
 	}
 
 	public String toJson(Message message) {
-
 		return gson.toJson(message);
 	}
-
 }

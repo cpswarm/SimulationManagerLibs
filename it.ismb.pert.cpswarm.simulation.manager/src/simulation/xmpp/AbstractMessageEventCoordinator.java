@@ -35,13 +35,13 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 		MessageSerializer serializer = new MessageSerializer();
 		RunSimulationMessage runSimulation = serializer.fromJson(msg.getBody());
 		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
-			System.out.println("SimulationManager received RunSimulationMessage from "+/*msg.getBody()*/ sender.asBareJid());
+			System.out.println("SimulationManager received RunSimulationMessage from "+sender.asBareJid());
 		}
-		parent.setOptimizationID(runSimulation.getId());
+	//	parent.setOptimizationID(runSimulation.getOId());
 		parent.setSimulationID(runSimulation.getSid());
-		parent.setSimulationConfiguration(runSimulation.getConfiguration());
+	//	parent.setSimulationConfiguration(runSimulation.getConfiguration());
 		// The candidate is handled in different ways by the several simulators
-		this.handleCandidate(sender, runSimulation.getCandidate());
+		this.handleCandidate(sender, runSimulation.getCandidate(), runSimulation.getCandidateType());
 
 	}
 
@@ -73,5 +73,5 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 	 * @param candidate:
 	 *            the candidate to be evaluated
 	 */
-	protected abstract void handleCandidate(EntityBareJid sender, final String candidate);
+	protected abstract void handleCandidate(EntityBareJid sender, final String candidate, final String candidateType);
 }

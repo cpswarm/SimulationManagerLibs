@@ -2,14 +2,13 @@ package eu.cpswarm.optimization.messages;
 
 public class SimulatorConfiguredMessage extends ReplyMessage {
 
-	public static final String TYPE_NAME = "SimulationConfigured";
+	public static final String TYPE_NAME = "SimulatorConfigured";
 
-	public SimulatorConfiguredMessage(String id, String description, Status operationStatus) {
-		super(TYPE_NAME, id, description, operationStatus);
+	public SimulatorConfiguredMessage(String oid, Boolean success) {
+		super(TYPE_NAME, oid, success);
 	}
-
+	
 	public SimulatorConfiguredMessage() {
 		this.type = TYPE_NAME;
 	}
-
 }

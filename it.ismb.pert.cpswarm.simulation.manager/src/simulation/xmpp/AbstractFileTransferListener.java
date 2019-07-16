@@ -6,18 +6,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Set;
 
 import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.SmackException.NotConnectedException;
 import org.jivesoftware.smack.chat2.Chat;
 import org.jivesoftware.smack.chat2.ChatManager;
+import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smackx.filetransfer.FileTransferListener;
 import org.jivesoftware.smackx.filetransfer.FileTransferRequest;
 import org.jivesoftware.smackx.filetransfer.IncomingFileTransfer;
 import org.jivesoftware.smackx.filetransfer.FileTransfer.Status;
 
+import com.google.gson.Gson;
+
 import eu.cpswarm.optimization.messages.MessageSerializer;
 import eu.cpswarm.optimization.messages.SimulatorConfiguredMessage;
+import messages.server.Server;
 import simulation.SimulationManager;
 
 public abstract class AbstractFileTransferListener implements FileTransferListener {
@@ -46,7 +52,9 @@ public abstract class AbstractFileTransferListener implements FileTransferListen
 		} else {
 			fileToReceive = rosFolder + request.getFileName();
 		}
-
+		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+			System.out.println("\n fileToReceive = "+ fileToReceive+"\n");
+		}
 		try {
 			transfer.receiveFile(new File(fileToReceive));
 
@@ -64,24 +72,54 @@ public abstract class AbstractFileTransferListener implements FileTransferListen
 			if (request.getRequestor().compareTo(parent.getOrchestratorJID()) == 0) {
 				final ChatManager chatmanager = ChatManager.getInstanceFor(parent.getConnection());
 				final Chat newChat = chatmanager.chatWith(parent.getOrchestratorJID().asEntityBareJidIfPossible());
-				packageName = request.getDescription();
+				System.out.println("\n description in transfer() is: "+request.getDescription());
+				String otherSimulationConfiguration = request.getDescription();  // Format is: OID,SCID,visual:=false,....
+				String[] simConfigs = otherSimulationConfiguration.split(",");
+				this.parent.setOptimizationID(simConfigs[0]);
+				this.parent.setSCID(simConfigs[1]);
+				String parameters = "";
+				for(int i=2; i<Arrays.asList(simConfigs).size(); i++) {
+					parameters += simConfigs[i];
+				}			
+				this.parent.setSimulationConfiguration(parameters);	
+				packageName = parent.getSCID();
+				
 				if (unzipFiles(fileToReceive)) {
 					if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
-						System.out.println("SimulationManager configured for optimization "+request.getDescription());
+						System.out.println("SimulationManager configured for optimization "+parent.getSCID());
 					}
-					parent.setOptimizationID(request.getDescription());
-					SimulatorConfiguredMessage reply = new SimulatorConfiguredMessage("Simulator configured",
-							request.getDescription(), eu.cpswarm.optimization.messages.ReplyMessage.Status.OK);
+					publishPresenceWithSCID();
+
+					SimulatorConfiguredMessage reply = new SimulatorConfiguredMessage(this.parent.getOptimizationID(), true);
 					MessageSerializer serializer = new MessageSerializer();
 					newChat.send(serializer.toJson(reply));
 				} else {
 					System.out.println("Error unzipping the file, sending error to SOO");
-					newChat.send("error");
+					SimulatorConfiguredMessage reply = new SimulatorConfiguredMessage(this.parent.getOptimizationID(), false);
+					MessageSerializer serializer = new MessageSerializer();
+					newChat.send(serializer.toJson(reply));
 				}
 			}
 		} catch (final SmackException | IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void publishPresenceWithSCID(){
+		final Presence presence = new Presence(Presence.Type.available);
+		Gson gson = new Gson();
+		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+			System.out.println("SimulationManager publish new presence with SCID = "+gson.toJson(parent.getServer(), Server.class));
+		}
+		
+		presence.setStatus(gson.toJson(parent.getServer(), Server.class));
+		try {
+			parent.getConnection().sendStanza(presence);
+		} catch (final NotConnectedException | InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		return ;
 	}
 
 	private FileTypesOrFolderFilter filter = null;
