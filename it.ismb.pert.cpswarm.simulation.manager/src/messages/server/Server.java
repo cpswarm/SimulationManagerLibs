@@ -1,6 +1,7 @@
 
 package messages.server;
 
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -22,13 +23,13 @@ public class Server implements Comparable<Server> {
     @Expose
     private String server;
     /**
-     * SCID: Simulation Configuration IDentifier to be used to select this server
+     * A list of all the simulations that can be performed at this server
      * (Required)
      * 
      */
-    @SerializedName("SCID")
+    @SerializedName("simulations")
     @Expose
-    private String SCID = null;
+    private List<String> simulations = null;
     /**
      * Capabilities of the simulator
      * (Required)
@@ -57,21 +58,21 @@ public class Server implements Comparable<Server> {
     }
 
     /**
-     * SCID: new presence status to be used to select this server by OT
+     * A list of all the simulations that can be performed at this server
      * (Required)
      * 
      */
-    public String getSCID() {
-        return SCID;
+    public List<String> getSimulations() {
+        return simulations;
     }
 
     /**
-     * SCID: new presence status to be used to select this server by OT
+     * A list of all the simulations that can be performed at this server
      * (Required)
      * 
      */
-    public void setSCID(String SCID) {
-        this.SCID = SCID;
+    public void setSimulations(List<String> simulations) {
+        this.simulations = simulations;
     }
 
     /**

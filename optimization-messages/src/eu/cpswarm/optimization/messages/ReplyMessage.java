@@ -4,20 +4,27 @@ import com.google.gson.annotations.SerializedName;
 
 public abstract class ReplyMessage extends Message {
 
-
-	@SerializedName("success")
-	protected Boolean success;
-
-	public ReplyMessage(String type, String oid, Boolean success) {
-		super(type, oid);
-		this.success = success;
+	public enum Status {
+		@SerializedName("ok")
+		OK, 
+		@SerializedName("error")
+		ERROR
 	}
-	
+
+	@SerializedName("status")
+	protected Status operationStatus;
+
+	public ReplyMessage(String type, String id, String description, Status operationStatus) {
+		super(type, id, description);
+		this.operationStatus = operationStatus;
+	}
+
 	public ReplyMessage() {
 
 	}
 
-	public Boolean getSuccess() {
-		return success;
+	public Status getOperationStatus() {
+		return operationStatus;
 	}
+
 }

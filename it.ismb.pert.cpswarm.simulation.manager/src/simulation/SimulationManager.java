@@ -36,6 +36,7 @@ import org.jxmpp.jid.parts.Localpart;
 import org.jxmpp.jid.parts.Resourcepart;
 import com.google.gson.Gson;
 import eu.cpswarm.optimization.messages.MessageSerializer;
+import eu.cpswarm.optimization.messages.ReplyMessage.Status;
 import eu.cpswarm.optimization.messages.SimulationResultMessage;
 import it.ismb.pert.cpswarm.mqttlib.transport.MqttAsyncDispatcher;
 import simulation.xmpp.AbstractFileTransferListener;
@@ -71,7 +72,6 @@ public abstract class SimulationManager {
 	private String mqttBroker = "";
 	private int timeout = 90000;
 	private boolean fake = false;
-	private String SCID = null;
 	
 	public static enum VERBOSITY_LEVELS {
 		NO_DEBUG,
@@ -100,7 +100,6 @@ public abstract class SimulationManager {
 				this.rosFolder+="src"+File.separator;
 			}
 		}
-		this.server = serverInfo;
 		this.catkinWS = rosFolder.substring(0,rosFolder.indexOf("src"));
 		this.monitoring = monitoring;
 		this.mqttBroker  = mqttBroker;
@@ -320,20 +319,20 @@ public abstract class SimulationManager {
 			e.printStackTrace();
 			return false;
 		} 
-		if(monitoring && !message.getSuccess().equals(true)) {
+		if(monitoring && !message.getOperationStatus().equals(Status.ERROR)) {
 			StringBuilder builder = new StringBuilder();
 			builder.append("{ \"SID\" : \""+message.getSid()+"\", ");
 			builder.append(" \"fitnessValue\" : "+message.getFitnessValue()+", ");
-		/*	String [] values = message.getDescription().split(" ");
+			String [] values = message.getDescription().split(" ");
 			for(int i = 0; i < values.length; i++) {
 				String [] splittedValues = values[i].split(":");
 				builder.append("\""+splittedValues[0]+"\" : "+splittedValues[1]+"");
 				if(i<values.length-1) {
 					builder.append(", ");
 				}
-			}*/
+			}
 			builder.append("}");
-			client.publish("/cpswarm/"+SCID+"/fitness", builder.toString().getBytes());
+			client.publish("/cpswarm/"+optimizationID+"/fitness", builder.toString().getBytes());
 		}
 		return true;
 	}
@@ -371,6 +370,15 @@ public abstract class SimulationManager {
 	public Jid getOrchestratorJID() {
 		return orchestratorJID;
 	}	
+	
+	public String getOptimizationID() {
+		return optimizationID;
+	}
+
+	public void setOptimizationID(String optimizationID) {
+		this.optimizationID = optimizationID;
+	}
+
 
 	public void setSimulationID(String simulationID) {
 		this.simulationID = simulationID;
@@ -430,23 +438,6 @@ public abstract class SimulationManager {
 
 	public void setFake(boolean fake) {
 		this.fake = fake;
-	}
-	
-	public String getOptimizationID() {
-		return optimizationID;
-	}
-	
-	public void setOptimizationID(String optimizationID) {
-		this.optimizationID = optimizationID;
-	}
-	
-	public String getSCID() {
-		return SCID;
-	}
-	
-	public void setSCID(String SCID) {
-		this.SCID = SCID;
-		this.server.setSCID(SCID);
 	}
 	
 }

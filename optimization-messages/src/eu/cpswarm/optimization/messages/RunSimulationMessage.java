@@ -7,31 +7,31 @@ public class RunSimulationMessage extends Message {
 
 	@SerializedName("SID")
 	protected String sid;
-	@SerializedName("candidate")
+	protected String configuration;
 	protected String candidate;
-	@SerializedName("candidateType")
-	protected String candidateType;
 
-	public RunSimulationMessage(String oid, String sid, String candidate, String candidateType) {
-		super(TYPE_NAME, oid);
+	public RunSimulationMessage(String id, String description, String sid, String configuration, String candidate) {
+		super(TYPE_NAME, id, description);
 		this.sid = sid;
+		this.configuration = configuration;
 		this.candidate = candidate;
-		this.candidateType = candidateType;
 	}
-	
+
 	public RunSimulationMessage() {
 		this.type = TYPE_NAME;
+
 	}
 
 	public String getSid() {
 		return sid;
 	}
 
+	public String getConfiguration() {
+		return configuration;
+	}
+
 	public String getCandidate() {
 		return candidate;
 	}
-	
-	public String getCandidateType() {
-		return candidateType;
-	}
+
 }

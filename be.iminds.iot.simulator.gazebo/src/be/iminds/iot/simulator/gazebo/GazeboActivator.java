@@ -112,9 +112,10 @@ public class GazeboActivator extends AbstractNodeMain{
 				reg = context.registerService(Simulator.class, gazebo, properties);
 				
 			} catch(Exception e){
+			//	e.printStackTrace();
 				if(nativeConfig == null && launchNative){
-					System.out.println("try to load gazebo ourselves");
-					// try to load gazebo ourselves?					
+					System.out.println("\n try to load gazebo by ourselves");
+					// try to load gazebo by ourselves?					
 					try {				
 						nativeConfig = ca.createFactoryConfiguration("be.iminds.iot.simulator.gazebo.Native", null);					
 						nativeConfig.update(new Hashtable());

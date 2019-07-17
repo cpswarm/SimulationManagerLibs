@@ -4,27 +4,37 @@ import com.google.gson.annotations.SerializedName;
 
 public abstract class Message {
 
-	@SerializedName("OID")
-	protected String oid;
+	@SerializedName("ID")
+	protected String id;
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	@SerializedName("type")
 	protected String type;
 
+	protected String description;
 
-	public Message(String type, String oid) {
+	protected Message(String type, String id, String description) {
 		this.type = type;
-		this.oid = oid;
+		this.id = id;
+		this.description = description;
 	}
-	
+
 	public Message() {
 
 	}
 
-	public String getOId() {
-		return oid;
+	public String getId() {
+		return id;
 	}
 
 	public String getType() {
 		return type;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 }

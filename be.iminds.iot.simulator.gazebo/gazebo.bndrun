@@ -57,9 +57,9 @@
 	be.iminds.iot.ros.msgs.generator;version=latest,\
 	be.iminds.iot.ros.api;version=latest,\
 	be.iminds.iot.ros.core;version=latest,\
-	org.ros.rosjava_messages.std_srvs;version='[1.11.1,1.11.2)',\
-	org.ros.rosjava_messages.trajectory_msgs;version='[1.11.7,1.12)',\
-	org.ros.rosjava_messages.gazebo_msgs;version='[2.4.13,2.5)',\
+	org.ros.rosjava_messages.gazebo_msgs;version=latest,\
+	org.ros.rosjava_messages.trajectory_msgs;version=latest,\
+	org.ros.rosjava_messages.std_srvs;version=latest,\
 	be.iminds.iot.simulator.api;version=latest,\
 	be.iminds.iot.simulator.gazebo;version=latest
 	
