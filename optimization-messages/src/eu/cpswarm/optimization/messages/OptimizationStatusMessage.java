@@ -6,7 +6,7 @@ public class OptimizationStatusMessage extends Message {
 	public static final String TYPE_NAME = "OptimizationStatus";
 
 	public enum Status {
-		@SerializedName("ErrorBadConfiguration")  // optimization is not actived
+		@SerializedName("ErrorBadConfiguration")  // optimization is not actived for replying to StartOptimization
 		ERROR_BAD_CONFIGURATION,
 		@SerializedName("Started")   // reply to StartOptimization when received in first time, maybe remove the OptimizationToolConfigured class  
 		STARTED,

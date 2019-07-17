@@ -3,7 +3,7 @@ package eu.cpswarm.optimization.messages;
 public class GetOptimizationStateMessage extends Message {
 	public static final String TYPE_NAME = "GetOptimizationState";
 
-	public GetOptimizationStateMessage(String oid, String TYPE_NAME) {
+	public GetOptimizationStateMessage(String oid) {
 		super(TYPE_NAME, oid);
 	}
 	

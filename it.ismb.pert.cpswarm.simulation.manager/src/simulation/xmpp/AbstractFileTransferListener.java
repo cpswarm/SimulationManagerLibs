@@ -72,7 +72,9 @@ public abstract class AbstractFileTransferListener implements FileTransferListen
 			if (request.getRequestor().compareTo(parent.getOrchestratorJID()) == 0) {
 				final ChatManager chatmanager = ChatManager.getInstanceFor(parent.getConnection());
 				final Chat newChat = chatmanager.chatWith(parent.getOrchestratorJID().asEntityBareJidIfPossible());
-				System.out.println("\n description in transfer() is: "+request.getDescription());
+				if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+					System.out.println("\n description in transfer() is: "+request.getDescription());
+				}
 				String otherSimulationConfiguration = request.getDescription();  // Format is: OID,SCID,visual:=false,....
 				String[] simConfigs = otherSimulationConfiguration.split(",");
 				this.parent.setOptimizationID(simConfigs[0]);
