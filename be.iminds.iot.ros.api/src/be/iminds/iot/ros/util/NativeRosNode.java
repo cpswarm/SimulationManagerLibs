@@ -166,7 +166,11 @@ public class NativeRosNode {
 				process.waitFor();
 				input.close();
 				if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
-					System.out.println("Ros command exits \n");
+					if (roslaunch) {
+						System.out.println("roslaunch command exits \n");
+					} else {
+						System.out.println("rosrun command exits \n");
+					}
 				}
 			} catch (Exception e) {
 				System.err.println("Error launching native ros node " + rosPackage + " " + rosNode);
@@ -213,4 +217,3 @@ public class NativeRosNode {
 	}
 
 }
-

@@ -34,14 +34,18 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 	public void newIncomingMessage(EntityBareJid sender, Message msg, org.jivesoftware.smack.chat2.Chat chat) {
 		MessageSerializer serializer = new MessageSerializer();
 		RunSimulationMessage runSimulation = serializer.fromJson(msg.getBody());
-		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
-			System.out.println("SimulationManager received RunSimulationMessage from "+sender.asBareJid());
+		if (parent.getOptimizationID().equals(runSimulation.getOId())) {
+			if (SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+				System.out.println("SimulationManager received RunSimulationMessage from " + sender.asBareJid());
+			}
+			// parent.setOptimizationID(runSimulation.getOId());
+			parent.setSimulationID(runSimulation.getSid());
+			// parent.setSimulationConfiguration(runSimulation.getConfiguration());
+			// The candidate is handled in different ways by the several simulators
+			this.handleCandidate(sender, runSimulation.getCandidate(), runSimulation.getCandidateType());
+		}else {
+			System.out.println("SimulationManager received a wrong RunSimulationMessage for Optimization ID : " + runSimulation.getOId());
 		}
-	//	parent.setOptimizationID(runSimulation.getOId());
-		parent.setSimulationID(runSimulation.getSid());
-	//	parent.setSimulationConfiguration(runSimulation.getConfiguration());
-		// The candidate is handled in different ways by the several simulators
-		this.handleCandidate(sender, runSimulation.getCandidate(), runSimulation.getCandidateType());
 
 	}
 

@@ -53,7 +53,7 @@ public abstract class AbstractFileTransferListener implements FileTransferListen
 			fileToReceive = rosFolder + request.getFileName();
 		}
 		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
-			System.out.println("\n fileToReceive = "+ fileToReceive+"\n");
+			System.out.println("\n fileToReceive = "+ fileToReceive);
 		}
 		try {
 			transfer.receiveFile(new File(fileToReceive));
@@ -73,7 +73,7 @@ public abstract class AbstractFileTransferListener implements FileTransferListen
 				final ChatManager chatmanager = ChatManager.getInstanceFor(parent.getConnection());
 				final Chat newChat = chatmanager.chatWith(parent.getOrchestratorJID().asEntityBareJidIfPossible());
 				if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
-					System.out.println("\n description in transfer() is: "+request.getDescription());
+					System.out.println(" description in transfer() is: "+request.getDescription());
 				}
 				String otherSimulationConfiguration = request.getDescription();  // Format is: OID,SCID,visual:=false,....
 				String[] simConfigs = otherSimulationConfiguration.split(",");
