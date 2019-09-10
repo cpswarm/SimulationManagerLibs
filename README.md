@@ -4,7 +4,7 @@ CPSwarm OSGI Bundles are subdevided in three different repositories: one for sta
 
 ## Requirement
  * Ros distribution: kinetic
- * Rod version:      1.12.14
+ * Ros version:      1.12.14
  * Gazebo version:   7.0.0
 
 ## Setup
