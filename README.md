@@ -45,7 +45,7 @@ The Ros commands in Felix console compose of two parts that are separated by a c
     ``` bash
     ros:catkinBuild             # arguments: (String rosWorkspace, String pkg, String node, String... parameters)
     ros:roslaunch               # arguments: (String rosWorkspace, String pkg, String node, String... parameters)
-    ros:rosrun                  # arguments: (String workspace)
+    ros:rosrun                  # arguments: (String workspace, String pkg, String node, String... parameters)
     ```
 *  **be.iminds.iot.ros.core**: it registers a Ros service which can launch the Ros Master.
     ``` bash
