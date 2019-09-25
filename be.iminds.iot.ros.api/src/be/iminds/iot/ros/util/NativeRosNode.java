@@ -128,11 +128,11 @@ public class NativeRosNode {
 				List<String> cmd = new ArrayList<>();
 				cmd.add("/bin/bash");
 				cmd.add("-c");
-				String source = "";
+				String source = "source /opt/ros/kinetic/setup.bash ; source " + rosWorkspace + "devel/setup.bash ; ";
 				if (roslaunch) {
-					source = "source /opt/ros/kinetic/setup.bash ; source " + rosWorkspace + "devel/setup.bash ; roslaunch ";
+					source += "roslaunch ";
 				} else {
-					source = "rosrun ";
+					source += "rosrun ";
 				}
 				source += rosPackage + " " + rosNode;
 
@@ -150,11 +150,11 @@ public class NativeRosNode {
 					System.out.println("\n=================running command = " + cmd + " ==================\n");
 				}
 				ProcessBuilder builder = new ProcessBuilder(cmd);
-		/*		if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
+				if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
 					builder.inheritIO();
-				}*/
+				}
 				process = builder.start();
-				String line="";
+			/*	String line="";
 				BufferedReader input =  
 						new BufferedReader  
 						(new InputStreamReader(process.getInputStream()));  
@@ -162,9 +162,9 @@ public class NativeRosNode {
 					if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
 						System.out.println(line);
 					}
-				}  
+				}  */
 				process.waitFor();
-				input.close();
+			//	input.close();
 				if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
 					System.out.println("Ros command exits \n");
 				}
