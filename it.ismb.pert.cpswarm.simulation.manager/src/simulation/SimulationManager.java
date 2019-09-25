@@ -9,6 +9,7 @@ import java.util.UUID;
 import javax.net.ssl.SSLContext;
 import org.jivesoftware.smack.ReconnectionManager;
 import org.jivesoftware.smack.ReconnectionManager.ReconnectionPolicy;
+import org.jivesoftware.smack.SmackConfiguration;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.SmackException.NoResponseException;
 import org.jivesoftware.smack.SmackException.NotConnectedException;
@@ -51,7 +52,8 @@ public abstract class SimulationManager {
 	private Server server;
 	private boolean available = true;
 	private boolean started = false;
-
+	private boolean optimizationToolAvailable = false;
+	private boolean orchestratorAvailable = false;
 	private ConnectionListenerImpl connectionListener;
 	private StanzaListener packetListener;
 	private String serverName = null;
@@ -116,6 +118,7 @@ public abstract class SimulationManager {
 			orchestratorJID = JidCreate.from(orchestratorUser+"@"+serverName+"/"+RESOURCE);
 			final SSLContext sc = SSLContext.getInstance("TLS");
 			sc.init(null, null, new SecureRandom());
+			SmackConfiguration.DEBUG = false;
 			XMPPTCPConnectionConfiguration connectionConfig = XMPPTCPConnectionConfiguration
 					.builder().setHostAddress(serverIP).setPort(5222)
 					.setXmppDomain(serverName)
@@ -303,7 +306,7 @@ public abstract class SimulationManager {
 	}
 	
 	
-	public boolean publishFitness(SimulationResultMessage message) {
+	public boolean publishFitness(SimulationResultMessage message) {  // if(this.isOptimizationToolAvailable()){} exists, no need to publish, no error info, user don't know that
 		MessageSerializer serializer = new MessageSerializer();
 		String messageToSend = serializer.toJson(message);
 		try {
@@ -311,7 +314,7 @@ public abstract class SimulationManager {
 			Chat chat = chatManager.chatWith(optimizationToolJID.asEntityBareJidIfPossible());
 			Message xmppMessage = new Message();
 			xmppMessage.setBody(messageToSend);
-			chat.send(messageToSend);
+			chat.send(xmppMessage);
 			if(!CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.NO_DEBUG)) {
 				System.out.println("fitness score: "+ messageToSend + " sent");
 			}
@@ -320,20 +323,12 @@ public abstract class SimulationManager {
 			e.printStackTrace();
 			return false;
 		} 
-		if(monitoring && !message.getSuccess().equals(true)) {
+		if(monitoring && message.getSuccess().equals(true)) {
 			StringBuilder builder = new StringBuilder();
 			builder.append("{ \"SID\" : \""+message.getSid()+"\", ");
 			builder.append(" \"fitnessValue\" : "+message.getFitnessValue()+", ");
-		/*	String [] values = message.getDescription().split(" ");
-			for(int i = 0; i < values.length; i++) {
-				String [] splittedValues = values[i].split(":");
-				builder.append("\""+splittedValues[0]+"\" : "+splittedValues[1]+"");
-				if(i<values.length-1) {
-					builder.append(", ");
-				}
-			}*/
 			builder.append("}");
-			client.publish("/cpswarm/"+SCID+"/fitness", builder.toString().getBytes());
+			client.publish("/cpswarm/"+optimizationID+"/fitness", builder.toString().getBytes());
 		}
 		return true;
 	}
@@ -448,5 +443,22 @@ public abstract class SimulationManager {
 		this.SCID = SCID;
 		this.server.setSCID(SCID);
 	}
+	
+	public boolean isOptimizationToolAvailable() {
+		return optimizationToolAvailable;
+	}
+
+	public void setOptimizationToolAvailable(boolean optimizationToolAvailable) {
+		this.optimizationToolAvailable = optimizationToolAvailable;
+	}
+
+	public boolean isOrchestratorAvailable() {
+		return orchestratorAvailable;
+	}
+
+	public void setOrchestratorAvailable(boolean orchestratorAvailable) {
+		this.orchestratorAvailable = orchestratorAvailable;
+	}
+	
 	
 }

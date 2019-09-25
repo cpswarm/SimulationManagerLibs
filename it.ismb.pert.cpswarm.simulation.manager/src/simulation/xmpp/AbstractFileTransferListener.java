@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.SmackException.NotConnectedException;
 import org.jivesoftware.smack.chat2.Chat;
@@ -19,6 +20,7 @@ import org.jivesoftware.smackx.filetransfer.FileTransferRequest;
 import org.jivesoftware.smackx.filetransfer.IncomingFileTransfer;
 import org.jivesoftware.smackx.filetransfer.FileTransfer.Status;
 
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
 
 import eu.cpswarm.optimization.messages.MessageSerializer;
@@ -75,12 +77,12 @@ public abstract class AbstractFileTransferListener implements FileTransferListen
 				if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
 					System.out.println(" description in transfer() is: "+request.getDescription());
 				}
-				String otherSimulationConfiguration = request.getDescription();  // Format is: OID,SCID,visual:=false,....
-				String[] simConfigs = otherSimulationConfiguration.split(",");
-				this.parent.setOptimizationID(simConfigs[0]);
-				this.parent.setSCID(simConfigs[1]);
+				String otherSimulationConfiguration = request.getDescription();  // Format is: SCID,visual:=false,....
+				String[] simConfigs = otherSimulationConfiguration.split(",");   // emergency_exit,visual:=true
+			//	this.parent.setOptimizationID(simConfigs[0]);  // null
+				this.parent.setSCID(simConfigs[0]);
 				String parameters = "";
-				for(int i=2; i<Arrays.asList(simConfigs).size(); i++) {
+				for(int i=1; i<Arrays.asList(simConfigs).size(); i++) {
 					parameters += simConfigs[i];
 				}			
 				this.parent.setSimulationConfiguration(parameters);	
