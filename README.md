@@ -106,7 +106,7 @@ The Ros commands in Felix console compose of two parts that are separated by a c
     For example, in the `org.ros.rosjava_messages.gazebo_msgs` project, due to the different gazebo version, maybe the original service type `GetModelState.java` have to be replaced with the `GetModelState.java` in generated_msgs folder by the `ros:generate` command, otherwise the md5sum error with accour for the service ***\/gazebo\/get\_model\_state***
 *  **it.ismb.pert.cpswarm.simulation.manager**: it provides the CPSwarm Simulation Manager APIs
 
-## Dependency Bundles Updation
+## Dependency Bundles Update
 
 Usually the bundle verion is defined by the `Bundle-Version:` instruction in the bnd.bnd file for each project. when you modify something of a bundle in Eclipse, the Bndtool IDE will autocatically update the bundle jar in the `generated` folder. Double click the generated bundle, you can see its version and some other infomation.
 
