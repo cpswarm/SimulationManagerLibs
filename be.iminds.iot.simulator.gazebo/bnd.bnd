@@ -5,7 +5,6 @@ Bundle-Version: 0.4.0
 	org.ros.rosjava_messages.geometry_msgs,\
 	org.ros.rosjava_messages.std_msgs,\
 	org.ros.rosjava_messages.std_srvs,\
-	org.ros.rosjava_messages.sensor_msgs,\
 	org.ros.rosjava_messages.rosgraph_msgs,\
 	org.ros.rosjava_messages.gazebo_msgs;version=latest,\
 	org.jboss.netty,\

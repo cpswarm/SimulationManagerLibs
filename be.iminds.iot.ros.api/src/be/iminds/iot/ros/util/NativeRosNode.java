@@ -22,6 +22,7 @@
  *******************************************************************************/
 package be.iminds.iot.ros.util;
 
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class NativeRosNode {
 	protected String rosPackage;
 	protected String rosNode;
 	protected String rosWorkspace;
+	protected String cmakeBuildType;
 	protected List<String> rosParameters = new ArrayList<>();
 	public static enum VERBOSITY_LEVELS {
 		NO_DEBUG,
@@ -91,6 +93,9 @@ public class NativeRosNode {
 		// this also allows to build a ROS node driven by configuration
 		if (properties.containsKey("ros.buildWorkspace")) {
 			rosWorkspace = (String) properties.get("ros.buildWorkspace");
+			if (properties.containsKey("cmakeBuild.type")) {
+				cmakeBuildType = (String) properties.get("cmakeBuild.type");
+			}
 		} else {
 			for (Entry<String, Object> entry : properties.entrySet()) {
 				String key = entry.getKey();
@@ -150,11 +155,12 @@ public class NativeRosNode {
 					System.out.println("\n=================running command = " + cmd + " ==================\n");
 				}
 				ProcessBuilder builder = new ProcessBuilder(cmd);
-				if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
+			/*	if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
 					builder.inheritIO();
-				}
+				}*/
 				process = builder.start();
-			/*	String line="";
+				
+				String line="";
 				BufferedReader input =  
 						new BufferedReader  
 						(new InputStreamReader(process.getInputStream()));  
@@ -162,9 +168,10 @@ public class NativeRosNode {
 					if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
 						System.out.println(line);
 					}
-				}  */
+				}  
+				
 				process.waitFor();
-			//	input.close();
+				input.close();
 				if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
 					System.out.println("Ros command exits \n");
 				}
@@ -179,7 +186,12 @@ public class NativeRosNode {
 		assert (rosWorkspace) != null;
 		ProcessBuilder builder = null;
 		try {
-			String[] cmd = new String[] { "/bin/bash", "-c", "cd " + rosWorkspace + " ; catkin build " };
+			String[] cmd = null;
+			if(this.cmakeBuildType == null) {
+				cmd = new String[] { "/bin/bash", "-c", "cd " + rosWorkspace + " ; catkin build " };
+			}else {
+				cmd = new String[] { "/bin/bash", "-c", "cd " + rosWorkspace + " ; catkin build --cmake-args -DCMAKE_BUILD_TYPE="+ cmakeBuildType};
+			}
 			builder = new ProcessBuilder(cmd);
 			builder.inheritIO();
 			process = builder.start();

@@ -72,6 +72,7 @@ public abstract class SimulationManager {
 	private String mqttBroker = "";
 	private int timeout = 90000;
 	private boolean fake = false;
+	private String launchFile = null;
 	
 	public static enum VERBOSITY_LEVELS {
 		NO_DEBUG,
@@ -81,7 +82,7 @@ public abstract class SimulationManager {
 	
 	public static VERBOSITY_LEVELS CURRENT_VERBOSITY_LEVEL = VERBOSITY_LEVELS.ALL;
 
-	public void connectToXMPPserver(final InetAddress serverIP, final String serverName, final String serverPassword, final String dataFolder, final String rosFolder, final Server serverInfo, final String optimizationUser, final String orchestratorUser, String uuid, boolean debug, final boolean monitoring, final String mqttBroker, final int timeout, final boolean fake) {
+	public void connectToXMPPserver(final InetAddress serverIP, final String serverName, final String serverPassword, final String dataFolder, final String rosFolder, final Server serverInfo, final String optimizationUser, final String orchestratorUser, String uuid, boolean debug, final boolean monitoring, final String mqttBroker, final int timeout, final boolean fake, final String launchFile) {
 		if(uuid.isEmpty()) {
 			uuid = UUID.randomUUID().toString();
 		}
@@ -105,6 +106,7 @@ public abstract class SimulationManager {
 		this.mqttBroker  = mqttBroker;
 		this.timeout = timeout;
 		this.fake = fake;
+		this.launchFile = launchFile;
 		if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
 			System.out.println("\n Create a simulation manager with clientID = "+clientID+" \n");
 		}
@@ -353,6 +355,14 @@ public abstract class SimulationManager {
 			}
 
 		}
+	}
+	
+	public String getLaunchFile() {
+		return launchFile;
+	}
+	
+	public void setLaunchFile(String launchFile) {
+		this.launchFile = launchFile;
 	}
 	
 	public boolean isStarted() {
