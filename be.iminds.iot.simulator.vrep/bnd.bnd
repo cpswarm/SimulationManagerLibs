@@ -1,0 +1,11 @@
+Bundle-Version: 0.3.0
+-buildpath: \
+	org.jboss.netty,\
+	osgi.core;version=5.0,\
+	osgi.enterprise;version=5.0,\
+	osgi.promise,\
+	be.iminds.iot.simulator.api;version=latest,\
+	coppelia;version=latest,\
+	be.iminds.iot.ros.api;version=latest
+Private-Package: be.iminds.iot.simulator.vrep
+Export-Package: be.iminds.iot.simulator.api
