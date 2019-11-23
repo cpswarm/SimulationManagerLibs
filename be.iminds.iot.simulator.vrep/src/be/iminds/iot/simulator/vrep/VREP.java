@@ -84,6 +84,7 @@ public class VREP implements Simulator {
 	
 	@Override
 	public synchronized void start(boolean sync, float step, Map<String, Object> config) {
+		System.out.println("Starting V-REP simulation ");
 		checkOk(server.simxSetFloatingParameter(clientID, server.sim_floatparam_simulation_time_step, step, server.simx_opmode_blocking));
 		
 		if(config != null){
@@ -108,7 +109,7 @@ public class VREP implements Simulator {
 		
 		checkOk(server.simxStartSimulation(clientID, server.simx_opmode_blocking));
 		
-		configure();
+	//	configure();
 		
 	}
 	
@@ -192,6 +193,7 @@ public class VREP implements Simulator {
 
 	@Override
 	public void loadScene(String file, Map<String, String> entities) {
+		System.out.println("loading Scene ");
 		File f = new File(file);
 		if(!f.exists()){
 			System.out.println("File "+file+" does not exist...");
@@ -202,7 +204,7 @@ public class VREP implements Simulator {
 			this.entities = new HashMap<>(entities);
 		}
 		
-		loadHandles();
+	//	loadHandles();
 	}
 
 	@Override
@@ -350,16 +352,6 @@ public class VREP implements Simulator {
 			String name = names[i];
 			int handle = handles[i];
 			this.objectHandles.put(name, handle);
-		//	System.out.println("find new objectHandles = ["+name+", "+handle+"]///////////////");
-			// add some default entries...
-		/*	if(name.equals("youBot")) {
-				entities.put("youBot", "be.iminds.iot.robot.youbot.ros.Youbot");
-			System.out.println("find youbot///////////////");}
-			else if(name.equals("hokuyo")) {
-				entities.put("hokuyo", "be.iminds.iot.sensor.range.ros.LaserScanner");
-				System.out.println("find hokuyo///////////////");}
-			else*/
-		//		System.out.println("find nothing///////////////");
 		}
 	}
 

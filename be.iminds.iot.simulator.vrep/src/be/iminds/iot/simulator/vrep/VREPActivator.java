@@ -159,7 +159,7 @@ public class VREPActivator {
 			}
 		}
 
-		// try to connect to an already running VREP
+		// try to connect to an already running VREP, To enable the remote API on the client side, call simxStart 
 		clientID = server.simxStart("127.0.0.1", port, true, true, -timeout, 5);
 		if (clientID == -1) {
 			if (nativeConfig == null && launchNative) {
@@ -244,7 +244,7 @@ public class VREPActivator {
 			}
 		}
 		try {
-			Process process = Runtime.getRuntime().exec("/bin/bash killall -9 "+vrepDir+"vrep");
+			Process process = Runtime.getRuntime().exec("killall -9 "+vrepDir+"vrep");
 			Runtime.getRuntime().addShutdownHook(new Thread(process::destroy));
 		} catch (IOException e) {
 			e.printStackTrace();

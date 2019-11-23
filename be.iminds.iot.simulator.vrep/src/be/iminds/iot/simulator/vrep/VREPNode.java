@@ -54,7 +54,7 @@ public class VREPNode {
 			// vrep -h -s90000 -q myScene.ttt
 			File file = new File(vrepDir);
 			ProcessBuilder builder = new ProcessBuilder(file.getAbsolutePath() + File.separator + "vrep",
-					headless ? "-h" : "", "-s"+timeout, quit ? "-q" : "", port != 19997 ? "-gREMOTEAPISERVERSERVICE_" + port + "_FALSE_TRUE" : "");
+					headless ? "-h" : ""/*, "-s"+timeout*/, quit ? "-q" : "", port != 19997 ? "-gREMOTEAPISERVERSERVICE_" + port + "_FALSE_TRUE" : "");
 			builder.environment().put("LD_LIBRARY_PATH",
 					builder.environment().get("LD_LIBRARY_PATH") + ":" + file.getAbsolutePath());
 
@@ -73,11 +73,13 @@ public class VREPNode {
 
 	@Deactivate
 	protected void deactivate() {
-		System.out.println("VREP is deactivated");
+		System.out.println("VREP is deactivated in VREPNode class");
 		try {  // commont this if SM has a common used vrep node, instead using launcher to new one instance for each simulation
-			Process process = Runtime.getRuntime().exec("/bin/bash killall -9 "+vrepDir+"vrep");
-			Runtime.getRuntime().addShutdownHook(new Thread(process::destroy));
-		} catch (IOException e) {
+			Process process = Runtime.getRuntime().exec("killall -9 "+vrepDir+"vrep");
+			process.waitFor();
+			process.destroy();
+			process = null;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
