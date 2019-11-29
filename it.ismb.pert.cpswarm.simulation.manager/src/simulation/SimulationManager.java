@@ -73,6 +73,7 @@ public abstract class SimulationManager {
 	private int timeout = 90000;
 	private boolean fake = false;
 	private String launchFile = null;
+	private String bagPath = null;
 	
 	public static enum VERBOSITY_LEVELS {
 		NO_DEBUG,
@@ -107,6 +108,10 @@ public abstract class SimulationManager {
 		this.timeout = timeout;
 		this.fake = fake;
 		this.launchFile = launchFile;
+		ProcessBuilder builder = new ProcessBuilder();
+		String home = builder.environment().get("HOME");
+		builder = null;
+		bagPath = home + File.separator + ".ros" + File.separator;
 		if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
 			System.out.println("\n Create a simulation manager with clientID = "+clientID+" \n");
 		}
@@ -440,6 +445,10 @@ public abstract class SimulationManager {
 
 	public void setTimeout(int timeout) {
 		this.timeout = timeout;
+	}
+	
+	public String getBagPath() {
+		return bagPath;
 	}
 
 	public boolean isFake() {

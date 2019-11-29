@@ -129,28 +129,28 @@ public class NativeRosNode {
 			if (rosNode.endsWith(".launch")) {
 				roslaunch = true;
 			}
-			try {
+			try {				
 				List<String> cmd = new ArrayList<>();
 				cmd.add("/bin/bash");
 				cmd.add("-c");
-				String source = "source /opt/ros/kinetic/setup.bash ; source " + rosWorkspace + "devel/setup.bash ; ";
+				StringBuilder source = new StringBuilder("source /opt/ros/kinetic/setup.bash ; source " + rosWorkspace + "devel/setup.bash ; ");
 				if (roslaunch) {
-					source += "roslaunch ";
+					source.append("roslaunch ");
 				} else {
-					source += "rosrun ";
+					source.append("rosrun ");
 				}
-				source += rosPackage + " " + rosNode;
+				source.append(rosPackage + " " + rosNode);
 
 				// use name for setting the node name
 				if (name != null) {
-					source += " __name:=" + name;
+					source.append(" __name:=" + name);
 				}
 				// add params to command
 				for (String str : rosParameters) {
-					source += " " + str;
+					source.append(" " + str);
 				}
 
-				cmd.add(source);
+				cmd.add(source.toString());
 				if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
 					System.out.println("\n=================running command = " + cmd + " ==================\n");
 				}
@@ -188,9 +188,9 @@ public class NativeRosNode {
 		try {
 			String[] cmd = null;
 			if(this.cmakeBuildType == null) {
-				cmd = new String[] { "/bin/bash", "-c", "cd " + rosWorkspace + " ; catkin build " };
+				cmd = new String[] { "/bin/bash", "-c", "source /opt/ros/kinetic/setup.bash; cd " + rosWorkspace + " ; catkin build " };
 			}else {
-				cmd = new String[] { "/bin/bash", "-c", "cd " + rosWorkspace + " ; catkin build --cmake-args -DCMAKE_BUILD_TYPE="+ cmakeBuildType};
+				cmd = new String[] { "/bin/bash", "-c", "source /opt/ros/kinetic/setup.bash; cd " + rosWorkspace + " ; catkin build --cmake-args -DCMAKE_BUILD_TYPE="+ cmakeBuildType};
 			}
 			builder = new ProcessBuilder(cmd);
 			builder.inheritIO();

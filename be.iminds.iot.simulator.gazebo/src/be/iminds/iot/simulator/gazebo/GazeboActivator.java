@@ -42,12 +42,6 @@ import org.ros.node.NodeMain;
 
 import be.iminds.iot.simulator.api.Simulator;
 
-/**
- * Check and connect to external Gazebo via ROS.
- * 
- * @author tverbele
- *
- */
 @Component(service = {NodeMain.class})
 public class GazeboActivator extends AbstractNodeMain{
 

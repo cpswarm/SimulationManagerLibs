@@ -29,8 +29,6 @@ import be.iminds.iot.ros.util.NativeRosNode;
 
 /**
  * Native ROS Gazebo node. Starts Gazebo simulator.
- * 
- * @author tverbele
  *
  */
 @Component(immediate=true,
