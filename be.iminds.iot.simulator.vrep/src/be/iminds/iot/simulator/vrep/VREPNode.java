@@ -54,7 +54,7 @@ public class VREPNode {
 			// vrep -h -s90000 -q myScene.ttt
 			File file = new File(vrepDir);
 			ProcessBuilder builder = new ProcessBuilder(file.getAbsolutePath() + File.separator + "vrep",
-					headless ? "-h" : ""/*, "-s"+timeout*/, quit ? "-q" : "", port != 19997 ? "-gREMOTEAPISERVERSERVICE_" + port + "_FALSE_TRUE" : "");
+					headless ? "-h" : "", quit ? "-q" : "", port != 19997 ? "-gREMOTEAPISERVERSERVICE_" + port + "_FALSE_TRUE" : "");
 			builder.environment().put("LD_LIBRARY_PATH",
 					builder.environment().get("LD_LIBRARY_PATH") + ":" + file.getAbsolutePath());
 

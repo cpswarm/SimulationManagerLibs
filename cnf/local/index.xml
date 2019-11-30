@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1575053468000">
+<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1575133401000">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="gson-extras-bundle"/>
@@ -996,10 +996,10 @@
       <attribute name="objectClass" value="java.lang.Object" type="List&lt;String&gt;"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="5334" type="Long"/>
+      <attribute name="size" value="5295" type="Long"/>
       <attribute name="url" value="be.iminds.iot.ros.msgs.generator/be.iminds.iot.ros.msgs.generator-0.2.0.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="F6B66A66293077A4337B1F85B4316E5257B3651CDDF1E4D455115DE7FE90276E"/>
+      <attribute name="osgi.content" value="E2C05AAD24D6ED678A9C780133F7C277680EE224BBC72C85FBE2509E3395340E"/>
     </capability>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=org.ros.internal.message)(&amp;(version&gt;=0.2.0)(!(version&gt;=1.0.0))))"/>
@@ -2409,10 +2409,10 @@
       <attribute name="osgi.wiring.package" value="be.iminds.iot.simulator.api"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="8378" type="Long"/>
+      <attribute name="size" value="8376" type="Long"/>
       <attribute name="url" value="be.iminds.iot.simulator.api/be.iminds.iot.simulator.api-0.3.0.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="EB8F9925482422C3CF17F33104A88DF34354B3E812D36A5980A048FA19120296"/>
+      <attribute name="osgi.content" value="5EF8E077F3FE45E1A5B2166DC497FFE7B20EA38400082056339F519933935C0E"/>
     </capability>
     <requirement namespace="osgi.ee">
       <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
@@ -4067,10 +4067,10 @@
       <attribute name="objectClass" value="org.ros.node.NodeMain" type="List&lt;String&gt;"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="36030" type="Long"/>
+      <attribute name="size" value="36028" type="Long"/>
       <attribute name="url" value="be.iminds.iot.simulator.gazebo/be.iminds.iot.simulator.gazebo-0.4.0.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="03CF330DBB1454E8B7A1D0541127B17279CC25992B453148807AE8B1FAD5A029"/>
+      <attribute name="osgi.content" value="B56A35F8F608C9E3975B2AF9D49A4B0DE1F1513278EA6FC3B5F29EDEF4968FAE"/>
     </capability>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=be.iminds.iot.ros.api)(&amp;(version&gt;=0.3.0)(!(version&gt;=1.0.0))))"/>
@@ -4407,16 +4407,13 @@
       <attribute name="osgi.wiring.package" value="std_srvs"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="5433" type="Long"/>
+      <attribute name="size" value="2763" type="Long"/>
       <attribute name="url" value="org.ros.rosjava_messages.std_srvs/org.ros.rosjava_messages.std_srvs-1.11.1.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="BEE18C123CD9307E3C8239C5F416271FF7D82A48EDEFAC4FABE71C005B28A3B9"/>
+      <attribute name="osgi.content" value="82A33FBF9D3F41C90E7B642EA653CA3443440570998172E30B392802F6ACF54E"/>
     </capability>
     <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=org.ros.internal.message)(&amp;(version&gt;=0.2.0)(!(version&gt;=1.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.ee">
-      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.ros.internal.message))"/>
     </requirement>
   </resource>
   <resource>
@@ -5194,10 +5191,10 @@
       <attribute name="objectClass" value="be.iminds.iot.ros.api.Ros" type="List&lt;String&gt;"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="17134" type="Long"/>
+      <attribute name="size" value="17065" type="Long"/>
       <attribute name="url" value="be.iminds.iot.ros.core/be.iminds.iot.ros.core-0.3.0.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="65E51EDF5A22C38A56BD881A93A10898771E512CCF1F74A8DE0DEC2FD56CAA62"/>
+      <attribute name="osgi.content" value="3510EF9B07034AFCD1B93C3EE496F062DB7292E27FBFE5C046968BF96EC4A0C8"/>
     </capability>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=be.iminds.iot.ros.api)(&amp;(version&gt;=0.3.0)(!(version&gt;=1.0.0))))"/>

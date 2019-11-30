@@ -54,16 +54,16 @@
 	org.objenesis;version='[2.1,2.2)',\
 	com.esotericsoftware.kryo;version='[2.23,2.24)',\
 	de.javakaffee.kryo-serializers;version='[0.23,0.24)',\
-	be.iminds.iot.ros.msgs.generator;version=latest,\
 	be.iminds.iot.ros.api;version=latest,\
-	be.iminds.iot.ros.core;version=latest,\
+	be.iminds.iot.ros.core;version=0.3.0,\
+	be.iminds.iot.ros.msgs.generator;version=0.2.0,\
 	org.ros.rosjava_messages.gazebo_msgs;version=latest,\
 	org.ros.rosjava_messages.trajectory_msgs;version=latest,\
-	org.ros.rosjava_messages.std_srvs;version=latest,\
-	be.iminds.iot.simulator.api;version=latest,\
-	be.iminds.iot.simulator.gazebo;version=latest
-	
+	be.iminds.iot.simulator.gazebo;version=latest,\
+	be.iminds.iot.simulator.api;version=0.3.0,\
+	org.ros.rosjava_messages.std_srvs;version=1.11.1
 
+	
 
 -runproperties: \
 	ros.core.native=true,\

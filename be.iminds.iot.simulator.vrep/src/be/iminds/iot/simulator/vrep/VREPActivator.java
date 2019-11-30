@@ -220,9 +220,7 @@ public class VREPActivator {
 	
 		if(nativeConfig != null && scene != null){
 			vrep.loadScene(scene, null);
-		}/* else {
-			vrep.loadHandles();
-		}*/
+		}
 	}
 	
 	@Deactivate

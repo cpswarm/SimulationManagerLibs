@@ -158,10 +158,17 @@ public class VREP implements Simulator {
 	
 	@Override
 	public synchronized void stop() {
-		deconfigure();
+		if(configurations.size()>0) {
+			deconfigure();
+		}
 
 		// stop the simulation:
-		checkOk(server.simxStopSimulation(clientID,server.simx_opmode_blocking));
+		int ret = server.simxGetConnectionId(clientID);
+		if (ret == -1) { // if V-REP already stops, no need to call it
+			return;
+		} else {
+			checkOk(server.simxStopSimulation(clientID,server.simx_opmode_blocking));
+		}
 		
 	}
 
