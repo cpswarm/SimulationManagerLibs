@@ -1,0 +1,9 @@
+Simulation Manager Libs
+Copyright 2019 LINKS Foundation
+
+This product includes software developed at LINKS Foundation (https://linksfoundation.com/).
+
+Simulation Manager Libs includes the following dependencies developed by the corresponding developers and organisations:
+
+* https://github.com/ibcn-cloudlet/rososgi by  imec - IDLab - UGent (GNU Affero General Public License v3.0)
+* https://github.com/dog-gateway/mqtt by  Dario Bonino (Apache v2.0)
