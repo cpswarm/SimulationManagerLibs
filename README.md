@@ -12,7 +12,8 @@ all the other projects are extended versions of [ROS-OSGi](https://github.com/ib
 
 ## Deployment
 
-
+The libraries are already inserted in the Stage SM and Gazebo SM projects, if you need to update and deploy them
+you can follow this gyude
 
 ### Compile from source
 
