@@ -1,6 +1,6 @@
 # CPSwarm Simulation Manager Libs
 
-This repository contains the source code of the OSGi dependency bundles used both by Gazebo SM and Stage SM. Some libraries are based.
+This repository contains the source code of the OSGi dependency bundles used both by Gazebo SM and Stage SM. 
 
 it.ismb.pert.cpswarm.simulation.manager is a library used to implement the SM API in XMPP, 
 it.ismb.pert.cpswarm-mqttlib is a library for MQTT communication, used by the SMs to pulish the fitness scores calculated during optimization,
