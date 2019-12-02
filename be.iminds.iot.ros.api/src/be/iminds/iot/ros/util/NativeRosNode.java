@@ -133,7 +133,11 @@ public class NativeRosNode {
 				List<String> cmd = new ArrayList<>();
 				cmd.add("/bin/bash");
 				cmd.add("-c");
-				StringBuilder source = new StringBuilder("source /opt/ros/kinetic/setup.bash ; source " + rosWorkspace + "devel/setup.bash ; ");
+				StringBuilder source = new StringBuilder();
+				if(rosWorkspace == null)
+					source.append("source /opt/ros/kinetic/setup.bash ; ");
+				else
+					source.append("source /opt/ros/kinetic/setup.bash ; source " + rosWorkspace + "devel/setup.bash ; ");				
 				if (roslaunch) {
 					source.append("roslaunch ");
 				} else {

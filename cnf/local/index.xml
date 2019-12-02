@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1575133401000">
+<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1575294704000">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="gson-extras-bundle"/>
@@ -2665,10 +2665,10 @@
       <attribute name="objectClass" value="be.iminds.iot.ros.util.RosCommandInjection" type="List&lt;String&gt;"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="18236" type="Long"/>
+      <attribute name="size" value="18295" type="Long"/>
       <attribute name="url" value="be.iminds.iot.ros.api/be.iminds.iot.ros.api-0.4.0.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="D58231D63814973A1E7A839F8C4E3990AE0EF44449B22DAD33F35F69A38B9CC1"/>
+      <attribute name="osgi.content" value="1AB888A187AC3E1FB79E5CDAA74B0D5EBE42DA91251B7A26BC216BB2CFD27BF9"/>
     </capability>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=be.iminds.iot.ros.api)(&amp;(version&gt;=0.3.0)(!(version&gt;=1.0.0))))"/>
@@ -3973,10 +3973,10 @@
       <attribute name="osgi.wiring.package" value="simulation.xmpp"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="44421" type="Long"/>
+      <attribute name="size" value="44577" type="Long"/>
       <attribute name="url" value="it.ismb.pert.cpswarm.simulation.manager/it.ismb.pert.cpswarm.simulation.manager-1.0.48.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="8CA0117F6E98EA1B22D93F30FB4606C4667B8AC2B43793DC9AEF6FBA94257DF9"/>
+      <attribute name="osgi.content" value="2DB0A1A8459CB812EA8E114C5DC02FBAFEFABB45F5BE501AF73207BF71BCB7E8"/>
     </capability>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=com.google.gson)(&amp;(version&gt;=2.8.0)(!(version&gt;=3.0.0))))"/>
@@ -6587,16 +6587,16 @@
       <attribute name="osgi.wiring.package" value="coppelia"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="88120" type="Long"/>
+      <attribute name="size" value="140715" type="Long"/>
       <attribute name="url" value="coppelia/coppelia-3.3.1.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="F21D669D9317C2268FFB2B3C56F383BAD7361CB8DC96A51C60373985C126B521"/>
+      <attribute name="osgi.content" value="4FEF9A32350E2F10F2D638634EF8862240A8B9D3F86DC73DF1B1604E4DE89F5B"/>
     </capability>
     <requirement namespace="osgi.ee">
       <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
     </requirement>
     <requirement namespace="osgi.native">
-      <directive name="filter" value="(&amp;(osgi.native.osname~=Linux)(osgi.native.processor~=x86_64))"/>
+      <directive name="filter" value="(|(&amp;(osgi.native.osname~=Linux)(osgi.native.processor~=x86_64))(&amp;(osgi.native.osname~=macosx)(osgi.native.processor~=x86_64)))"/>
     </requirement>
   </resource>
   <resource>
@@ -6902,6 +6902,44 @@
   </resource>
   <resource>
     <capability namespace="osgi.identity">
+      <attribute name="osgi.identity" value="optimization-messages"/>
+      <attribute name="type" value="osgi.bundle"/>
+      <attribute name="version" value="0.0.2.SNAPSHOT" type="Version"/>
+    </capability>
+    <capability namespace="osgi.wiring.bundle">
+      <attribute name="bundle-version" value="0.0.2.SNAPSHOT" type="Version"/>
+      <attribute name="osgi.wiring.bundle" value="optimization-messages"/>
+    </capability>
+    <capability namespace="osgi.wiring.host">
+      <attribute name="bundle-version" value="0.0.2.SNAPSHOT" type="Version"/>
+      <attribute name="osgi.wiring.host" value="optimization-messages"/>
+    </capability>
+    <capability namespace="osgi.wiring.package">
+      <directive name="uses" value="com.google.gson,com.google.gson.annotations"/>
+      <attribute name="version" value="0.0.2" type="Version"/>
+      <attribute name="osgi.wiring.package" value="eu.cpswarm.optimization.messages"/>
+    </capability>
+    <capability namespace="osgi.content">
+      <attribute name="size" value="14371" type="Long"/>
+      <attribute name="url" value="optimization-messages/optimization-messages-0.0.2.jar"/>
+      <attribute name="mime" value="application/vnd.osgi.bundle"/>
+      <attribute name="osgi.content" value="61F5521437406DFA5315DC3A8A385C075143E0E84E76A0493B68C5AB32E896B1"/>
+    </capability>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.google.gson)(&amp;(version&gt;=2.8.0)(!(version&gt;=3.0.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.google.gson.annotations)(&amp;(version&gt;=2.8.0)(!(version&gt;=3.0.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=com.google.gson.typeadapters))"/>
+    </requirement>
+    <requirement namespace="osgi.ee">
+      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
+    </requirement>
+  </resource>
+  <resource>
+    <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="com.google.gson.bundle"/>
       <attribute name="type" value="osgi.bundle"/>
       <attribute name="version" value="2.8.5" type="Version"/>
@@ -6994,44 +7032,6 @@
     </requirement>
     <requirement namespace="osgi.ee">
       <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.5))"/>
-    </requirement>
-  </resource>
-  <resource>
-    <capability namespace="osgi.identity">
-      <attribute name="osgi.identity" value="optimization-messages"/>
-      <attribute name="type" value="osgi.bundle"/>
-      <attribute name="version" value="0.0.1.SNAPSHOT" type="Version"/>
-    </capability>
-    <capability namespace="osgi.wiring.bundle">
-      <attribute name="bundle-version" value="0.0.1.SNAPSHOT" type="Version"/>
-      <attribute name="osgi.wiring.bundle" value="optimization-messages"/>
-    </capability>
-    <capability namespace="osgi.wiring.host">
-      <attribute name="bundle-version" value="0.0.1.SNAPSHOT" type="Version"/>
-      <attribute name="osgi.wiring.host" value="optimization-messages"/>
-    </capability>
-    <capability namespace="osgi.wiring.package">
-      <directive name="uses" value="com.google.gson,com.google.gson.annotations"/>
-      <attribute name="version" value="0.0.1" type="Version"/>
-      <attribute name="osgi.wiring.package" value="eu.cpswarm.optimization.messages"/>
-    </capability>
-    <capability namespace="osgi.content">
-      <attribute name="size" value="14266" type="Long"/>
-      <attribute name="url" value="optimization-messages/optimization-messages-0.0.1.jar"/>
-      <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="6DF90BA538A3A5F101C72CB85A80CB5E7C8672879FBCE8599C166B91A15C40CB"/>
-    </capability>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=com.google.gson)(&amp;(version&gt;=2.8.0)(!(version&gt;=3.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=com.google.gson.annotations)(&amp;(version&gt;=2.8.0)(!(version&gt;=3.0.0))))"/>
-    </requirement>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=com.google.gson.typeadapters))"/>
-    </requirement>
-    <requirement namespace="osgi.ee">
-      <directive name="filter" value="(&amp;(osgi.ee=JavaSE)(version=1.8))"/>
     </requirement>
   </resource>
   <resource>

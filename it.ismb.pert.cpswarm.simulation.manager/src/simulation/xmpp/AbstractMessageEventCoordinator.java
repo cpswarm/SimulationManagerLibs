@@ -15,6 +15,7 @@ import org.jivesoftware.smack.packet.Message;
 import org.jxmpp.jid.EntityBareJid;
 
 import eu.cpswarm.optimization.messages.MessageSerializer;
+import eu.cpswarm.optimization.messages.Parameter;
 import eu.cpswarm.optimization.messages.ParameterSet;
 import eu.cpswarm.optimization.messages.RunSimulationMessage;
 import simulation.SimulationManager;
@@ -40,7 +41,7 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 	public void newIncomingMessage(EntityBareJid sender, Message msg, org.jivesoftware.smack.chat2.Chat chat) {
 		MessageSerializer serializer = new MessageSerializer();
 		RunSimulationMessage runSimulation = serializer.fromJson(msg.getBody());
-		System.out.println("parameterSet = "+msg.getBody());
+		System.out.println("ABS parameterSet = "+msg.getBody());
 		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
 			System.out.println("SimulationManager received RunSimulationMessage from "+sender.asBareJid());
 		}
@@ -56,21 +57,17 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 	 * 
 	 * @return the result of the serialization (true: OK, false error)
 	 */
-	protected boolean serializeCandidate(final String candidate) {
-		String metaType = "command line";
-		String metaPackage = "swarm_behaviors";
+	protected boolean serializeCandidate(final ParameterSet parameterSet) {
 		boolean findLine = false;
 		StringBuilder simConfig = new StringBuilder();  // visual:true, name:=value, ....
 		
-		String[] names = {"1", "2"};
-		double[] values = {0.1, 0.2};
-		
-		for (int i = 0; i < names.length-1; i++) {
+		for (Parameter param : parameterSet.getParameters()) {
 			
-			if (metaType.equals("command line")) {
-				simConfig.append(names[i] + ":=" + values[i] + ",");
-			} else if (metaType.equals("file")) {
-				String metaPackageName = getMetaPackage();
+			if (param.getMeta().equals("cml")) {
+				simConfig.append(param.getName() + ":=" + param.getValue() + ",");
+			} else if (param.getMeta().equals("file")) {
+			//	String metaPackageName = getMetaPackage();
+				String metaPackageName = "ugv_random_walk";
 				Process proc = null;
 				try {
 					proc = Runtime.getRuntime().exec(new String[] { "/bin/bash", "-c",
@@ -82,14 +79,15 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 
 					if ((line = input.readLine()) != null && !line.startsWith("[rospack]")) {
 						String parameterFilePath = line + "/param/ugv_random_walk.yaml";
+						System.out.println("parameterFilePath = "+parameterFilePath);
 						File parameterFile = new File(parameterFilePath);
 						if (parameterFile.exists()) {
 							List<String> fileContent = new ArrayList<>(
 									Files.readAllLines(Paths.get(parameterFilePath), StandardCharsets.UTF_8)); // ensure the file is closed in all cases
 							findLine = false;
 							for (int j = 0; j < fileContent.size(); j++) {
-								if (fileContent.get(j).trim().startsWith(names[i])) {
-									fileContent.set(j, names[i] + " " + values[i]);
+								if (fileContent.get(j).trim().startsWith(param.getName())) {
+									fileContent.set(j, param.getName() + " " + param.getValue());
 									findLine = true;
 									break;
 								}
@@ -119,11 +117,19 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 					return false;
 				}
 			}
+			else {
+				return false;
+			}
 		}
 		
 		if(simConfig.length()!=0) {
 			String commandLine = simConfig.substring(0, simConfig.length()-1);  // remove the last ,
-			parent.setSimulationConfiguration(commandLine);
+			System.out.println("commandLine = "+commandLine);
+			String params = parent.getSimulationConfiguration();
+			if (params != null) {
+				params+=","+commandLine;
+			}
+			parent.setSimulationConfiguration(params);
 		}
 		
 		return true;
