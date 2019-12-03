@@ -79,7 +79,7 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 
 					if ((line = input.readLine()) != null && !line.startsWith("[rospack]")) {
 						String parameterFilePath = line + "/param/ugv_random_walk.yaml";
-						System.out.println("parameterFilePath = "+parameterFilePath);
+					//	System.out.println("parameterFilePath = "+parameterFilePath);
 						File parameterFile = new File(parameterFilePath);
 						if (parameterFile.exists()) {
 							List<String> fileContent = new ArrayList<>(
@@ -87,7 +87,7 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 							findLine = false;
 							for (int j = 0; j < fileContent.size(); j++) {
 								if (fileContent.get(j).trim().startsWith(param.getName())) {
-									fileContent.set(j, param.getName() + " " + param.getValue());
+									fileContent.set(j, param.getName() + ": " + param.getValue());
 									findLine = true;
 									break;
 								}
