@@ -6,6 +6,5 @@ RemoteSystemsTempFiles/
 *.git/
 **/generated/
 **/bin/
-git.sh
-red.sh
+
 
