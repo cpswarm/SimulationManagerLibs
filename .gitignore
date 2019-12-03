@@ -3,7 +3,6 @@
 .metadata
 .recommenders/
 RemoteSystemsTempFiles/
-*.git/
 **/generated/
 **/bin/
 
