@@ -2,9 +2,9 @@
 
 This repository contains the source code of the OSGi dependency bundles used both by Gazebo SM and Stage SM. 
 
-- it.ismb.pert.cpswarm.simulation.manager is a library used to implement the SM API in XMPP, 
-- it.ismb.pert.cpswarm-mqttlib is a library for MQTT communication, used by the SMs to pulish the fitness scores calculated during optimization,
-- all the other projects are extended versions of [ROS-OSGi](https://github.com/ibcn-cloudlet/rososgi) bundles.
+* it.ismb.pert.cpswarm.simulation.manager is a library used to implement the SM API in XMPP, 
+* it.ismb.pert.cpswarm-mqttlib is a library for MQTT communication, used by the SMs to pulish the fitness scores calculated during optimization,
+* all the other projects are extended versions of [ROS-OSGi](https://github.com/ibcn-cloudlet/rososgi) bundles.
 
 
 ## Getting Started
