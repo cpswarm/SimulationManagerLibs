@@ -24,6 +24,7 @@ package be.iminds.iot.ros.util;
 
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +79,7 @@ public class NativeRosNode {
 	}
 
 	@Activate
-	protected void activate(BundleContext context, Map<String, Object> properties) throws Exception {
+	protected void activate(BundleContext context, Map<String, Object> properties){
 		String verbosity = "2";
 		if(context.getProperty("verbosity")!=null){
 			verbosity = context.getProperty("verbosity");
@@ -125,64 +126,91 @@ public class NativeRosNode {
 				}
 			}
 
-			boolean roslaunch = false;
-			if (rosNode.endsWith(".launch")) {
-				roslaunch = true;
+		
+		}
+	}
+	
+	public void startSimulation() {
+		boolean roslaunch = false;
+		if (rosNode.endsWith(".launch")) {
+			roslaunch = true;
+		}
+		try {		
+			List<String> cmd = new ArrayList<>();
+			cmd.add("/bin/bash");
+			cmd.add("-c");
+			StringBuilder source = new StringBuilder();
+			if(rosWorkspace == null)
+				source.append("source /opt/ros/kinetic/setup.bash ; ");
+			else
+				source.append("source /opt/ros/kinetic/setup.bash ; source " + rosWorkspace + "devel/setup.bash ; ");				
+			if (roslaunch) {
+				source.append("roslaunch ");
+			} else {
+				source.append("rosrun ");
 			}
-			try {				
-				List<String> cmd = new ArrayList<>();
-				cmd.add("/bin/bash");
-				cmd.add("-c");
-				StringBuilder source = new StringBuilder();
-				if(rosWorkspace == null)
-					source.append("source /opt/ros/kinetic/setup.bash ; ");
-				else
-					source.append("source /opt/ros/kinetic/setup.bash ; source " + rosWorkspace + "devel/setup.bash ; ");				
-				if (roslaunch) {
-					source.append("roslaunch ");
-				} else {
-					source.append("rosrun ");
-				}
-				source.append(rosPackage + " " + rosNode);
+			source.append(rosPackage + " " + rosNode);
 
-				// use name for setting the node name
-				if (name != null) {
-					source.append(" __name:=" + name);
-				}
-				// add params to command
-				for (String str : rosParameters) {
-					source.append(" " + str);
-				}
+			// use name for setting the node name
+			if (name != null) {
+				source.append(" __name:=" + name);
+			}
+			// add params to command
+			for (String str : rosParameters) {
+				source.append(" " + str);
+			}
 
-				cmd.add(source.toString());
-				if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
-					System.out.println("\n=================running command = " + cmd + " ==================\n");
-				}
-				ProcessBuilder builder = new ProcessBuilder(cmd);
-			/*	if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
-					builder.inheritIO();
-				}*/
+			cmd.add(source.toString());
+			if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
+				System.out.println("\n=================running command = " + cmd + " ==================\n");
+			}
+			ProcessBuilder builder = new ProcessBuilder(cmd);
+			if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
+				builder.inheritIO();
 				process = builder.start();
+				process.waitFor();
+				process = null;
 				
+			}else {
+				process = builder.start();
 				String line="";
 				BufferedReader input =  
 						new BufferedReader  
 						(new InputStreamReader(process.getInputStream()));  
-				while ((line = input.readLine()) != null) {  
-					if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
-						System.out.println(line);
-					}
-				}  
-				
-				process.waitFor();
-				input.close();
-				if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
-					System.out.println("Ros command exits \n");
+				while ((line = input.readLine()) != null) {  // to be sure that GUI=true works
+					
 				}
-			} catch (Exception e) {
-				System.err.println("Error launching native ros node " + rosPackage + " " + rosNode);
-				throw e;
+				process.waitFor();
+				process = null;
+				input.close();
 			}
+		
+			
+			
+			/*	if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
+				builder.inheritIO();
+			}
+			process = builder.start();
+
+				String line="";
+			BufferedReader input =  
+					new BufferedReader  
+					(new InputStreamReader(process.getInputStream()));  
+			while ((line = input.readLine()) != null) {  
+					if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
+					System.out.println(line);
+				}
+			}  
+			
+			process.waitFor();
+			process = null;
+		//	input.close();*/
+	//		if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
+				System.out.println("Ros command exits");
+	//		}
+		} catch (Exception e) {
+			System.err.println("Error launching native ros node " + rosPackage + " " + rosNode);
+			e.printStackTrace();
 		}
 	}
 
@@ -200,6 +228,7 @@ public class NativeRosNode {
 			builder.inheritIO();
 			process = builder.start();
 			process.waitFor();
+			process = null;
 			if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
 				System.out.println("build workspace finished");
 			}
@@ -212,20 +241,49 @@ public class NativeRosNode {
 
 	@Deactivate
 	protected void deactivate() {
+		System.out.println("rosComand is deactivated");
+		Process proc;
+		try {
+			ProcessBuilder builder = new ProcessBuilder(new String[] { "/bin/bash", "-c", "killall -2 roslaunch"});
+				proc = builder.start();
+				proc.waitFor();
+				proc = null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+		try {
+			Thread.sleep(25000);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		int counter = 2;
+		while (process != null && counter>0) {
+			try {
+				Thread.sleep(15000);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			counter-=1;	
+		}	
+		if (process != null) {
+			process.destroyForcibly();			
+			try {
+				process.waitFor();
+				System.out.println("process destroyForcibly in deactivate()");
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			process = null;
+		}
 		if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
 			System.out.println("rosComand is deactivated");
 		}
-		// help ... destroy doesn't gracefully ends the child process ... might not be
-		// enough :-/
-		if (process != null) {
-			process.destroy();
-			process = null;
-		}
 	}
 
-	@Reference
+/*	@Reference
 	void setROSEnvironment(Ros e) {
 		// make sure ROS core is running before activating a native node
-	}
+	}*/
 
 }

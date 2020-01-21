@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1575294704000">
+<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1579597368000">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="gson-extras-bundle"/>
@@ -2665,14 +2665,11 @@
       <attribute name="objectClass" value="be.iminds.iot.ros.util.RosCommandInjection" type="List&lt;String&gt;"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="18295" type="Long"/>
+      <attribute name="size" value="18910" type="Long"/>
       <attribute name="url" value="be.iminds.iot.ros.api/be.iminds.iot.ros.api-0.4.0.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="1AB888A187AC3E1FB79E5CDAA74B0D5EBE42DA91251B7A26BC216BB2CFD27BF9"/>
+      <attribute name="osgi.content" value="66707E4F55C6535EBC5973525742CB8F1BFA5BC393D9E6A7EC2C4062D5C8D604"/>
     </capability>
-    <requirement namespace="osgi.wiring.package">
-      <directive name="filter" value="(&amp;(osgi.wiring.package=be.iminds.iot.ros.api)(&amp;(version&gt;=0.3.0)(!(version&gt;=1.0.0))))"/>
-    </requirement>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=be.iminds.iot.ros.util)(&amp;(version&gt;=0.3.0)(!(version&gt;=1.0.0))))"/>
     </requirement>
@@ -2687,10 +2684,6 @@
     </requirement>
     <requirement namespace="osgi.extender">
       <directive name="filter" value="(&amp;(osgi.extender=osgi.component)(version&gt;=1.3.0)(!(version&gt;=2.0.0)))"/>
-    </requirement>
-    <requirement namespace="osgi.service">
-      <directive name="filter" value="(objectClass=be.iminds.iot.ros.api.Ros)"/>
-      <directive name="effective" value="active"/>
     </requirement>
     <requirement namespace="osgi.service">
       <directive name="filter" value="(objectClass=org.osgi.service.component.ComponentFactory)"/>
@@ -2756,10 +2749,10 @@
       <attribute name="objectClass" value="manager.StageSimulationManager" type="List&lt;String&gt;"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="33600" type="Long"/>
+      <attribute name="size" value="36910" type="Long"/>
       <attribute name="url" value="it.ismb.pert.cpswarm.simulation.stage/it.ismb.pert.cpswarm.simulation.stage-1.1.0.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="7A29F0FFFF1393860E7A36ADFF7835E3ABF4149F53CAE6590F031E5C830B7C05"/>
+      <attribute name="osgi.content" value="5A5E14400112848D112745979723420173232C534A3351788ED1B18FE8BDFB07"/>
     </capability>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=be.iminds.iot.ros.util)(&amp;(version&gt;=0.3.0)(!(version&gt;=1.0.0))))"/>
@@ -2780,6 +2773,9 @@
       <directive name="filter" value="(&amp;(osgi.wiring.package=org.jivesoftware.smack)(&amp;(version&gt;=4.3.0)(!(version&gt;=5.0.0))))"/>
     </requirement>
     <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.jivesoftware.smack.chat2)(&amp;(version&gt;=4.3.0)(!(version&gt;=5.0.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=org.jivesoftware.smack.packet)(&amp;(version&gt;=4.3.0)(!(version&gt;=5.0.0))))"/>
     </requirement>
     <requirement namespace="osgi.wiring.package">
@@ -2790,6 +2786,9 @@
     </requirement>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=org.jxmpp.jid)(&amp;(version&gt;=0.6.0)(!(version&gt;=1.0.0))))"/>
+    </requirement>
+    <requirement namespace="osgi.wiring.package">
+      <directive name="filter" value="(&amp;(osgi.wiring.package=org.jxmpp.jid.impl)(&amp;(version&gt;=0.6.0)(!(version&gt;=1.0.0))))"/>
     </requirement>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=org.osgi.framework)(&amp;(version&gt;=1.7.0)(!(version&gt;=2.0.0))))"/>
@@ -3973,10 +3972,10 @@
       <attribute name="osgi.wiring.package" value="simulation.xmpp"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="44577" type="Long"/>
+      <attribute name="size" value="45225" type="Long"/>
       <attribute name="url" value="it.ismb.pert.cpswarm.simulation.manager/it.ismb.pert.cpswarm.simulation.manager-1.0.48.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="2DB0A1A8459CB812EA8E114C5DC02FBAFEFABB45F5BE501AF73207BF71BCB7E8"/>
+      <attribute name="osgi.content" value="A48591B1C0E29A6482D61E2E984D231C5CB29E94E2665B549BC602FA46D3FA28"/>
     </capability>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=com.google.gson)(&amp;(version&gt;=2.8.0)(!(version&gt;=3.0.0))))"/>
@@ -6923,7 +6922,7 @@
       <attribute name="size" value="14371" type="Long"/>
       <attribute name="url" value="optimization-messages/optimization-messages-0.0.2.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="61F5521437406DFA5315DC3A8A385C075143E0E84E76A0493B68C5AB32E896B1"/>
+      <attribute name="osgi.content" value="3ACC861CB792EB02A37573824CB1C6491CE1D32C8B691B1243DCC3663DF2D974"/>
     </capability>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=com.google.gson)(&amp;(version&gt;=2.8.0)(!(version&gt;=3.0.0))))"/>

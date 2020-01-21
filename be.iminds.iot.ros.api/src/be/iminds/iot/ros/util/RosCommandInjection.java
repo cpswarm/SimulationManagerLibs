@@ -7,7 +7,10 @@ import java.util.Properties;
 import org.osgi.service.component.ComponentFactory;
 import org.osgi.service.component.ComponentInstance;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+
+import be.iminds.iot.ros.util.NativeRosNode.VERBOSITY_LEVELS;
 
 @Component(immediate=true,
 	property = {"osgi.command.scope=ros", 
@@ -112,4 +115,11 @@ public class RosCommandInjection {
 	public void getRosCommandFactory(final ComponentFactory s) {
 		this.rosCommandFactory = s;
 	}
+	
+	@Deactivate
+	public void deactivate() {
+		System.out.println("\n rosComandInjection is deactivated");
+		
+	}
+
 }
