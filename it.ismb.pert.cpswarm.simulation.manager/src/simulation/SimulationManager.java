@@ -351,6 +351,17 @@ public abstract class SimulationManager {
 		}
 	}
 	
+	public void sendPresence() {
+		final Presence presence = new Presence(Presence.Type.available);
+		Gson gson = new Gson();
+		presence.setStatus(gson.toJson(this.server));
+		try {
+			connection.sendStanza(presence);
+		} catch (final NotConnectedException | InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public boolean isStarted() {
 		return started;
 	}
@@ -369,6 +380,8 @@ public abstract class SimulationManager {
 
 	public void setSimulationID(String simulationID) {
 		this.simulationID = simulationID;
+		server.setSID(simulationID);
+		this.sendPresence();
 	}
 	
 	public String getSimulationID() {
@@ -442,6 +455,7 @@ public abstract class SimulationManager {
 	public void setSCID(String SCID) {
 		this.SCID = SCID;
 		this.server.setSCID(SCID);
+		this.sendPresence();
 	}
 	
 	public boolean isOptimizationToolAvailable() {

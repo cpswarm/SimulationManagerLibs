@@ -45,6 +45,7 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 			}
 			parent.setOptimizationID(runSimulation.getOId());
 			parent.setSimulationID(runSimulation.getSid());
+			
 			// parent.setSimulationConfiguration(runSimulation.getConfiguration());
 			// The candidate is handled in different ways by the several simulators
 			this.handleCandidate(sender, runSimulation.getCandidate(), runSimulation.getCandidateType());
