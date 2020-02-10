@@ -83,11 +83,10 @@ public abstract class SimulationManager {
 	
 	public static VERBOSITY_LEVELS CURRENT_VERBOSITY_LEVEL = VERBOSITY_LEVELS.ALL;
 
-	public void connectToXMPPserver(final InetAddress serverIP, final String serverName, final String serverPassword, final String dataFolder, final String rosFolder, final Server serverInfo, final String optimizationUser, final String orchestratorUser, String uuid, boolean debug, final boolean monitoring, final String mqttBroker, final int timeout, final boolean fake, final String launchFile) {
+	public boolean connectToXMPPserver(final InetAddress serverIP, final String serverName, final String serverPassword, final String dataFolder, final String rosFolder, final Server serverInfo, final String optimizationUser, final String orchestratorUser, String uuid, boolean debug, final boolean monitoring, final String mqttBroker, final int timeout, final boolean fake, final String launchFile) {
 		if(uuid.isEmpty()) {
 			uuid = UUID.randomUUID().toString();
-		}
-	
+		}	    
 		clientID = "manager_"+uuid;
 		this.serverName = serverName;
 		this.dataFolder = dataFolder;
@@ -110,11 +109,13 @@ public abstract class SimulationManager {
 		this.launchFile = launchFile;
 		ProcessBuilder builder = new ProcessBuilder();
 		String home = builder.environment().get("HOME");
-		builder = null;
+		if(home == null)
+			home = "/root";
 		bagPath = home + File.separator + ".ros" + File.separator;
-		if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
+		builder = null;
+	//	if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
 			System.out.println("\n Create a simulation manager with clientID = "+clientID+" \n");
-		}
+	//	}
 		try {
 
 			clientJID = JidCreate.from(clientID+"@"+serverName+"/"+RESOURCE);
@@ -160,7 +161,11 @@ public abstract class SimulationManager {
 		} catch (final SmackException | IOException | XMPPException e) {
 			if (e instanceof SASLErrorException) {
 				connection.disconnect();
-				createAccount(serverPassword, serverInfo);
+				if(!createAccount(serverPassword, serverInfo)) {
+					System.out.println("Failed to connect to XMPP server");
+					return false;
+				}
+				
 			}
 		} catch(Exception me) {
 			System.out.println("msg "+me.getMessage());
@@ -169,8 +174,8 @@ public abstract class SimulationManager {
 			System.out.println("excep "+me);
 			me.printStackTrace();
 		}
-		
-		addOrchestratorAndOptimizationToTheRoster();
+			addOrchestratorAndOptimizationToTheRoster();
+		return true;
 	}
 
 
@@ -194,6 +199,7 @@ public abstract class SimulationManager {
 				connection.sendStanza(presence);
 			} catch (final NotConnectedException | InterruptedException e) {
 				e.printStackTrace();
+				return false;
 			}
 			startMonitoring();
 		} catch (InterruptedException | SmackException | IOException | XMPPException me) {
@@ -309,7 +315,7 @@ public abstract class SimulationManager {
 	}
 	
 	
-	public boolean publishFitness(SimulationResultMessage message) {
+	public boolean publishFitness(SimulationResultMessage message, String paramsString, Integer counter) {
 		MessageSerializer serializer = new MessageSerializer();
 		String messageToSend = serializer.toJson(message);
 		try {
@@ -319,27 +325,48 @@ public abstract class SimulationManager {
 			xmppMessage.setBody(messageToSend);
 			chat.send(messageToSend);
 			if(!CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.NO_DEBUG)) {
-				System.out.println("fitness score: "+ messageToSend + " sent");
+				System.out.println("\nfitness score: "+ messageToSend + " sent");
 			}
 		} catch (NotConnectedException | InterruptedException e) {
 			System.out.println("Error sending the result of the simulation: "+messageToSend);
 			e.printStackTrace();
 			return false;
 		} 
+		StringBuilder builder = null;
+		int count = 3;
+		boolean success = false;
 		if(monitoring && !message.getOperationStatus().equals(Status.ERROR)) {
-			StringBuilder builder = new StringBuilder();
-			builder.append("{ \"SID\" : \""+message.getSid()+"\", ");
-			builder.append(" \"fitnessValue\" : "+message.getFitnessValue()+", ");
-			String [] values = message.getDescription().split(" ");
-			for(int i = 0; i < values.length; i++) {
-				String [] splittedValues = values[i].split(":");
-				builder.append("\""+splittedValues[0]+"\" : "+splittedValues[1]+"");
-				if(i<values.length-1) {
-					builder.append(", ");
+			builder = new StringBuilder();
+		//	builder.append("{ \"SID\" : \""+message.getSid()+"\", ");
+			builder.append("{ \"SID\" : \""+message.getSid()+" ("+counter+" carts)\", ");
+			builder.append(" \"fitnessValue\" : "+message.getFitnessValue());
+			if(paramsString!=null) {
+				builder.append(", ");
+				String [] params = paramsString.split(",");
+				for(int i = 0; i < params.length; i++) {
+					String[] keyValue = params[i].split(":");
+					builder.append("\""+keyValue[0]+"\" : "+keyValue[1]);
+					if(i<params.length-1) {
+						builder.append(", ");
+					}
+					keyValue = null;
 				}
 			}
 			builder.append("}");
-			client.publish("/cpswarm/"+optimizationID+"/fitness", builder.toString().getBytes());
+			if(!CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.NO_DEBUG)) {
+				System.out.println("publishFitness: msg = "+builder.toString());
+			}  // try to publish for maximum 4 times
+			success = client.publish("/cpswarm/"+optimizationID+"/fitness", builder.toString().getBytes());
+			while(!success && count>0) {
+				try {
+					Thread.sleep(30000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				success = client.publish("/cpswarm/"+optimizationID+"/fitness", builder.toString().getBytes());
+				count-=1;
+			}
+			builder = null;
 		}
 		return true;
 	}

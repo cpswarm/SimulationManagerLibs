@@ -67,7 +67,7 @@ public abstract class AbstractFileTransferListener implements FileTransferListen
 				packageName = request.getDescription();
 				if (unzipFiles(fileToReceive)) {
 					if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
-						System.out.println("SimulationManager configured for optimization "+request.getDescription());
+						System.out.println("SimulationManager configured for optimization: "+request.getDescription());
 					}
 					parent.setOptimizationID(request.getDescription());
 					SimulatorConfiguredMessage reply = new SimulatorConfiguredMessage("Simulator configured",
@@ -82,25 +82,26 @@ public abstract class AbstractFileTransferListener implements FileTransferListen
 		} catch (final SmackException | IOException | InterruptedException e) {
 			e.printStackTrace();
 		}
+		fileToReceive = null;
 	}
 
 	private FileTypesOrFolderFilter filter = null;
 
-	protected void copy(final Set<String> supportedException, String fromPath, String outputPath) {
-		filter = new FileTypesOrFolderFilter(supportedException);
+	protected void copy(final Set<String> supportedExtensions, String fromPath, String outputPath) {
+		filter = new FileTypesOrFolderFilter(supportedExtensions);
 		File currentFolder = new File(fromPath);
 		File outputFolder = new File(outputPath);
-		scanFolder(supportedException, currentFolder, outputFolder);
+		scanFolder(supportedExtensions, currentFolder, outputFolder);
 	}
 
-	private void scanFolder(final Set<String> supportedException, File currentFolder, File outputFolder) {
+	private void scanFolder(final Set<String> supportedExtensions, File currentFolder, File outputFolder) {
 		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
     		System.out.println("Scanning folder [" + currentFolder + "]...");
     	}
 		File[] files = currentFolder.listFiles(filter);
 		for (File file : files) {
 			if (file.isDirectory()) {
-				scanFolder(supportedException, file, outputFolder);
+				scanFolder(supportedExtensions, file, outputFolder);
 			} else {
 				copy(file, outputFolder);
 			}

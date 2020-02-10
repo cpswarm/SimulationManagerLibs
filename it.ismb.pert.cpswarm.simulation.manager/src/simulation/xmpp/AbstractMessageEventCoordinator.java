@@ -31,6 +31,7 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 	private SimulationManager parent;
 	protected static final Double BAD_FITNESS = 0.0;
 	protected String packageName = null;
+	protected StringBuilder params = new StringBuilder();
 	
 	public void setSimulationManager(final SimulationManager manager) {
 		assert (parent) != null;
@@ -41,7 +42,6 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 	public void newIncomingMessage(EntityBareJid sender, Message msg, org.jivesoftware.smack.chat2.Chat chat) {
 		MessageSerializer serializer = new MessageSerializer();
 		RunSimulationMessage runSimulation = serializer.fromJson(msg.getBody());
-		System.out.println("ABS parameterSet = "+msg.getBody());
 		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
 			System.out.println("SimulationManager received RunSimulationMessage from "+sender.asBareJid());
 		}
@@ -60,27 +60,37 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 	protected boolean serializeCandidate(final ParameterSet parameterSet) {
 		boolean findLine = false;
 		StringBuilder simConfig = new StringBuilder();  // visual:true, name:=value, ....
-		
+		String parameterFilePath = null;
+		File parameterFile = null;
+		if (params.length()!=0)
+			params.delete(0, params.length());
 		for (Parameter param : parameterSet.getParameters()) {
 			
-			if (param.getMeta().equals("cml")) {
-				simConfig.append(param.getName() + ":=" + param.getValue() + ",");
-			} else if (param.getMeta().equals("file")) {
-			//	String metaPackageName = getMetaPackage();
-				String metaPackageName = "ugv_random_walk";
+			if (param.getMeta().equals("command_line")) {
+				Float fl = new Float(param.getValue());
+				simConfig.append(param.getName() + ":=" + fl.intValue() + ",");	
+				if (params.length()==0) {
+					params.append(param.getName() + ":" + fl.intValue());
+				} else {
+					params.append(","+param.getName() + ":" + fl.intValue());
+				}
+			} else if (param.getMeta().split(":")[0].equals("file")) {
+				String metaPackageName = param.getMeta().split(":")[1]; //"ugv_random_walk"
 				Process proc = null;
 				try {
 					proc = Runtime.getRuntime().exec(new String[] { "/bin/bash", "-c",
 							"source " + parent.getCatkinWS() + "devel/setup.bash ; rospack find " + metaPackageName });
-
-					Runtime.getRuntime().addShutdownHook(new Thread(proc::destroy));
 					String line = "";
 					BufferedReader input = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 
 					if ((line = input.readLine()) != null && !line.startsWith("[rospack]")) {
-						String parameterFilePath = line + "/param/ugv_random_walk.yaml";
-					//	System.out.println("parameterFilePath = "+parameterFilePath);
-						File parameterFile = new File(parameterFilePath);
+						proc.waitFor();
+						proc = null;
+						input.close();
+						input = null;
+						parameterFilePath = line + "/param/"+metaPackageName+".yaml";
+						metaPackageName = null;
+						parameterFile = new File(parameterFilePath);
 						if (parameterFile.exists()) {
 							List<String> fileContent = new ArrayList<>(
 									Files.readAllLines(Paths.get(parameterFilePath), StandardCharsets.UTF_8)); // ensure the file is closed in all cases
@@ -88,6 +98,11 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 							for (int j = 0; j < fileContent.size(); j++) {
 								if (fileContent.get(j).trim().startsWith(param.getName())) {
 									fileContent.set(j, param.getName() + ": " + param.getValue());
+									if (params.length()==0) {
+										params.append(param.getName() + ":" + param.getValue());
+									} else {
+										params.append(","+param.getName() + ":" + param.getValue());
+									}
 									findLine = true;
 									break;
 								}
@@ -97,55 +112,50 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 							Files.write(Paths.get(parameterFilePath), fileContent, StandardCharsets.UTF_8);*/
 							
 							if(findLine) {
-								Files.write(Paths.get(parameterFilePath), fileContent, StandardCharsets.UTF_8);
+								Files.write(Paths.get(parameterFilePath), fileContent, StandardCharsets.UTF_8);								
 							} else {  // if the line doesn't exist, report error and stop simulation
 								System.out.println("Error: the parameter doesn't exist in the yaml file");
 								return false;
 							}
-							
+							fileContent = null;
 						} else {
 							System.out.println("Error: the parameter file doesn't exist in the package " + metaPackageName);
 							return false;
 						}
+						parameterFilePath = null;
+						parameterFile = null;
 
 					} else {
 						System.out.println("Error: the parameter package " + metaPackageName +"doesn't exist");
 						return false;
 					}
+					line = null;
 				} catch (IOException e) {
 					e.printStackTrace();
 					return false;
-				}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} 
 			}
 			else {
 				return false;
 			}
 		}
-		
 		if(simConfig.length()!=0) {
-			String commandLine = simConfig.substring(0, simConfig.length()-1);  // remove the last ,
-			System.out.println("commandLine = "+commandLine);
-			String params = parent.getSimulationConfiguration();
-			if (params != null) {
-				params+=","+commandLine;
+			String commandLine = simConfig.substring(0, simConfig.length()-1);  // remove the last ,			
+			String launchArgs = parent.getSimulationConfiguration();
+			if (launchArgs != null) {
+				launchArgs+=","+commandLine;
+				parent.setSimulationConfiguration(launchArgs);
+			} else {
+				parent.setSimulationConfiguration(commandLine);
 			}
-			parent.setSimulationConfiguration(params);
+			commandLine = null;
+			launchArgs = null;
 		}
+		simConfig = null;
 		
 		return true;
-	}
-	
-	public String getName() {
-		return "name";
-	}
-	public String getValue() {
-		return "0.1";
-	}
-	public String getMetaType() {
-		return "command line"; // or file
-	}
-	public String getMetaPackage() {
-		return "metaPackage";
 	}
 
 	/**

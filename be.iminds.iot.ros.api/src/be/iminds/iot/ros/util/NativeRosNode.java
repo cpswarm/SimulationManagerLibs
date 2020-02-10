@@ -128,6 +128,7 @@ public class NativeRosNode {
 
 		
 		}
+		startSimulation();
 	}
 	
 	public void startSimulation() {
@@ -177,37 +178,16 @@ public class NativeRosNode {
 				BufferedReader input =  
 						new BufferedReader  
 						(new InputStreamReader(process.getInputStream()));  
-				while ((line = input.readLine()) != null) {  // to be sure that GUI=true works
-					
+				while ((line = input.readLine()) != null) {  // to be sure that GUI=true works, process InputStream must be read
+					line = null;
 				}
 				process.waitFor();
 				process = null;
 				input.close();
+				input = null;
+				line = null;
 			}
-		
-			
-			
-			/*	if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
-				builder.inheritIO();
-			}
-			process = builder.start();
-
-				String line="";
-			BufferedReader input =  
-					new BufferedReader  
-					(new InputStreamReader(process.getInputStream()));  
-			while ((line = input.readLine()) != null) {  
-					if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
-					System.out.println(line);
-				}
-			}  
-			
-			process.waitFor();
-			process = null;
-		//	input.close();*/
-	//		if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
-				System.out.println("Ros command exits");
-	//		}
+			System.out.println("Ros command exits");
 		} catch (Exception e) {
 			System.err.println("Error launching native ros node " + rosPackage + " " + rosNode);
 			e.printStackTrace();
@@ -245,9 +225,10 @@ public class NativeRosNode {
 		Process proc;
 		try {
 			ProcessBuilder builder = new ProcessBuilder(new String[] { "/bin/bash", "-c", "killall -2 roslaunch"});
-				proc = builder.start();
-				proc.waitFor();
-				proc = null;
+			builder.inheritIO();
+			proc = builder.start();
+			proc.waitFor();
+			proc = null;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -276,14 +257,11 @@ public class NativeRosNode {
 			}
 			process = null;
 		}
-		if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
-			System.out.println("rosComand is deactivated");
-		}
 	}
 
-/*	@Reference
+	@Reference
 	void setROSEnvironment(Ros e) {
 		// make sure ROS core is running before activating a native node
-	}*/
+	}
 
 }

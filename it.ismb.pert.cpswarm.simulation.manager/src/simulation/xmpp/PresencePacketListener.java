@@ -202,10 +202,10 @@ public class PresencePacketListener implements StanzaListener {
 			// If instead it is an indication of available
 			// it is inserted in the list of those available
 		} else if ((presence.getMode() == Presence.Mode.available) || (presence.getMode() == null)) {
-			if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+	//		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
 				System.out.println(
 					"SimulationManager "+manager.getJid()+"," + presence.getFrom() +" is online");
-			}
+	//		}
 			// TODO
 			// handle orchestrator online
 
@@ -228,10 +228,10 @@ public class PresencePacketListener implements StanzaListener {
 	 *             if something wrong
 	 */
 	private void handlePrenceUnavailable(final Presence presence, final String jid, final Roster roster) {
-		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
+	//	if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
 			System.out.println(
 				"SimulationManager "+manager.getJid()+","+ presence.getFrom() + "is offline");
-		}
+	//	}
 		// TODO
 		// handle orchestrator offline
 	}

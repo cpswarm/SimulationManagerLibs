@@ -46,6 +46,7 @@ public class RosCommandInjection {
 		try {
 			commandInstance = this.rosCommandFactory.newInstance((Dictionary) props);
 			RosCommand roslaunch = (RosCommand) commandInstance.getInstance();
+			roslaunch.startSimulation();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -82,6 +83,7 @@ public class RosCommandInjection {
 		try {
 			instance = this.rosCommandFactory.newInstance((Dictionary) props);
 			RosCommand rosrun = (RosCommand) instance.getInstance();
+			rosrun.startSimulation();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -118,7 +120,7 @@ public class RosCommandInjection {
 	
 	@Deactivate
 	public void deactivate() {
-		System.out.println("\n rosComandInjection is deactivated");
+		System.out.println("rosComandInjection is deactivated");
 		
 	}
 
