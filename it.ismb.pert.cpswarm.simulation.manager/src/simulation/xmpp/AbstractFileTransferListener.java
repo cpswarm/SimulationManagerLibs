@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.SmackException.NotConnectedException;
@@ -19,13 +18,11 @@ import org.jivesoftware.smackx.filetransfer.FileTransferListener;
 import org.jivesoftware.smackx.filetransfer.FileTransferRequest;
 import org.jivesoftware.smackx.filetransfer.IncomingFileTransfer;
 import org.jivesoftware.smackx.filetransfer.FileTransfer.Status;
-
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
-
 import eu.cpswarm.optimization.messages.MessageSerializer;
 import eu.cpswarm.optimization.messages.SimulatorConfiguredMessage;
-import messages.server.Server;
+import eu.cpswarm.optimization.statuses.SimulationManagerStatus;
 import simulation.SimulationManager;
 
 public abstract class AbstractFileTransferListener implements FileTransferListener {
@@ -54,9 +51,6 @@ public abstract class AbstractFileTransferListener implements FileTransferListen
 		} else {
 			fileToReceive = rosFolder + request.getFileName();
 		}
-		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
-			System.out.println("\n fileToReceive = "+ fileToReceive);
-		}
 		try {
 			transfer.receiveFile(new File(fileToReceive));
 
@@ -75,25 +69,28 @@ public abstract class AbstractFileTransferListener implements FileTransferListen
 				final ChatManager chatmanager = ChatManager.getInstanceFor(parent.getConnection());
 				final Chat newChat = chatmanager.chatWith(parent.getOrchestratorJID().asEntityBareJidIfPossible());
 				if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
-					System.out.println(" description in transfer() is: "+request.getDescription());
+					System.out.println("Received description from the file transfer: "+request.getDescription());
 				}
-				String otherSimulationConfiguration = request.getDescription();  // Format is: SCID,visual:=false,....
-				String[] simConfigs = otherSimulationConfiguration.split(",");   // emergency_exit,visual:=true
-			//	this.parent.setOptimizationID(simConfigs[0]);  // null
+				String otherSimulationConfiguration = request.getDescription();  // Format is: SCID,gui:=true,....
+				String[] simConfigs = otherSimulationConfiguration.split(",");
 				this.parent.setSCID(simConfigs[0]);
-				String parameters = "";
-				for(int i=1; i<Arrays.asList(simConfigs).size(); i++) {
-					parameters += simConfigs[i];
-				}			
-				this.parent.setSimulationConfiguration(parameters);	
-				packageName = parent.getSCID();
+				packageName = simConfigs[0];
+				StringBuilder parameters = new StringBuilder();
+				for(int i=1; i<simConfigs.length; i++) {
+					parameters.append(simConfigs[i]+",");
+				}	
+				if(parameters.length()!=0) {
+					String launchArgs = parameters.substring(0, parameters.length()-1);  // remove the last ,
+					this.parent.setSimulationConfiguration(launchArgs);	
+					launchArgs = null;
+				}
+				parameters = null;
 				
 				if (unzipFiles(fileToReceive)) {
 					if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
 						System.out.println("SimulationManager configured for optimization "+parent.getSCID());
 					}
-					publishPresenceWithSCID();
-
+					parent.sendPresence();
 					SimulatorConfiguredMessage reply = new SimulatorConfiguredMessage(this.parent.getOptimizationID(), true);
 					MessageSerializer serializer = new MessageSerializer();
 					newChat.send(serializer.toJson(reply));
@@ -109,23 +106,6 @@ public abstract class AbstractFileTransferListener implements FileTransferListen
 		}
 	}
 	
-	private void publishPresenceWithSCID(){
-		final Presence presence = new Presence(Presence.Type.available);
-		Gson gson = new Gson();
-		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
-			System.out.println("SimulationManager publish new presence with SCID = "+gson.toJson(parent.getServer(), Server.class));
-		}
-		
-		presence.setStatus(gson.toJson(parent.getServer(), Server.class));
-		try {
-			parent.getConnection().sendStanza(presence);
-		} catch (final NotConnectedException | InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		return ;
-	}
-
 	private FileTypesOrFolderFilter filter = null;
 
 	protected void copy(final Set<String> supportedException, String fromPath, String outputPath) {

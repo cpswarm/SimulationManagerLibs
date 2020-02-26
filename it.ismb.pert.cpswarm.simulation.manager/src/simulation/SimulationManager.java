@@ -36,12 +36,14 @@ import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.jid.parts.Localpart;
 import org.jxmpp.jid.parts.Resourcepart;
 import com.google.gson.Gson;
+import eu.cpswarm.optimization.messages.ReplyMessage;
 import eu.cpswarm.optimization.messages.MessageSerializer;
 import eu.cpswarm.optimization.messages.SimulationResultMessage;
+import eu.cpswarm.optimization.statuses.SimulationManagerCapabilities;
+import eu.cpswarm.optimization.statuses.SimulationManagerStatus;
 import it.ismb.pert.cpswarm.mqttlib.transport.MqttAsyncDispatcher;
 import simulation.xmpp.AbstractFileTransferListener;
 import simulation.xmpp.AbstractMessageEventCoordinator;
-import messages.server.Server;
 import simulation.xmpp.ConnectionListenerImpl;
 import simulation.xmpp.PresencePacketListener;
 
@@ -49,7 +51,8 @@ import simulation.xmpp.PresencePacketListener;
 public abstract class SimulationManager {
 	private static final String RESOURCE = "cpswarm";
 	private XMPPTCPConnection connection;
-	private Server server;
+	private SimulationManagerStatus simulationManagerStatus;
+	private SimulationManagerCapabilities simulationManagerCapabilities;
 	private boolean available = true;
 	private boolean started = false;
 	private boolean optimizationToolAvailable = false;
@@ -72,8 +75,13 @@ public abstract class SimulationManager {
 	private String testResult = "";
 	private String mqttBroker = "";
 	private int timeout = 90000;
-	private boolean fake = false;
+	private boolean fake = true;
 	private String SCID = null;
+	private String launchFile = null;
+	private String bagPath = null;
+	private int simulationSeed = 0;
+	private String fitnessFunction =null;
+	private int maxNumberOfCarts = 0;
 	
 	public static enum VERBOSITY_LEVELS {
 		NO_DEBUG,
@@ -83,7 +91,7 @@ public abstract class SimulationManager {
 	
 	public static VERBOSITY_LEVELS CURRENT_VERBOSITY_LEVEL = VERBOSITY_LEVELS.ALL;
 
-	public void connectToXMPPserver(final InetAddress serverIP, final String serverName, final String serverPassword, final String dataFolder, final String rosFolder, final Server serverInfo, final String optimizationUser, final String orchestratorUser, String uuid, boolean debug, final boolean monitoring, final String mqttBroker, final int timeout, final boolean fake) {
+	public boolean connectToXMPPserver(final InetAddress serverIP, final String serverName, final String serverPassword, final String dataFolder, final String rosFolder, final SimulationManagerStatus simulationManagerStatus, final String optimizationUser, final String orchestratorUser, String uuid, boolean debug, final boolean monitoring, final String mqttBroker, final int timeout, final boolean fake, final String launchFile, final String fitnessFunction, final int maxNumberOfCarts) {
 		if(uuid.isEmpty()) {
 			uuid = UUID.randomUUID().toString();
 		}
@@ -102,15 +110,23 @@ public abstract class SimulationManager {
 				this.rosFolder+="src"+File.separator;
 			}
 		}
-		this.server = serverInfo;
+		this.simulationManagerStatus = simulationManagerStatus;
+		this.simulationManagerCapabilities = simulationManagerStatus.getCapabilities();
 		this.catkinWS = rosFolder.substring(0,rosFolder.indexOf("src"));
 		this.monitoring = monitoring;
 		this.mqttBroker  = mqttBroker;
 		this.timeout = timeout;
 		this.fake = fake;
-		if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
-			System.out.println("\n Create a simulation manager with clientID = "+clientID+" \n");
-		}
+		this.launchFile = launchFile;
+		this.fitnessFunction = fitnessFunction;
+		this.maxNumberOfCarts = maxNumberOfCarts;
+		ProcessBuilder builder = new ProcessBuilder();
+		String home = builder.environment().get("HOME");
+		if(home == null)
+			home = "/root";
+		bagPath = home + File.separator + ".ros" + File.separator;
+		builder = null;		
+		System.out.println("Create a simulation manager with clientID = "+clientID+" \n");
 		try {
 
 			clientJID = JidCreate.from(clientID+"@"+serverName+"/"+RESOURCE);
@@ -151,13 +167,16 @@ public abstract class SimulationManager {
 			this.addAsyncStanzaListener(packetListener, presenceFilter);
 			connection.login(clientID, serverPassword , Resourcepart.from(RESOURCE));
 			Thread.sleep(2000);
-			
+			this.sendPresence();
 			startMonitoring();
 			
 		} catch (final SmackException | IOException | XMPPException e) {
 			if (e instanceof SASLErrorException) {
 				connection.disconnect();
-				createAccount(serverPassword, serverInfo);
+				if(!createAccount(serverPassword, simulationManagerStatus)) {
+					System.out.println("Failed to connect to XMPP server");
+					return false;
+				}
 			}
 		} catch(Exception me) {
 			System.out.println("msg "+me.getMessage());
@@ -168,10 +187,11 @@ public abstract class SimulationManager {
 		}
 		
 		addOrchestratorAndOptimizationToTheRoster();
+		return true;
 	}
 
 
-    private boolean createAccount(final String password, final Server serverInfo) {
+    private boolean createAccount(final String password, final SimulationManagerStatus simulationManagerStatus) {
 		final AccountManager accountManager = AccountManager
 				.getInstance(connection);
 		final HashMap<String, String> props = new HashMap<String, String>();
@@ -184,14 +204,6 @@ public abstract class SimulationManager {
 			accountManager.createAccount(part, password, props);
 			connection.login(clientID, password, Resourcepart.from(RESOURCE));
 			Thread.sleep(2000);
-			final Presence presence = new Presence(Presence.Type.available);
-			Gson gson = new Gson();
-			presence.setStatus(gson.toJson(serverInfo));
-			try {
-				connection.sendStanza(presence);
-			} catch (final NotConnectedException | InterruptedException e) {
-				e.printStackTrace();
-			}
 			startMonitoring();
 		} catch (InterruptedException | SmackException | IOException | XMPPException me) {
             System.out.println("msg "+me.getMessage());
@@ -293,8 +305,8 @@ public abstract class SimulationManager {
 	
 	
 		
-	public void setServerInfo(Server serverInfo) {
-		server = serverInfo;
+	public void setSimulationManagerStatus(SimulationManagerStatus simulationManagerStatus) {
+		this.simulationManagerStatus = simulationManagerStatus;
 	}
 	
 	public boolean isAvailable() {
@@ -306,7 +318,7 @@ public abstract class SimulationManager {
 	}
 	
 	
-	public boolean publishFitness(SimulationResultMessage message) {  // if(this.isOptimizationToolAvailable()){} exists, no need to publish, no error info, user don't know that
+	public boolean publishFitness(SimulationResultMessage message, String paramsString, Integer counter) {  // if(this.isOptimizationToolAvailable()){} exists, no need to publish, no error info, user don't know that
 		MessageSerializer serializer = new MessageSerializer();
 		String messageToSend = serializer.toJson(message);
 		try {
@@ -323,12 +335,41 @@ public abstract class SimulationManager {
 			e.printStackTrace();
 			return false;
 		} 
-		if(monitoring && message.getSuccess().equals(true)) {
-			StringBuilder builder = new StringBuilder();
-			builder.append("{ \"SID\" : \""+message.getSid()+"\", ");
-			builder.append(" \"fitnessValue\" : "+message.getFitnessValue()+", ");
+		StringBuilder builder = null;
+		int count = 3;
+		boolean success = false;
+		if(monitoring && message.getSuccess()) {
+			builder = new StringBuilder();  // SID is in the format of s_(optimizationID)_1
+			builder.append("{ \"SID\" : \""+message.getSimulationId().split("_")[2]+" ("+counter+" carts)\", ");
+			builder.append(" \"fitnessValue\" : "+message.getFitnessValue());
+			if(paramsString!=null) {
+				builder.append(", ");
+				String [] params = paramsString.split(",");
+				for(int i = 0; i < params.length; i++) {
+					String[] keyValue = params[i].split(":");
+					builder.append("\""+keyValue[0]+"\" : "+keyValue[1]);
+					if(i<params.length-1) {
+						builder.append(", ");
+					}
+					keyValue = null;
+				}
+			}
 			builder.append("}");
-			client.publish("/cpswarm/"+optimizationID+"/fitness", builder.toString().getBytes());
+			if(!CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.NO_DEBUG)) {
+				System.out.println("publishFitness: msg = "+builder.toString());
+			}  // wait for maximum 4 times  to publish the fitness			
+			success = client.publish("/cpswarm/"+optimizationID+"/fitness", builder.toString().getBytes());
+			while(!success && count>0) {
+				try {
+					Thread.sleep(30000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				success = client.publish("/cpswarm/"+optimizationID+"/fitness", builder.toString().getBytes());
+				count-=1;
+			}
+			builder = null;
+			
 		}
 		return true;
 	}
@@ -354,20 +395,41 @@ public abstract class SimulationManager {
 	public void sendPresence() {
 		final Presence presence = new Presence(Presence.Type.available);
 		Gson gson = new Gson();
-		presence.setStatus(gson.toJson(this.server));
+		SimulationManagerStatus simulationManagerStatus = new SimulationManagerStatus(SCID, simulationID, simulationManagerCapabilities);
+		presence.setStatus(gson.toJson(simulationManagerStatus));
 		try {
 			connection.sendStanza(presence);
 		} catch (final NotConnectedException | InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
+
+	public String getFitnessFunction() {
+		return fitnessFunction;
+	}
+	
+	public int getMaxNumberOfCarts() {
+		return maxNumberOfCarts;
+	}
+
+	public String getLaunchFile() {
+		return launchFile;
+	}
+	
+	public void setLaunchFile(String launchFile) {
+		this.launchFile = launchFile;
+	}
 	
 	public boolean isStarted() {
 		return started;
 	}
 
-	public Server getServer() {
-		return server;
+	public SimulationManagerStatus getSimulationManagerStatus() {
+		return simulationManagerStatus;
+	}
+	
+	public SimulationManagerCapabilities getSimulationManagerCapabilities() {
+		return simulationManagerCapabilities;
 	}
 	
 	public Jid getOptimizationJID() {
@@ -380,12 +442,19 @@ public abstract class SimulationManager {
 
 	public void setSimulationID(String simulationID) {
 		this.simulationID = simulationID;
-		server.setSID(simulationID);
 		this.sendPresence();
 	}
 	
 	public String getSimulationID() {
 		return simulationID;
+	}
+	
+	public int getSimulationSeed() {
+		return simulationSeed;
+	}
+	
+	public void setSimulationSeed(int simulationSeed) {
+		this.simulationSeed = simulationSeed;
 	}
 
 	public String getSimulationConfiguration() {
@@ -454,8 +523,7 @@ public abstract class SimulationManager {
 	
 	public void setSCID(String SCID) {
 		this.SCID = SCID;
-		this.server.setSCID(SCID);
-		this.sendPresence();
+	//	this.sendPresence();
 	}
 	
 	public boolean isOptimizationToolAvailable() {
@@ -473,6 +541,11 @@ public abstract class SimulationManager {
 	public void setOrchestratorAvailable(boolean orchestratorAvailable) {
 		this.orchestratorAvailable = orchestratorAvailable;
 	}
+	
+	public String getBagPath() {
+		return bagPath;
+	}
+
 	
 	
 }

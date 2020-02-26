@@ -23,8 +23,10 @@
 package be.iminds.iot.simulator.gazebo;
 
 import java.io.IOException;
+import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Properties;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -112,12 +114,15 @@ public class GazeboActivator extends AbstractNodeMain{
 				reg = context.registerService(Simulator.class, gazebo, properties);
 				
 			} catch(Exception e){
+			//	e.printStackTrace();
 				if(nativeConfig == null && launchNative){
-					System.out.println("try to load gazebo ourselves");
-					// try to load gazebo ourselves?					
+					System.out.println("\n try to load gazebo by ourselves");
+					// try to load gazebo by ourselves?					
 					try {				
-						nativeConfig = ca.createFactoryConfiguration("be.iminds.iot.simulator.gazebo.Native", null);					
-						nativeConfig.update(new Hashtable());
+						nativeConfig = ca.createFactoryConfiguration("be.iminds.iot.simulator.gazebo.Native", null);
+						Properties props = new Properties();
+						props.put("startNow", "true");
+						nativeConfig.update((Dictionary) props);
 					} catch(Exception ex){}
 				}
 			

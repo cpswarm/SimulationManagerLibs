@@ -68,7 +68,6 @@ public class Gazebo implements Simulator {
 	private ServiceClient<std_srvs.EmptyRequest, std_srvs.EmptyResponse> resetWorld;
 	private ServiceClient<gazebo_msgs.SpawnModelRequest, gazebo_msgs.SpawnModelResponse> spawnSDFModel;
 	private ServiceClient<gazebo_msgs.SpawnModelRequest, gazebo_msgs.SpawnModelResponse> spawnURDFModel;
-//	private ServiceClient<gazebo_msgs.SpawnModelRequest, gazebo_msgs.SpawnModelResponse> spawnGazeboModel;
 	private ServiceClient<gazebo_msgs.DeleteModelRequest, gazebo_msgs.DeleteModelResponse> deleteModel;
 	private ServiceClient<gazebo_msgs.GetModelStateRequest, gazebo_msgs.GetModelStateResponse> getModelState;
 	private ServiceClient<gazebo_msgs.SetModelStateRequest, gazebo_msgs.SetModelStateResponse> setModelState;
@@ -90,7 +89,6 @@ public class Gazebo implements Simulator {
 		resetWorld = node.newServiceClient("/gazebo/reset_world",  std_srvs.Empty._TYPE);
 		spawnSDFModel = node.newServiceClient("/gazebo/spawn_sdf_model", gazebo_msgs.SpawnModel._TYPE);
 		spawnURDFModel = node.newServiceClient("/gazebo/spawn_urdf_model", gazebo_msgs.SpawnModel._TYPE);
-//		spawnGazeboModel = node.newServiceClient("/gazebo/spawn_gazebo_model", gazebo_msgs.SpawnModel._TYPE);
 		deleteModel = node.newServiceClient("/gazebo/delete_model", gazebo_msgs.DeleteModel._TYPE);	
 		setModelState = node.newServiceClient("/gazebo/set_model_state", gazebo_msgs.SetModelState._TYPE);
 		getModelState = node.newServiceClient("/gazebo/get_model_state", gazebo_msgs.GetModelState._TYPE);
@@ -253,13 +251,6 @@ public class Gazebo implements Simulator {
 		}else {
 			spawnModel = spawnURDFModel;
 		}
-		
-		/* else if(file.endsWith(".urdf")){
-			spawnModel = spawnURDFModel;
-		} else {
-			spawnModel = spawnGazeboModel;
-		}*/
-
 		final Deferred<Void> deferred = new Deferred<>();
 			
 		try {

@@ -18,6 +18,10 @@ import org.jxmpp.stringprep.XmppStringprepException;
 
 import com.google.gson.Gson;
 
+import eu.cpswarm.optimization.statuses.BaseStatus;
+import eu.cpswarm.optimization.statuses.SOOStatus;
+import eu.cpswarm.optimization.statuses.SimulationManagerStatus;
+import eu.cpswarm.optimization.statuses.StatusSerializer;
 import simulation.SimulationManager;
 
 /**
@@ -170,7 +174,8 @@ public class PresencePacketListener implements StanzaListener {
 			final Presence answerPresence = new Presence(Presence.Type.subscribe);
 			answerPresence.setTo(presence.getFrom());
 			Gson gson = new Gson();
-			answerPresence.setStatus(gson.toJson(manager.getServer()));
+			SimulationManagerStatus simulationManagerStatus = new SimulationManagerStatus(manager.getSCID(), manager.getSimulationID(), manager.getSimulationManagerCapabilities());
+			answerPresence.setStatus(gson.toJson(simulationManagerStatus));
 			manager.getConnection().sendStanza(answerPresence);
 		} catch (NotLoggedInException | NoResponseException | NotConnectedException | InterruptedException e) {
 			System.out.println("Error receiving a subscription request.");
@@ -203,7 +208,7 @@ public class PresencePacketListener implements StanzaListener {
 			}
 			// handle orchestrator or optimization tool offline
 			if(jid.equals(manager.getOptimizationJID().asBareJid())) {
-				manager.setOptimizationToolAvailable(false);   /*>>>>>>>>> if offline, should be false */
+				manager.setOptimizationToolAvailable(false);
 			} else if(jid.equals(manager.getOrchestratorJID().asBareJid())) {
 				manager.setOrchestratorAvailable(false);
 			}
