@@ -77,8 +77,8 @@ public class PresencePacketListener implements StanzaListener {
 				}
 				if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
 					System.out.println(
-						"SimulationManager "+manager.getJid()+", Presence received: " + presence.getFrom()
-								+ " " + presence);
+						"SimulationManager "+manager.getJid()+", Presence received from: " + presence.getFrom()
+								+"  type: "+presence.getType().toString()+ "  status: " + presence.getStatus());
 				}
 				// Stores the bare JID without resource, because the roster
 				// returns that info as user of a RosterEntry
@@ -92,15 +92,13 @@ public class PresencePacketListener implements StanzaListener {
 					handlePrenceUnavailable(presence, jid, roster);
 				}
 				if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
-					System.out.println(
-						"SimulationManager "+manager.getJid()+"," + presence.getFrom() + " managed");
+					System.out.println(presence.getFrom() + " managed");
 				}
 			} catch (final IllegalStateException e) {
 				// The client is disconnected
 				System.out.println("SimulationManager " + manager.getJid() + ", connection disconnected");
 				return;
 			} catch (XmppStringprepException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
 		}
@@ -177,6 +175,7 @@ public class PresencePacketListener implements StanzaListener {
 			SimulationManagerStatus simulationManagerStatus = new SimulationManagerStatus(manager.getSCID(), manager.getSimulationID(), manager.getSimulationManagerCapabilities());
 			answerPresence.setStatus(gson.toJson(simulationManagerStatus));
 			manager.getConnection().sendStanza(answerPresence);
+			simulationManagerStatus = null;
 		} catch (NotLoggedInException | NoResponseException | NotConnectedException | InterruptedException e) {
 			System.out.println("Error receiving a subscription request.");
 			System.out.println("cause " + e.getCause());
@@ -203,8 +202,7 @@ public class PresencePacketListener implements StanzaListener {
 		// the list of the available bundles
 		if (presence.getMode() == Presence.Mode.away) {
 			if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
-				System.out.println(
-					"SimulationManager "+manager.getJid()+"," + presence.getFrom() +" is offline");
+				System.out.println(presence.getFrom() +" is offline");
 			}
 			// handle orchestrator or optimization tool offline
 			if(jid.equals(manager.getOptimizationJID().asBareJid())) {
@@ -217,8 +215,7 @@ public class PresencePacketListener implements StanzaListener {
 			// it is inserted in the list of those available
 		} else if ((presence.getMode() == Presence.Mode.available) || (presence.getMode() == null)) {
 			if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
-				System.out.println(
-					"SimulationManager "+manager.getJid()+"," + presence.getFrom() +" is online");
+				System.out.println(presence.getFrom() +" is online");
 			}
 			// handle orchestrator or optimization tool offline
 			if(jid.equals(manager.getOptimizationJID().asBareJid())) {
@@ -247,8 +244,7 @@ public class PresencePacketListener implements StanzaListener {
 	 */
 	private void handlePrenceUnavailable(final Presence presence, final BareJid jid, final Roster roster) {
 		if(SimulationManager.CURRENT_VERBOSITY_LEVEL.equals(SimulationManager.VERBOSITY_LEVELS.ALL)) {
-			System.out.println(
-				"SimulationManager "+manager.getJid()+","+ presence.getFrom() + "is offline");
+			System.out.println(presence.getFrom() + "is offline");
 		}
 		// handle orchestrator or optimization tool offline
 		if(jid.equals(manager.getOptimizationJID().asBareJid())) {

@@ -65,6 +65,7 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 	 * @return the result of the serialization (true: OK, false error)
 	 */
 	protected boolean serializeCandidate(final List<Parameter> parameters) {
+		float stepsize = 0;
 		boolean findLine = false;
 		StringBuilder simConfig = new StringBuilder();  // visual:=true, name:=value, ....
 		String parameterFilePath = null;
@@ -82,6 +83,7 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 				}
 			} else if (param.getMeta().split(":")[0].equals("file")) {
 				String metaPackageName = param.getMeta().split(":")[1]; //"ugv_random_walk"
+				stepsize = param.getValue();
 				Process proc = null;
 				try {
 					proc = Runtime.getRuntime().exec(new String[] { "/bin/bash", "-c",
@@ -144,7 +146,7 @@ public abstract class AbstractMessageEventCoordinator implements IncomingChatMes
 		}
 		if(simConfig.length()!=0) {
 			String commandLine = simConfig.toString()+("rng_seed:="+parent.getSimulationSeed());
-	//		System.out.println("\n parameter values = "+commandLine);
+			System.out.println("parameter values = step-size:="+stepsize+", "+commandLine);
 			String launchArgs = parent.getSimulationConfiguration();
 			if (launchArgs != null) {
 				launchArgs+=","+commandLine;

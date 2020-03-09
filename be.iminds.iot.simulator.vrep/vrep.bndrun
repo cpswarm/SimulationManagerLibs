@@ -1,0 +1,136 @@
+-runfw: org.apache.felix.framework;version='[6.0.2,6.0.2]'   
+
+-runee: JavaSE-1.8
+-runprovidedcapabilities: ${native_capability}
+
+-resolve.effective: active;skip:="osgi.service"
+
+-runrequires: \
+	bnd.identity;version='latest';id='be.iminds.iot.simulator.vrep',\
+	bnd.identity;version='latest';id='be.iminds.iot.ros.core',\
+	bnd.identity;version='latest';id='be.iminds.iot.ros.msgs.generator',\
+	bnd.identity;id='org.apache.felix.gogo.command',\
+	bnd.identity;id='org.apache.felix.gogo.runtime',\
+	bnd.identity;id='org.apache.felix.gogo.shell',\
+	bnd.identity;version='latest';id='be.iminds.iot.ros.api',\
+	bnd.identity;version='latest';id='be.iminds.iot.simulator.api',\
+	bnd.identity;version='1.0.10';id='org.apache.felix.metatype',\
+	bnd.identity;id='org.apache.felix.webconsole',\
+	bnd.identity;id='org.apache.felix.webconsole.plugins.gogo',\
+	bnd.identity;version='1.1.2';id='org.apache.felix.http.servlet-api',\
+	bnd.identity;version='2.3.2';id='org.apache.felix.http.whiteboard',\
+	bnd.identity;version='1.0.0';id='org.apache.felix.resolver'
+	
+-runtrace: 		false
+
+-runproperties: \
+	ros.core.native=true,\
+	vrep.dir=/home/rui/V-REP_PRO_EDU_V3_6_2_Ubuntu16_04/,\
+	vrep.launch=true,\
+	vrep.log=true,\
+	vrep.quit=false,\
+	vrep.headless=false,\
+	vrep.synchronous=false,\
+	vrep.stepTime=0.1f,\
+	vrep.timeout=90000,\
+	verbosity=2,\
+	vrep.scene=youbot_test.ttt,\
+	cmakeBuild.type=RelWithDebInfo,\
+	ros.master.uri=http://localhost:11311,\
+	org.apache.felix.log.storeDebug=false,\
+	org.osgi.service.http.port=8080,\
+	logback.configurationFile=resources/logback.xml,\
+	javax.net.ssl.trustStorePassword=changeit,\
+	javax.net.ssl.trustStore=/usr/java/jdk1.8.0_171/jre/lib/security/cacerts
+	
+	#	simulation.launch.file=stage.launch,\
+	
+#	vrep.port=20000,\    default=19997
+#	ros.master.uri=http://localhost:11312
+#   vrep.timeout=10000,\
+#   vrep.interval=10000,\
+#	vrep.scene=youbot_test.ttt,\
+#	vrep.headless=true   default=false
+#	vrep.dir=/opt/vrep
+
+-runbundles: \
+	be.iminds.iot.simulator.vrep;version=snapshot,\
+	org.apache.felix.configadmin;version='[1.6.0,1.6.1)',\
+	org.apache.felix.scr;version='[2.0.6,2.0.7)',\
+	org.apache.felix.gogo.command;version='[0.16.0,0.16.1)',\
+	org.apache.felix.gogo.runtime;version='[0.16.2,0.16.3)',\
+	org.apache.felix.gogo.shell;version='[0.12.0,0.12.1)',\
+	be.iminds.iot.ros.core;version=snapshot,\
+	com.google.guava;version='[12.0.1,12.0.2)',\
+	coppelia;version=snapshot,\
+	org.apache.commons.codec;version='[1.3.0,1.3.1)',\
+	org.apache.commons.httpclient;version='[3.1.0,3.1.1)',\
+	org.apache.commons.lang;version='[2.6.0,2.6.1)',\
+	org.apache.commons.logging;version='[1.1.1,1.1.2)',\
+	org.apache.commons.net;version='[2.0.0,2.0.1)',\
+	org.apache.commons.pool;version='[1.6.0,1.6.1)',\
+	org.jboss.netty;version='[3.5.2,3.5.3)',\
+	org.ros.rosjava;version='[0.2.2,0.2.3)',\
+	org.ros.rosjava.message_generation;version='[0.2.1,0.2.2)',\
+	org.ros.rosjava_core.apache_xmlrpc_client;version='[0.2.1,0.2.2)',\
+	org.ros.rosjava_core.apache_xmlrpc_common;version='[0.2.1,0.2.2)',\
+	org.ros.rosjava_core.apache_xmlrpc_server;version='[0.2.1,0.2.2)',\
+	org.ros.rosjava_messages.rosgraph_msgs;version='[1.11.1,1.11.2)',\
+	org.ros.rosjava_messages.std_msgs;version='[0.5.9,0.5.10)',\
+	ws-commons-util;version='[1.0.1,1.0.2)',\
+	be.iminds.iot.ros.msgs.generator;version=snapshot,\
+	be.iminds.iot.ros.api;version=snapshot,\
+	be.iminds.iot.simulator.api;version=snapshot,\
+	org.apache.felix.metatype;version='[1.1.2,1.1.3)',\
+	org.apache.felix.http.api;version='[2.3.2,2.3.3)',\
+	org.apache.felix.http.servlet-api;version='[1.1.2,1.1.3)',\
+	org.apache.felix.webconsole;version='[4.2.16,4.2.17)',\
+	org.apache.felix.webconsole.plugins.gogo;version='[0.0.1,0.0.2)',\
+	org.apache.felix.http.jetty.bundle;version='[2.3.2,2.3.3)',\
+	org.apache.felix.http.whiteboard;version='[3.0.0,3.0.1)',\
+	org.apache.felix.resolver;version='[1.0.0,1.0.1)',\
+	org.osgi.service.event;version='[1.3.1,1.3.2)'
+	be.iminds.iot.simulator.api;version=snapshot
+
+
+
+-runsystempackages: \
+	javax.naming,\
+	javax.naming.ldap,\
+	javax.net,\
+	javax.net.ssl,\
+	javax.sql,\
+	javax.xml,\
+	javax.xml.parsers,\
+	javax.xml.namespace,\
+	javax.xml.bind,\
+	javax.xml.transform,\
+	javax.xml.transform.stream,\
+	javax.xml.transform.*,\
+	javax.crypto,\
+	javax.crypto.spec,\
+	org.xml.sax,\
+	org.xml.sax.ext,\
+	org.xml.sax.helpers,\
+	org.w3c.dom,\
+	javax.annotation,\
+	javax.annotation.meta,\
+	javax.management,\
+	javax.management.modelmbean,\
+	javax.management.remote,\
+	javax.security.auth,\
+	javax.security.auth.callback,\
+	javax.security.auth.kerberos,\
+	javax.security.auth.x500,\
+	javax.security.auth.*,\
+	javax.security.cert,\
+	javax.imageio,\
+	javax.imageio.stream,\
+	javax.imageio.plugins.jpeg,\
+	javax.tools,\
+	sun.reflect,\
+	sun.*,\
+	sun.net.spi.nameservice.*,\
+	javax.*
+
+

@@ -301,13 +301,7 @@ public abstract class SimulationManager {
 					"Connection disconnected, adding system bundles to roster interrupted");
 		} 
 	}
-	
-	
-	
-		
-	public void setSimulationManagerStatus(SimulationManagerStatus simulationManagerStatus) {
-		this.simulationManagerStatus = simulationManagerStatus;
-	}
+
 	
 	public boolean isAvailable() {
 		return available;
@@ -402,6 +396,7 @@ public abstract class SimulationManager {
 		} catch (final NotConnectedException | InterruptedException e) {
 			e.printStackTrace();
 		}
+		simulationManagerStatus =null;
 	}
 
 	public String getFitnessFunction() {
