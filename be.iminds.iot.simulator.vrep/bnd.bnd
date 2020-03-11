@@ -2,9 +2,8 @@ Bundle-Version: 0.3.0
 -buildpath: \
 	osgi.core;version=5.0,\
 	osgi.enterprise;version=5.0,\
-	be.iminds.iot.ros.api;version=0.3.0,\
-	be.iminds.iot.simulator.api;version=0.3,\
-	coppelia;version=3.3
+	be.iminds.iot.simulator.api;version=0.3.0,\
+	coppelia;version=3.3.1,\
+	be.iminds.iot.ros.api;version=0.4.0
 Private-Package: be.iminds.iot.simulator.vrep
 Export-Package: be.iminds.iot.simulator.api
-

@@ -22,5 +22,4 @@ Export-Package: \
 	messages.server,\
 	simulation,\
 	simulation.xmpp
-
 	
