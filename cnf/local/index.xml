@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1583774182000">
+<repository xmlns="http://www.osgi.org/xmlns/repository/v1.0.0" name="Local" increment="1583926325000">
   <resource>
     <capability namespace="osgi.identity">
       <attribute name="osgi.identity" value="org.ros.rosjava_messages.gazebo_msgs"/>
@@ -1374,10 +1374,10 @@
       <attribute name="osgi.wiring.package" value="be.iminds.iot.simulator.api"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="30081" type="Long"/>
+      <attribute name="size" value="30083" type="Long"/>
       <attribute name="url" value="be.iminds.iot.simulator.vrep/be.iminds.iot.simulator.vrep-0.3.0.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="AB97C47D71A8181AD2A0C51414B302F17872424357E9DCDB58F1622F6886FC28"/>
+      <attribute name="osgi.content" value="3E76347A0E05AC410CCC08E79E505530286B60313E096E67554C073C3295C458"/>
     </capability>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=be.iminds.iot.simulator.api)(&amp;(version&gt;=0.3.0)(!(version&gt;=1.0.0))))"/>
@@ -9112,10 +9112,10 @@
       <attribute name="objectClass" value="manager.VrepSimulationManager" type="List&lt;String&gt;"/>
     </capability>
     <capability namespace="osgi.content">
-      <attribute name="size" value="35776" type="Long"/>
+      <attribute name="size" value="35709" type="Long"/>
       <attribute name="url" value="it.ismb.pert.cpswarm.simulation.vrep/it.ismb.pert.cpswarm.simulation.vrep-1.1.1.jar"/>
       <attribute name="mime" value="application/vnd.osgi.bundle"/>
-      <attribute name="osgi.content" value="BCB2AF7D133DA50C6A7888448599D3779883C848C7B135891D1A1F4332E246F1"/>
+      <attribute name="osgi.content" value="8A58F2595E7120ACC983A66685F8DA6C75EFCD7CF5BA6EDC687750EE456833D4"/>
     </capability>
     <requirement namespace="osgi.wiring.package">
       <directive name="filter" value="(&amp;(osgi.wiring.package=be.iminds.iot.simulator.api)(&amp;(version&gt;=0.3.0)(!(version&gt;=1.0.0))))"/>
