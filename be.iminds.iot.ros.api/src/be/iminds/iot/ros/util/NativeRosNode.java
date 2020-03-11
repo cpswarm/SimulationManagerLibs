@@ -22,9 +22,7 @@
  *******************************************************************************/
 package be.iminds.iot.ros.util;
 
-
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +44,7 @@ public class NativeRosNode {
 	protected String rosNode;
 	protected String rosWorkspace;
 	protected String cmakeBuildType;
+	protected boolean startNow = false;
 	protected List<String> rosParameters = new ArrayList<>();
 	public static enum VERBOSITY_LEVELS {
 		NO_DEBUG,
@@ -79,7 +78,7 @@ public class NativeRosNode {
 	}
 
 	@Activate
-	protected void activate(BundleContext context, Map<String, Object> properties){
+	protected void activate(BundleContext context, Map<String, Object> properties) throws Exception {
 		String verbosity = "2";
 		if(context.getProperty("verbosity")!=null){
 			verbosity = context.getProperty("verbosity");
@@ -125,12 +124,12 @@ public class NativeRosNode {
 					rosParameters.add(key + ":=" + entry.getValue());
 				}
 			}
-
-		
 		}
-		startSimulation();
+		if(startNow) {  // use this flag to specify starting the simulation automatically or explicitly calling to this method
+			startSimulation();
+		}
 	}
-	
+
 	public void startSimulation() {
 		boolean roslaunch = false;
 		if (rosNode.endsWith(".launch")) {
@@ -144,7 +143,7 @@ public class NativeRosNode {
 			if(rosWorkspace == null)
 				source.append("source /opt/ros/kinetic/setup.bash ; ");
 			else
-				source.append("source /opt/ros/kinetic/setup.bash ; source " + rosWorkspace + "devel/setup.bash ; ");				
+				source.append("source /opt/ros/kinetic/setup.bash ; source " + rosWorkspace + "devel/setup.bash ; source ~/.bashrc; ");				
 			if (roslaunch) {
 				source.append("roslaunch ");
 			} else {
@@ -174,7 +173,7 @@ public class NativeRosNode {
 				
 			}else {
 				process = builder.start();
-				String line="";
+				String line=null;
 				BufferedReader input =  
 						new BufferedReader  
 						(new InputStreamReader(process.getInputStream()));  
@@ -187,7 +186,7 @@ public class NativeRosNode {
 				input = null;
 				line = null;
 			}
-			System.out.println("Ros command exits");
+				System.out.println("Ros command exits");
 		} catch (Exception e) {
 			System.err.println("Error launching native ros node " + rosPackage + " " + rosNode);
 			e.printStackTrace();
@@ -208,7 +207,6 @@ public class NativeRosNode {
 			builder.inheritIO();
 			process = builder.start();
 			process.waitFor();
-			process = null;
 			if(CURRENT_VERBOSITY_LEVEL.equals(VERBOSITY_LEVELS.ALL)) {
 				System.out.println("build workspace finished");
 			}
@@ -259,9 +257,9 @@ public class NativeRosNode {
 		}
 	}
 
-	@Reference
+/*	@Reference
 	void setROSEnvironment(Ros e) {
 		// make sure ROS core is running before activating a native node
-	}
+	}*/
 
 }

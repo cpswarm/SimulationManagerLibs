@@ -54,25 +54,27 @@
 	org.objenesis;version='[2.1,2.2)',\
 	com.esotericsoftware.kryo;version='[2.23,2.24)',\
 	de.javakaffee.kryo-serializers;version='[0.23,0.24)',\
-	be.iminds.iot.ros.core;version=0.3.0,\
 	be.iminds.iot.ros.msgs.generator;version=0.2.0,\
-	be.iminds.iot.simulator.api;version=0.3.0,\
-	org.ros.rosjava_messages.std_srvs;version=1.11.1,\
 	be.iminds.iot.ros.api;version=0.4.0,\
+	be.iminds.iot.ros.core;version=0.3.0,\
 	org.ros.rosjava_messages.gazebo_msgs;version=2.4.13,\
 	org.ros.rosjava_messages.trajectory_msgs;version=1.11.7,\
+	org.ros.rosjava_messages.std_srvs;version=1.11.1,\
+	be.iminds.iot.simulator.api;version=0.3.0,\
 	be.iminds.iot.simulator.gazebo;version=0.4.0
-
 	
 
+
 -runproperties: \
+	org.eclipse.jetty.util.log.class=org.eclipse.jetty.util.log.StdErrLog,\
+	org.eclipse.jetty.LEVEL=WARN,\
 	ros.core.native=true,\
 	gazebo.launch=true,\
 	verbosity=2,\
 	ros.master.uri=http://localhost:11311,\
 	org.apache.felix.log.storeDebug=false,\
 	felix.fileinstall.dir=resources,\
-	org.osgi.service.http.port=8080,\
+	org.osgi.service.http.port=8081,\
 	logback.configurationFile=resources/logback.xml
 
 -runsystempackages: \

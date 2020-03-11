@@ -4,14 +4,16 @@ Bundle-Version: 0.4.0
 	org.ros.rosjava.message_generation,\
 	org.ros.rosjava_messages.geometry_msgs,\
 	org.ros.rosjava_messages.std_msgs,\
+	org.ros.rosjava_messages.sensor_msgs,\
 	org.ros.rosjava_messages.rosgraph_msgs,\
-	org.ros.rosjava_messages.gazebo_msgs;version=latest,\
+	org.ros.rosjava_messages.gazebo_msgs,\
+	org.jboss.netty,\
 	osgi.core;version=5.0,\
 	osgi.enterprise;version=5.0,\
 	osgi.promise,\
-	be.iminds.iot.ros.api;version=latest,\
-	org.ros.rosjava_messages.std_srvs;version=1.11,\
-	be.iminds.iot.simulator.api;version=0.3
+	be.iminds.iot.ros.api;version=0.4.0,\
+	be.iminds.iot.simulator.api;version=0.3.0,\
+	org.ros.rosjava_messages.std_srvs;version=1.11
 Private-Package: be.iminds.iot.simulator.gazebo
 Export-Package: be.iminds.iot.simulator.api
 

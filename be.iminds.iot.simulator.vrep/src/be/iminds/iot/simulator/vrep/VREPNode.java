@@ -53,11 +53,19 @@ public class VREPNode {
 			// add vrep dir to LD_LIBRARY_PATH and start vrep executable
 			// vrep -h -s90000 -q myScene.ttt
 			File file = new File(vrepDir);
+<<<<<<< HEAD
 			ProcessBuilder builder = new ProcessBuilder("source ~/.bashrc; "+file.getAbsolutePath() + File.separator + "vrep",
 					headless ? "-h" : "", quit ? "-q" : "", port != 19997 ? "-gREMOTEAPISERVERSERVICE_" + port + "_FALSE_TRUE" : "");
 			builder.environment().put("LD_LIBRARY_PATH",
 					builder.environment().get("LD_LIBRARY_PATH") + ":" + file.getAbsolutePath());
 			System.err.println("LD_LIBRARY_PATH = "+builder.environment().get("LD_LIBRARY_PATH"));
+=======
+			ProcessBuilder builder = new ProcessBuilder(file.getAbsolutePath() + File.separator + "vrep",
+					headless ? "-h" : "", quit ? "-q" : "", port != 19997 ? "-gREMOTEAPISERVERSERVICE_" + port + "_FALSE_TRUE" : "");
+			builder.environment().put("LD_LIBRARY_PATH",
+					builder.environment().get("LD_LIBRARY_PATH") + ":" + file.getAbsolutePath());
+
+>>>>>>> refs/remotes/origin/api2.0
 			if (rosMasterURI != null) {
 				builder.environment().put("ROS_MASTER_URI", rosMasterURI.toString());
 			}
